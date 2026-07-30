@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 Disallow: /api/
-Sitemap: https://voixdubere.com/sitemap.xml
+Sitemap: https://fmvoixdeveloppement-bere.com/sitemap.xml
