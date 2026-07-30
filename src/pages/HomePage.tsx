@@ -8,16 +8,17 @@ import { db } from '@/lib/supabase'
 import SectionHeader from '@/components/shared/SectionHeader'
 import ArticleCard from '@/components/shared/ArticleCard'
 import GoogleMap from '@/components/shared/GoogleMap'
+import SafeImage from '@/components/shared/SafeImage'
 import Ticker from '@/components/layout/Ticker'
 import type { ActualiteView, ProgrammeView } from '@/types/database'
 
 const NAV_CARDS = [
-  { to: '/actualites', icon: Newspaper, title: 'Actualités', desc: 'Nouvelles de Béré, de la Tandjilé et du Tchad', badge: { text: 'Mis à jour', color: '#9B2226' }, img: 'https://images.unsplash.com/photo-1611532736597-de2d4265fba3?w=800&q=80', alt: 'Journaliste africain avec micro' },
-  { to: '/radio',      icon: Radio,     title: 'Radio et émissions', desc: 'Grille des programmes, podcasts, journaux et écoute en direct', badge: { text: '96.7 FM', color: '#1B4332' }, img: 'https://images.unsplash.com/photo-1478737270239-2f02b77fc618?w=800&q=80', alt: 'Studio radio avec microphone professionnel' },
-  { to: '/projets',    icon: Briefcase, title: 'Projets et partenariats', desc: 'Nos projets de développement local et nos partenaires', badge: null, img: 'https://images.unsplash.com/photo-1531545514256-b1400bc00f31?w=800&q=80', alt: 'Réunion communautaire africaine' },
-  { to: '/galerie',    icon: ImageIcon,  title: 'Galerie photos', desc: 'Studio, terrain, événements et équipe en images', badge: null, img: 'https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?w=800&q=80', alt: 'Paysage de savane africaine au coucher de soleil' },
-  { to: '/apropos',    icon: Info,       title: 'À propos', desc: 'Notre histoire, notre mission et notre équipe depuis Béré', badge: null, img: 'https://images.unsplash.com/photo-1489749798305-4fea3ae63d43?w=800&q=80', alt: 'Groupe de personnes africaines' },
-  { to: '/contact',    icon: Phone,      title: 'Nous contacter', desc: 'Téléphone, WhatsApp, email et formulaire de contact', badge: { text: 'Répondons vite', color: '#9B2226' }, img: 'https://images.unsplash.com/photo-1523805009345-7448845a9e53?w=800&q=80', alt: 'Marché africain animé' },
+  { to: '/actualites', icon: Newspaper, title: 'Actualités', desc: 'Nouvelles de Béré, de la Tandjilé et du Tchad', badge: { text: 'Mis à jour', color: '#9B2226' }, img: '/photos/studio-radio-bere.jpg', alt: 'Studio de diffusion de la Radio Voix de Béré' },
+  { to: '/radio',      icon: Radio,     title: 'Radio et émissions', desc: 'Grille des programmes, podcasts, journaux et écoute en direct', badge: { text: '96.7 FM', color: '#1B4332' }, img: 'https://images.unsplash.com/photo-1478737270239-2f02b77fc618?w=600&q=75&auto=format&fit=crop', alt: 'Studio de radio avec microphone professionnel' },
+  { to: '/projets',    icon: Briefcase, title: 'Projets et partenariats', desc: 'Nos projets de développement local et nos partenaires', badge: null, img: '/photos/equipe-radio-bere.jpg', alt: "L'équipe de la Radio Voix de Béré" },
+  { to: '/galerie',    icon: ImageIcon,  title: 'Galerie photos', desc: 'Studio, terrain, événements et équipe en images', badge: null, img: 'https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?w=600&q=75&auto=format&fit=crop', alt: 'Paysage de savane africaine au coucher de soleil' },
+  { to: '/apropos',    icon: Info,       title: 'À propos', desc: 'Notre histoire, notre mission et notre équipe depuis Béré', badge: null, img: '/photos/equipe-radio-bere.jpg', alt: "L'équipe de la Radio Voix de Béré devant les locaux de la station" },
+  { to: '/contact',    icon: Phone,      title: 'Nous contacter', desc: 'Téléphone, WhatsApp, email et formulaire de contact', badge: { text: 'Répondons vite', color: '#9B2226' }, img: 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=600&q=75&auto=format&fit=crop', alt: 'Professionnel de santé africain consultant son téléphone' },
 ]
 
 const VALEUR_ICONS = [Mic, Sprout, Heart]
@@ -34,7 +35,10 @@ export default function HomePage() {
   useEffect(() => {
     async function load() {
       try {
-        const { data } = await db.vActualites().select('*').order('date_publication', { ascending: false }).limit(3)
+        const { data } = await db.vActualites()
+          .select('id,titre,slug,extrait,image_url,date_publication,categorie_nom,categorie_couleur,a_la_une,vues')
+          .order('date_publication', { ascending: false })
+          .limit(3)
         if (data) setArticles(data as ActualiteView[])
       } finally {
         setLoadingActus(false)
@@ -96,9 +100,9 @@ export default function HomePage() {
               <div className="relative">
                 <div className="absolute inset-0 rounded-3xl opacity-20"
                   style={{ background: 'var(--color-accent)', filter: 'blur(40px)', transform: 'scale(0.9)' }} />
-                <img
+                <SafeImage
                   src="/photos/studio-radio-bere.jpg"
-                  alt="Studio de la Radio Voix de Développement de Béré"
+                  alt="Studio de diffusion de la Radio Voix de Développement de Béré"
                   loading="eager"
                   className="relative rounded-3xl w-80 h-80 object-cover shadow-2xl"
                   style={{ border: '4px solid rgba(255,255,255,0.2)' }}
@@ -146,7 +150,7 @@ export default function HomePage() {
             <Link key={card.to} to={card.to} className="card group flex flex-col cursor-pointer">
               {/* Image */}
               <div className="relative h-[180px] overflow-hidden">
-                <img src={card.img} alt={card.alt} loading="lazy"
+                <SafeImage src={card.img} alt={card.alt} loading="lazy"
                   className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                 />
                 {card.badge && (
@@ -262,9 +266,9 @@ export default function HomePage() {
               <Link to="/apropos" className="btn-primary mt-8 inline-flex">En savoir plus</Link>
             </div>
             <div>
-              <img
-                src="https://images.unsplash.com/photo-1594608661623-aa0bd3a69d98?w=800&q=80"
-                alt="Femme africaine journaliste en studio radio"
+              <SafeImage
+                src="https://images.unsplash.com/photo-1529390079861-591de354faf5?w=800&q=75&auto=format&fit=crop"
+                alt="Jeunes de la province de la Tandjilé, au cœur de notre mission de développement"
                 loading="lazy"
                 className="rounded-3xl w-full h-80 object-cover shadow-xl"
                 style={{ border: '4px solid var(--color-brand-primary)' }}

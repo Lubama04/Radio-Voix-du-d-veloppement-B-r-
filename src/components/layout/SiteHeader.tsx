@@ -3,6 +3,7 @@ import { Link, useLocation } from '@tanstack/react-router'
 import { Menu, X, Globe, ChevronDown, Check } from 'lucide-react'
 import { useLang, type Lang } from '@/contexts/LanguageContext'
 import { usePlayer } from '@/contexts/PlayerContext'
+import SafeImage from '@/components/shared/SafeImage'
 
 const LANGS: { code: Lang; flag: string; label: string }[] = [
   { code: 'fr', flag: '🇫🇷', label: 'Français' },
@@ -61,9 +62,10 @@ export default function SiteHeader() {
 
           {/* Logo + Nom */}
           <Link to="/" className="flex items-center gap-3 flex-shrink-0">
-            <img
+            <SafeImage
               src="/logo.png"
               alt="Radio La Voix du Développement de Béré 96.7 FM"
+              loading="eager"
               style={{ width: 44, height: 44, borderRadius: '50%', objectFit: 'cover', border: '2px solid #C9A84C' }}
             />
             <div className="hidden sm:block">

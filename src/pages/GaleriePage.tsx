@@ -1,61 +1,44 @@
 import { useState } from 'react'
-import { X, ChevronLeft, ChevronRight, ZoomIn, ImageOff } from 'lucide-react'
+import { X, ChevronLeft, ChevronRight, ZoomIn } from 'lucide-react'
 import { useDocumentTitle } from '@/hooks/useDocumentTitle'
+import SafeImage from '@/components/shared/SafeImage'
 
 const CATEGORIES = ['Tous', 'Studio', 'Terrain', 'Événements', 'Équipe']
 
 interface Photo {
-  url?: string
+  url: string
   titre: string
-  legende?: string
+  legende: string
   cat: string
-  placeholder?: boolean
 }
 
 const PHOTOS: Photo[] = [
   {
     url: '/photos/equipe-radio-bere.jpg',
-    titre: "L'équipe de la Radio Voix de Béré",
-    legende: "L'équipe de la Radio Voix de Développement devant les locaux de la station à Béré, province de la Tandjilé.",
+    titre: "L'équipe de la radio",
+    legende: "L'équipe de la Radio Voix de Développement de Béré devant les locaux de la station, Béré, province de la Tandjilé.",
     cat: 'Équipe',
   },
   {
     url: '/photos/studio-radio-bere.jpg',
     titre: 'Le studio de diffusion',
-    legende: "Notre technicien en cabine de diffusion. Le studio est équipé d'une console de mixage et d'un microphone professionnel.",
+    legende: "Notre technicien en cabine de diffusion avec la console de mixage et le microphone professionnel.",
     cat: 'Studio',
   },
-  { placeholder: true, titre: 'Photo à venir', cat: 'Studio' },
-  { placeholder: true, titre: 'Photo à venir', cat: 'Terrain' },
-  { placeholder: true, titre: 'Photo à venir', cat: 'Terrain' },
-  { placeholder: true, titre: 'Photo à venir', cat: 'Événements' },
-  { placeholder: true, titre: 'Photo à venir', cat: 'Événements' },
-  { placeholder: true, titre: 'Photo à venir', cat: 'Équipe' },
 ]
-
-function PlaceholderTile({ titre }: { titre: string }) {
-  return (
-    <div className="w-full aspect-[4/3] flex flex-col items-center justify-center gap-2"
-      style={{ background: 'var(--color-ivory)', border: '1px solid var(--color-gray-light)' }}>
-      <ImageOff className="w-8 h-8" style={{ color: 'var(--color-brand-primary)' }} />
-      <span className="text-xs font-semibold" style={{ color: 'var(--color-brand-primary)' }}>{titre}</span>
-    </div>
-  )
-}
 
 export default function GaleriePage() {
   useDocumentTitle('Galerie Photos | Radio Voix de Béré')
   const [cat, setCat] = useState('Tous')
   const [lightbox, setLightbox] = useState<number | null>(null)
   const filtered = PHOTOS.filter(p => cat === 'Tous' || p.cat === cat)
-  const viewable = filtered.filter(p => !p.placeholder)
 
   const openLightbox = (photo: Photo) => {
-    const idx = viewable.indexOf(photo)
+    const idx = filtered.indexOf(photo)
     if (idx !== -1) setLightbox(idx)
   }
-  const prev = () => setLightbox(l => l !== null ? (l - 1 + viewable.length) % viewable.length : null)
-  const next = () => setLightbox(l => l !== null ? (l + 1) % viewable.length : null)
+  const prev = () => setLightbox(l => l !== null ? (l - 1 + filtered.length) % filtered.length : null)
+  const next = () => setLightbox(l => l !== null ? (l + 1) % filtered.length : null)
 
   return (
     <main className="pt-16">
@@ -79,30 +62,31 @@ export default function GaleriePage() {
             ))}
           </div>
 
-          <div className="masonry">
-            {filtered.map((photo, i) => (
-              <div key={i}
-                className={`relative group overflow-hidden rounded-xl ${photo.placeholder ? '' : 'cursor-pointer'}`}
-                onClick={() => !photo.placeholder && openLightbox(photo)}>
-                {photo.placeholder ? (
-                  <PlaceholderTile titre={photo.titre} />
-                ) : (
-                  <>
-                    <img src={photo.url} alt={photo.titre} loading="lazy"
-                      className="w-full object-cover transition-transform duration-300 group-hover:scale-105" />
-                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-all flex items-center justify-center">
-                      <ZoomIn className="w-8 h-8 text-white opacity-0 group-hover:opacity-100 transition-opacity" />
-                    </div>
-                  </>
-                )}
-              </div>
-            ))}
-          </div>
+          {filtered.length > 0 ? (
+            <div className="masonry">
+              {filtered.map((photo, i) => (
+                <div key={i} className="relative group overflow-hidden rounded-xl cursor-pointer"
+                  onClick={() => openLightbox(photo)}>
+                  <SafeImage src={photo.url} alt={photo.titre} loading="lazy"
+                    className="w-full object-cover transition-transform duration-300 group-hover:scale-105" />
+                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-all flex items-center justify-center">
+                    <ZoomIn className="w-8 h-8 text-white opacity-0 group-hover:opacity-100 transition-opacity" />
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-12 text-gray-500">
+              <p className="text-sm">
+                Photos en cours d'acquisition pour cette catégorie.
+              </p>
+            </div>
+          )}
         </div>
       </section>
 
       {/* Lightbox */}
-      {lightbox !== null && viewable[lightbox] && (
+      {lightbox !== null && filtered[lightbox] && (
         <div className="fixed inset-0 z-50 bg-black/95 flex items-center justify-center p-4"
           onClick={() => setLightbox(null)}>
           <button onClick={e => { e.stopPropagation(); setLightbox(null) }}
@@ -115,7 +99,7 @@ export default function GaleriePage() {
             aria-label="Photo précédente">
             <ChevronLeft className="w-10 h-10" />
           </button>
-          <img src={viewable[lightbox].url} alt={viewable[lightbox].titre} loading="lazy"
+          <img src={filtered[lightbox].url} alt={filtered[lightbox].titre} loading="lazy"
             className="max-w-full max-h-[85vh] object-contain rounded-xl"
             onClick={e => e.stopPropagation()} />
           <button onClick={e => { e.stopPropagation(); next() }}
@@ -124,9 +108,9 @@ export default function GaleriePage() {
             <ChevronRight className="w-10 h-10" />
           </button>
           <div className="absolute bottom-4 max-w-xl px-4 text-white/70 text-sm text-center">
-            <div className="font-semibold text-white">{viewable[lightbox].titre}</div>
-            {viewable[lightbox].legende && <p className="mt-1">{viewable[lightbox].legende}</p>}
-            <p className="mt-1 text-white/50">{lightbox + 1}/{viewable.length}</p>
+            <div className="font-semibold text-white">{filtered[lightbox].titre}</div>
+            {filtered[lightbox].legende && <p className="mt-1">{filtered[lightbox].legende}</p>}
+            <p className="mt-1 text-white/50">{lightbox + 1}/{filtered.length}</p>
           </div>
         </div>
       )}

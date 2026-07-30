@@ -63,12 +63,15 @@ export default defineConfig({
       output: {
         manualChunks: {
           'react-vendor': ['react', 'react-dom'],
-          'router': ['@tanstack/react-router'],
-          'query': ['@tanstack/react-query'],
-          'supabase': ['@supabase/supabase-js'],
-          'motion': ['framer-motion']
+          'router':       ['@tanstack/react-router'],
+          'supabase':     ['@supabase/supabase-js'],
+          'date':         ['date-fns'],
+          'icons':        ['lucide-react'],
         }
       }
-    }
+    },
+    chunkSizeWarningLimit: 600,
+    target: 'esnext',
+    minify: 'esbuild',
   }
 })

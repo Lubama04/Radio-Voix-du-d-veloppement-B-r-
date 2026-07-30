@@ -2,7 +2,6 @@ import { createRootRoute, createRoute, createRouter, Outlet } from '@tanstack/re
 import SiteHeader from '@/components/layout/SiteHeader'
 import SiteFooter from '@/components/layout/SiteFooter'
 import GlobalPlayer from '@/components/layout/GlobalPlayer'
-import LiveButton from '@/components/layout/LiveButton'
 import HomePage from '@/pages/HomePage'
 import ActualitesPage from '@/pages/ActualitesPage'
 import RadioPage from '@/pages/RadioPage'
@@ -31,7 +30,6 @@ const rootRoute = createRootRoute({
       </div>
       <SiteFooter />
       <GlobalPlayer />
-      <LiveButton />
     </div>
   ),
 })

@@ -5,6 +5,7 @@ import { useDocumentTitle } from '@/hooks/useDocumentTitle'
 import { db } from '@/lib/supabase'
 import SectionHeader from '@/components/shared/SectionHeader'
 import GoogleMap from '@/components/shared/GoogleMap'
+import SafeImage from '@/components/shared/SafeImage'
 import type { Partenaire } from '@/types/database'
 
 export default function AProposPage() {
@@ -87,7 +88,7 @@ export default function AProposPage() {
         <div className="max-w-7xl mx-auto">
           <SectionHeader title={t.sections.team} subtitle="Les femmes et hommes qui font vivre la radio au quotidien" align="center" />
           <figure className="mt-8">
-            <img
+            <SafeImage
               src="/photos/equipe-radio-bere.jpg"
               alt="L'équipe de la Radio Voix de Développement de Béré devant les locaux de la station"
               loading="lazy"
@@ -144,7 +145,7 @@ export default function AProposPage() {
                 <div key={p.id} className="bg-white rounded-xl px-6 py-4 shadow-sm text-center min-w-32"
                   style={{ border: '1px solid var(--color-border)' }}>
                   {p.logo_url ? (
-                    <img src={p.logo_url} alt={p.nom} className="h-10 object-contain mx-auto mb-2" loading="lazy" />
+                    <SafeImage src={p.logo_url} alt={p.nom} className="h-10 object-contain mx-auto mb-2" loading="lazy" />
                   ) : (
                     <div className="h-10 flex items-center justify-center mb-2">
                       <span className="font-bold text-sm" style={{ color: 'var(--color-brand-primary)' }}>{p.nom_court || p.nom}</span>

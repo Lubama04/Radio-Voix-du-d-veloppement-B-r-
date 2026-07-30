@@ -6,6 +6,7 @@ import { Clock, Eye, User, Facebook, MessageCircle, Link as LinkIcon, Check, Che
 import { db } from '@/lib/supabase'
 import { useDocumentTitle } from '@/hooks/useDocumentTitle'
 import ArticleCard from '@/components/shared/ArticleCard'
+import SafeImage from '@/components/shared/SafeImage'
 import type { ActualiteView } from '@/types/database'
 
 const routeApi = getRouteApi('/actualites/$slug')
@@ -111,7 +112,7 @@ export default function ArticlePage() {
         </div>
 
         {article.image_url && (
-          <img src={article.image_url} alt={article.image_alt || article.titre} loading="eager"
+          <SafeImage src={article.image_url} alt={article.image_alt || article.titre} loading="eager"
             className="w-full rounded-2xl object-cover mb-8 max-h-96" />
         )}
 

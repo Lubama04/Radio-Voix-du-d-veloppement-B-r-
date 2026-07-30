@@ -2,6 +2,7 @@ import { Link } from '@tanstack/react-router'
 import { Clock, Eye } from 'lucide-react'
 import { formatDistanceToNow } from 'date-fns'
 import { fr } from 'date-fns/locale'
+import SafeImage from '@/components/shared/SafeImage'
 import type { ActualiteView } from '@/types/database'
 
 interface Props {
@@ -16,7 +17,7 @@ export default function ArticleCard({ article, variant = 'default' }: Props) {
   if (variant === 'compact') return (
     <Link to={href} className="flex items-start gap-3 group py-2 border-b" style={{ borderColor: 'var(--color-border)' }}>
       {article.image_url && (
-        <img src={article.image_url} alt={article.titre} loading="lazy"
+        <SafeImage src={article.image_url} alt={article.titre} loading="lazy"
           className="w-16 h-16 rounded-lg object-cover flex-shrink-0" />
       )}
       <div className="min-w-0 flex-1">
@@ -36,7 +37,7 @@ export default function ArticleCard({ article, variant = 'default' }: Props) {
   if (variant === 'featured') return (
     <Link to={href} className="group block rounded-2xl overflow-hidden relative h-80"
       style={{ border: '1px solid var(--color-border)' }}>
-      <img
+      <SafeImage
         src={article.image_url || `https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80`}
         alt={article.titre} loading="lazy"
         className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
@@ -58,7 +59,7 @@ export default function ArticleCard({ article, variant = 'default' }: Props) {
   return (
     <Link to={href} className="card group flex flex-col h-full">
       <div className="relative h-44 overflow-hidden">
-        <img
+        <SafeImage
           src={article.image_url || `https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=600&q=70`}
           alt={article.titre} loading="lazy"
           className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"

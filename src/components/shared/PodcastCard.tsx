@@ -1,6 +1,7 @@
 import { Play, Headphones, Clock } from 'lucide-react'
 import { usePlayer } from '@/contexts/PlayerContext'
 import { db } from '@/lib/supabase'
+import SafeImage from '@/components/shared/SafeImage'
 import type { PodcastView } from '@/types/database'
 
 interface Props { podcast: PodcastView }
@@ -25,7 +26,7 @@ export default function PodcastCard({ podcast }: Props) {
   return (
     <div className="card group flex flex-col">
       <div className="relative h-40 overflow-hidden">
-        <img
+        <SafeImage
           src={podcast.image_url || podcast.emission_image || `https://images.unsplash.com/photo-1478737270239-2f02b77fc618?w=400&q=70`}
           alt={podcast.titre} loading="lazy"
           className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
