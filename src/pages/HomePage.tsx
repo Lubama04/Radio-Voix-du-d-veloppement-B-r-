@@ -12,12 +12,12 @@ import Ticker from '@/components/layout/Ticker'
 import type { ActualiteView, ProgrammeView } from '@/types/database'
 
 const NAV_CARDS = [
-  { to: '/actualites', icon: Newspaper, title: 'Actualités', desc: 'Nouvelles de Béré, de la Tandjilé et du Tchad', badge: { text: 'Mis à jour', color: '#CC0000' }, img: 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=600&q=70' },
-  { to: '/radio',      icon: Radio,     title: 'Radio et émissions', desc: 'Grille des programmes, podcasts, journaux et écoute en direct', badge: { text: '96.7 FM', color: '#006400' }, img: 'https://images.unsplash.com/photo-1478737270239-2f02b77fc618?w=600&q=70' },
-  { to: '/projets',    icon: Briefcase, title: 'Projets et partenariats', desc: 'Nos projets de développement local et nos partenaires', badge: null, img: 'https://images.unsplash.com/photo-1531545514256-b1400bc00f31?w=600&q=70' },
-  { to: '/galerie',    icon: ImageIcon,  title: 'Galerie photos', desc: 'Studio, terrain, événements et équipe en images', badge: null, img: 'https://images.unsplash.com/photo-1527631746610-bca00a040d60?w=600&q=70' },
-  { to: '/apropos',    icon: Info,       title: 'À propos', desc: 'Notre histoire, notre mission et notre équipe depuis Béré', badge: null, img: 'https://images.unsplash.com/photo-1593113630400-ea4288922559?w=600&q=70' },
-  { to: '/contact',    icon: Phone,      title: 'Nous contacter', desc: 'Téléphone, WhatsApp, email et formulaire de contact', badge: { text: 'Répondons vite', color: '#CC0000' }, img: 'https://images.unsplash.com/photo-1534536281715-e28d76689b4d?w=600&q=70' },
+  { to: '/actualites', icon: Newspaper, title: 'Actualités', desc: 'Nouvelles de Béré, de la Tandjilé et du Tchad', badge: { text: 'Mis à jour', color: '#9B2226' }, img: 'https://images.unsplash.com/photo-1611532736597-de2d4265fba3?w=800&q=80', alt: 'Journaliste africain avec micro' },
+  { to: '/radio',      icon: Radio,     title: 'Radio et émissions', desc: 'Grille des programmes, podcasts, journaux et écoute en direct', badge: { text: '96.7 FM', color: '#1B4332' }, img: 'https://images.unsplash.com/photo-1478737270239-2f02b77fc618?w=800&q=80', alt: 'Studio radio avec microphone professionnel' },
+  { to: '/projets',    icon: Briefcase, title: 'Projets et partenariats', desc: 'Nos projets de développement local et nos partenaires', badge: null, img: 'https://images.unsplash.com/photo-1531545514256-b1400bc00f31?w=800&q=80', alt: 'Réunion communautaire africaine' },
+  { to: '/galerie',    icon: ImageIcon,  title: 'Galerie photos', desc: 'Studio, terrain, événements et équipe en images', badge: null, img: 'https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?w=800&q=80', alt: 'Paysage de savane africaine au coucher de soleil' },
+  { to: '/apropos',    icon: Info,       title: 'À propos', desc: 'Notre histoire, notre mission et notre équipe depuis Béré', badge: null, img: 'https://images.unsplash.com/photo-1489749798305-4fea3ae63d43?w=800&q=80', alt: 'Groupe de personnes africaines' },
+  { to: '/contact',    icon: Phone,      title: 'Nous contacter', desc: 'Téléphone, WhatsApp, email et formulaire de contact', badge: { text: 'Répondons vite', color: '#9B2226' }, img: 'https://images.unsplash.com/photo-1523805009345-7448845a9e53?w=800&q=80', alt: 'Marché africain animé' },
 ]
 
 const VALEUR_ICONS = [Mic, Sprout, Heart]
@@ -56,7 +56,7 @@ export default function HomePage() {
 
       {/* ── HERO ── */}
       <section className="relative min-h-[85vh] sm:min-h-[70vh] flex items-center overflow-hidden"
-        style={{ background: 'linear-gradient(135deg, var(--color-brand-dark) 0%, var(--color-brand-primary) 100%)' }}>
+        style={{ background: 'linear-gradient(135deg, #1B4332 0%, #0D2B1F 100%)' }}>
         {/* Pattern d'onde radio SVG en overlay */}
         <div className="absolute inset-0 opacity-5">
           <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
@@ -74,10 +74,10 @@ export default function HomePage() {
                 <span className="live-dot" />
                 🔴 {t.hero.badge}
               </div>
-              <h1 className="font-display text-white mb-4 leading-tight" style={{ fontWeight: 800, letterSpacing: '-0.02em' }}>
+              <h1 className="font-display text-white mb-4 leading-tight" style={{ fontSize: 'clamp(2rem, 5vw, 3.5rem)', fontWeight: 800, letterSpacing: '-0.02em' }}>
                 {t.hero.title}
               </h1>
-              <p className="text-white/85 text-lg mb-8 max-w-lg">{t.hero.subtitle}</p>
+              <p className="text-lg mb-8 max-w-lg" style={{ color: 'rgba(255,255,255,0.8)' }}>{t.hero.subtitle}</p>
               <div className="flex flex-wrap gap-4">
                 <button onClick={handleLive}
                   className="btn-accent flex items-center gap-2 text-base px-8 py-4">
@@ -100,8 +100,6 @@ export default function HomePage() {
                   src="/photos/studio-radio-bere.jpg"
                   alt="Studio de la Radio Voix de Développement de Béré"
                   loading="eager"
-                  // @ts-expect-error fetchpriority n'est pas encore dans les types React 18, mais l'attribut HTML est valide
-                  fetchpriority="high"
                   className="relative rounded-3xl w-80 h-80 object-cover shadow-2xl"
                   style={{ border: '4px solid rgba(255,255,255,0.2)' }}
                 />
@@ -118,18 +116,19 @@ export default function HomePage() {
       </section>
 
       {/* ── CHIFFRES CLÉS ── */}
-      <div style={{ background: '#004d00' }}>
+      <div style={{ background: '#0D2B1F', borderTop: '1px solid rgba(201, 168, 76, 0.3)' }}>
         <div className="max-w-7xl mx-auto px-4 py-4">
-          <div className="grid grid-cols-2 sm:grid-cols-4 divide-x divide-white/20">
+          <div className="grid grid-cols-2 sm:grid-cols-4">
             {[
               { val: '96.7 FM', label: t.home.statLabels[0] },
-              { val: 'Béré', label: t.home.statLabels[1] },
-              { val: '24h/24', label: t.home.statLabels[2] },
-              { val: '2023', label: t.home.statLabels[3] },
+              { val: 'Béré, Tandjilé', label: t.home.statLabels[1] },
+              { val: '24h sur 24', label: t.home.statLabels[2] },
+              { val: 'Depuis 2023', label: t.home.statLabels[3] },
             ].map((s, i) => (
-              <div key={i} className="flex flex-col items-center py-3 px-4 border-t sm:border-t-0 border-white/20 first:border-t-0">
-                <div className="font-display font-bold text-xl sm:text-2xl text-white">{s.val}</div>
-                <div className="text-white/60 text-xs text-center">{s.label}</div>
+              <div key={i} className="flex flex-col items-center py-3 px-4"
+                style={{ borderLeft: i > 0 ? '1px solid rgba(201, 168, 76, 0.3)' : undefined }}>
+                <div className="font-display font-bold" style={{ fontSize: '1.6rem', color: '#C9A84C' }}>{s.val}</div>
+                <div className="text-center" style={{ color: 'rgba(255,255,255,0.6)', fontSize: '0.72rem' }}>{s.label}</div>
               </div>
             ))}
           </div>
@@ -146,8 +145,8 @@ export default function HomePage() {
           {NAV_CARDS.map(card => (
             <Link key={card.to} to={card.to} className="card group flex flex-col cursor-pointer">
               {/* Image */}
-              <div className="relative h-40 overflow-hidden">
-                <img src={card.img} alt={card.title} loading="lazy"
+              <div className="relative h-[180px] overflow-hidden">
+                <img src={card.img} alt={card.alt} loading="lazy"
                   className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                 />
                 {card.badge && (
@@ -160,14 +159,14 @@ export default function HomePage() {
               {/* Texte */}
               <div className="p-5 flex flex-col flex-1">
                 <div className="flex items-center gap-2 mb-2">
-                  <card.icon className="w-5 h-5" style={{ color: 'var(--color-brand-primary)' }} />
-                  <h3 className="font-display font-bold text-base text-gray-900 group-hover:text-green-700 transition-colors">
+                  <card.icon className="w-5 h-5" style={{ color: 'var(--color-gold)' }} />
+                  <h3 className="font-display transition-colors" style={{ fontSize: '1.1rem', fontWeight: 700, color: 'var(--color-brand-primary)' }}>
                     {card.title}
                   </h3>
                 </div>
-                <p className="text-sm text-gray-600 flex-1">{card.desc}</p>
-                <div className="flex items-center gap-1 mt-3 text-sm font-semibold"
-                  style={{ color: 'var(--color-brand-primary)' }}>
+                <p className="flex-1" style={{ fontSize: '0.85rem', color: 'var(--color-gray-medium)' }}>{card.desc}</p>
+                <div className="flex items-center gap-1 mt-3 text-sm"
+                  style={{ color: 'var(--color-brand-primary)', fontWeight: 700 }}>
                   Découvrir <ChevronRight className="w-4 h-4" />
                 </div>
               </div>
@@ -235,12 +234,12 @@ export default function HomePage() {
       )}
 
       {/* ── NOTRE MISSION ── */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8" style={{ background: 'var(--color-brand-light)' }}>
+      <section className="py-16 px-4 sm:px-6 lg:px-8" style={{ background: 'var(--color-ivory-alt)' }}>
         <div className="max-w-7xl mx-auto">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div>
               <SectionHeader title={t.home.missionTitle} />
-              <p className="text-gray-700 text-lg leading-relaxed mb-8">
+              <p className="text-lg leading-relaxed mb-8" style={{ color: 'var(--color-gray-medium)' }}>
                 {t.home.missionText}
               </p>
               <div className="space-y-4">
@@ -249,12 +248,12 @@ export default function HomePage() {
                   return (
                     <div key={i} className="flex items-start gap-4">
                       <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
-                        style={{ background: 'var(--color-brand-primary)' }}>
-                        <Icon className="w-5 h-5 text-white" />
+                        style={{ background: 'var(--color-gold-light)' }}>
+                        <Icon className="w-5 h-5" style={{ color: 'var(--color-gold)' }} />
                       </div>
                       <div>
-                        <h4 className="font-bold text-gray-900 mb-1">{v.title}</h4>
-                        <p className="text-sm text-gray-600">{v.desc}</p>
+                        <h4 className="font-bold mb-1" style={{ color: 'var(--color-anthracite)' }}>{v.title}</h4>
+                        <p className="text-sm" style={{ color: 'var(--color-gray-medium)' }}>{v.desc}</p>
                       </div>
                     </div>
                   )
@@ -264,8 +263,8 @@ export default function HomePage() {
             </div>
             <div>
               <img
-                src="https://images.unsplash.com/photo-1590602847861-f357a9332bbc?w=600&q=80"
-                alt="Journaliste africain en studio radio"
+                src="https://images.unsplash.com/photo-1594608661623-aa0bd3a69d98?w=800&q=80"
+                alt="Femme africaine journaliste en studio radio"
                 loading="lazy"
                 className="rounded-3xl w-full h-80 object-cover shadow-xl"
                 style={{ border: '4px solid var(--color-brand-primary)' }}
@@ -282,7 +281,7 @@ export default function HomePage() {
           <div className="grid md:grid-cols-2 gap-8 items-start">
             <GoogleMap height="350px" />
             <div className="space-y-4">
-              <div className="bg-white rounded-2xl p-6" style={{ border: '1px solid var(--color-border)' }}>
+              <div className="bg-white rounded-2xl p-6" style={{ border: '1px solid rgba(201, 168, 76, 0.3)' }}>
                 <h3 className="font-display font-bold text-lg mb-4" style={{ color: 'var(--color-brand-primary)' }}>
                   Radio La Voix du Développement de Béré
                 </h3>

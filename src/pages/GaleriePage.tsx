@@ -36,9 +36,9 @@ const PHOTOS: Photo[] = [
 function PlaceholderTile({ titre }: { titre: string }) {
   return (
     <div className="w-full aspect-[4/3] flex flex-col items-center justify-center gap-2"
-      style={{ background: 'linear-gradient(135deg, var(--color-brand-light), #fdecec)' }}>
+      style={{ background: 'var(--color-ivory)', border: '1px solid var(--color-gray-light)' }}>
       <ImageOff className="w-8 h-8" style={{ color: 'var(--color-brand-primary)' }} />
-      <span className="text-xs font-semibold" style={{ color: 'var(--color-accent)' }}>{titre}</span>
+      <span className="text-xs font-semibold" style={{ color: 'var(--color-brand-primary)' }}>{titre}</span>
     </div>
   )
 }

@@ -102,7 +102,7 @@ export default function ContactPage() {
                   aria-invalid={!!fieldErrors.nom} aria-describedby={fieldErrors.nom ? 'contact-nom-error' : undefined}
                   className="w-full px-4 py-3 rounded-xl border text-sm focus:outline-none focus:ring-2"
                   style={{ borderColor: fieldErrors.nom ? '#CC0000' : 'var(--color-border)' }}
-                  placeholder="Votre nom complet" />
+                  placeholder={t.forms.namePlaceholder} />
                 {fieldErrors.nom && <p id="contact-nom-error" className="text-xs text-red-600 mt-1">{fieldErrors.nom}</p>}
               </div>
               <div className="grid grid-cols-2 gap-4">
@@ -111,7 +111,7 @@ export default function ContactPage() {
                   <input id="contact-telephone" name="telephone" value={form.telephone} onChange={handleChange} type="tel"
                     aria-invalid={!!fieldErrors.telephone} aria-describedby={fieldErrors.telephone ? 'contact-telephone-error' : undefined}
                     className="w-full px-4 py-3 rounded-xl border text-sm focus:outline-none"
-                    style={{ borderColor: fieldErrors.telephone ? '#CC0000' : 'var(--color-border)' }} placeholder="+235..." />
+                    style={{ borderColor: fieldErrors.telephone ? '#CC0000' : 'var(--color-border)' }} placeholder={t.forms.phonePlaceholder} />
                   {fieldErrors.telephone && <p id="contact-telephone-error" className="text-xs text-red-600 mt-1">{fieldErrors.telephone}</p>}
                 </div>
                 <div>
@@ -119,7 +119,7 @@ export default function ContactPage() {
                   <input id="contact-email" name="email" value={form.email} onChange={handleChange} type="email"
                     aria-invalid={!!fieldErrors.email} aria-describedby={fieldErrors.email ? 'contact-email-error' : undefined}
                     className="w-full px-4 py-3 rounded-xl border text-sm focus:outline-none"
-                    style={{ borderColor: fieldErrors.email ? '#CC0000' : 'var(--color-border)' }} placeholder="votre@email.com" />
+                    style={{ borderColor: fieldErrors.email ? '#CC0000' : 'var(--color-border)' }} placeholder={t.forms.emailPlaceholder} />
                   {fieldErrors.email && <p id="contact-email-error" className="text-xs text-red-600 mt-1">{fieldErrors.email}</p>}
                 </div>
               </div>
@@ -137,7 +137,7 @@ export default function ContactPage() {
                   aria-invalid={!!fieldErrors.message} aria-describedby={fieldErrors.message ? 'contact-message-error' : undefined}
                   className="w-full px-4 py-3 rounded-xl border text-sm focus:outline-none resize-none"
                   style={{ borderColor: fieldErrors.message ? '#CC0000' : 'var(--color-border)' }}
-                  placeholder="Votre message..." />
+                  placeholder={t.forms.messagePlaceholder} />
                 {fieldErrors.message && <p id="contact-message-error" className="text-xs text-red-600 mt-1">{fieldErrors.message}</p>}
               </div>
               <button type="submit" disabled={status === 'loading'}

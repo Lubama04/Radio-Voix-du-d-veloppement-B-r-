@@ -7,8 +7,9 @@ interface Translations {
   hero: { badge:string; title:string; subtitle:string; cta1:string; cta2:string }
   live: { label:string; on:string; off:string; loading:string }
   sections: { latestNews:string; programs:string; mission:string; location:string; partners:string; podcasts:string; schedule:string; gallery:string; team:string; agenda:string }
-  footer: { rights:string; description:string }
-  forms: { name:string; phone:string; email:string; message:string; subject:string; send:string; success:string; error:string; subscribe:string }
+  footer: { rights:string; description:string; col1Title:string; col2Title:string; col3Title:string; col4Title:string; madeBy:string; address:string; schedule:string }
+  ticker: { label:string }
+  forms: { name:string; phone:string; email:string; message:string; subject:string; send:string; success:string; error:string; subscribe:string; contactTitle:string; namePlaceholder:string; phonePlaceholder:string; emailPlaceholder:string; messagePlaceholder:string }
   pages: { news:string; radio:string; projects:string; gallery:string; about:string; contact:string; agenda:string }
   misc: { seeAll:string; loading:string; noData:string; views:string; listens:string; share:string; duration:string; download:string; listen:string; search:string }
   home: {
@@ -25,11 +26,12 @@ interface Translations {
 const T: Record<Lang, Translations> = {
   fr: {
     nav: { home:'Accueil', news:'Actualités', radio:'Radio', projects:'Projets', gallery:'Galerie', about:'À propos', contact:'Contact' },
-    hero: { badge:'Antenne en direct', title:'La voix qui porte le développement', subtitle:'Radio communautaire 96.7 FM · Béré, province de la Tandjilé, Tchad', cta1:'Écouter en direct', cta2:'Découvrir la radio' },
+    hero: { badge:'Antenne en direct 96.7 FM', title:'La voix qui porte le développement', subtitle:'Radio communautaire 96.7 FM · Béré, province de la Tandjilé, Tchad', cta1:'Écouter en direct', cta2:'Découvrir la radio' },
     live: { label:'En direct', on:'En cours d\'antenne', off:'Hors antenne', loading:'Connexion...' },
     sections: { latestNews:'Dernières actualités', programs:'Programmes du jour', mission:'Notre mission', location:'Nous trouver', partners:'Partenaires', podcasts:'Podcasts récents', schedule:'Grille des programmes', gallery:'Galerie photos', team:'Notre équipe', agenda:'Agenda Béré' },
-    footer: { rights:'Tous droits réservés', description:'Radio communautaire au service du développement local de Béré et de la province de la Tandjilé, au Tchad.' },
-    forms: { name:'Nom complet', phone:'Téléphone', email:'Email', message:'Message', subject:'Objet', send:'Envoyer', success:'Message envoyé avec succès !', error:'Erreur lors de l\'envoi. Réessayez.', subscribe:'S\'abonner' },
+    footer: { rights:'Tous droits réservés', description:'Radio communautaire au service du développement local de Béré et de la province de la Tandjilé, au Tchad.', col1Title:'La radio', col2Title:'Navigation', col3Title:'Émissions', col4Title:'Contact', madeBy:'Réalisé par', address:'Béré, Tandjilé Centre, province de la Tandjilé, Tchad', schedule:'Antenne 24h sur 24, 7 jours sur 7' },
+    ticker: { label:'Fil info' },
+    forms: { name:'Nom complet', phone:'Téléphone', email:'Email', message:'Message', subject:'Objet', send:'Envoyer', success:'Message envoyé avec succès !', error:'Erreur lors de l\'envoi. Réessayez.', subscribe:'S\'abonner', contactTitle:'Nous contacter', namePlaceholder:'Votre nom', phonePlaceholder:'+235...', emailPlaceholder:'votre@email.com', messagePlaceholder:'Votre message...' },
     pages: { news:'Actualités', radio:'Radio et émissions', projects:'Projets et partenariats', gallery:'Galerie photos', about:'À propos', contact:'Nous contacter', agenda:'Agenda' },
     misc: { seeAll:'Voir tout', loading:'Chargement...', noData:'Aucune donnée disponible', views:'vues', listens:'écoutes', share:'Partager', duration:'Durée', download:'Télécharger', listen:'Écouter', search:'Rechercher...' },
     home: {
@@ -51,8 +53,9 @@ const T: Record<Lang, Translations> = {
     hero: { badge:'Live on air', title:'The voice that carries development', subtitle:'Community radio 96.7 FM · Béré, Province of Tandjilé, Chad', cta1:'Listen live', cta2:'Discover the radio' },
     live: { label:'Live', on:'On air', off:'Off air', loading:'Connecting...' },
     sections: { latestNews:'Latest news', programs:'Today\'s programs', mission:'Our mission', location:'Find us', partners:'Partners', podcasts:'Recent podcasts', schedule:'Program schedule', gallery:'Photo gallery', team:'Our team', agenda:'Béré agenda' },
-    footer: { rights:'All rights reserved', description:'Community radio serving local development in Béré and the province of Tandjilé, Chad.' },
-    forms: { name:'Full name', phone:'Phone', email:'Email', message:'Message', subject:'Subject', send:'Send', success:'Message sent successfully!', error:'Error sending. Please try again.', subscribe:'Subscribe' },
+    footer: { rights:'All rights reserved', description:'Community radio serving local development in Béré and the province of Tandjilé, Chad.', col1Title:'The radio', col2Title:'Navigation', col3Title:'Shows', col4Title:'Contact', madeBy:'Made by', address:'Béré, Tandjilé Centre, province of Tandjilé, Chad', schedule:'On air 24 hours a day, 7 days a week' },
+    ticker: { label:'News feed' },
+    forms: { name:'Full name', phone:'Phone', email:'Email', message:'Message', subject:'Subject', send:'Send', success:'Message sent successfully!', error:'Error sending. Please try again.', subscribe:'Subscribe', contactTitle:'Contact us', namePlaceholder:'Your name', phonePlaceholder:'+235...', emailPlaceholder:'your@email.com', messagePlaceholder:'Your message...' },
     pages: { news:'News', radio:'Radio & Shows', projects:'Projects & Partnerships', gallery:'Photo Gallery', about:'About Us', contact:'Contact Us', agenda:'Agenda' },
     misc: { seeAll:'See all', loading:'Loading...', noData:'No data available', views:'views', listens:'listens', share:'Share', duration:'Duration', download:'Download', listen:'Listen', search:'Search...' },
     home: {
@@ -74,8 +77,9 @@ const T: Record<Lang, Translations> = {
     hero: { badge:'البث المباشر', title:'الصوت الذي يحمل التنمية', subtitle:'راديو مجتمعي 96.7 FM · بيري، مقاطعة تانجيلي، تشاد', cta1:'استمع مباشرة', cta2:'اكتشف الراديو' },
     live: { label:'مباشر', on:'على الهواء', off:'خارج الهواء', loading:'جارٍ الاتصال...' },
     sections: { latestNews:'آخر الأخبار', programs:'برامج اليوم', mission:'مهمتنا', location:'أين نحن', partners:'الشركاء', podcasts:'البودكاست الأخيرة', schedule:'جدول البرامج', gallery:'معرض الصور', team:'فريقنا', agenda:'أجندة بيري' },
-    footer: { rights:'جميع الحقوق محفوظة', description:'راديو مجتمعي في خدمة التنمية المحلية في بيري ومقاطعة تانجيلي بتشاد.' },
-    forms: { name:'الاسم الكامل', phone:'الهاتف', email:'البريد الإلكتروني', message:'الرسالة', subject:'الموضوع', send:'إرسال', success:'تم إرسال الرسالة بنجاح!', error:'خطأ في الإرسال. حاول مرة أخرى.', subscribe:'اشتراك' },
+    footer: { rights:'جميع الحقوق محفوظة', description:'راديو مجتمعي في خدمة التنمية المحلية في بيري ومقاطعة تانجيلي بتشاد.', col1Title:'الراديو', col2Title:'التنقل', col3Title:'البرامج', col4Title:'الاتصال', madeBy:'من إنجاز', address:'بيري، تانجيلي سنتر، مقاطعة تانجيلي، تشاد', schedule:'على الهواء 24 ساعة يومياً، 7 أيام في الأسبوع' },
+    ticker: { label:'نشرة الأخبار' },
+    forms: { name:'الاسم الكامل', phone:'الهاتف', email:'البريد الإلكتروني', message:'الرسالة', subject:'الموضوع', send:'إرسال', success:'تم إرسال الرسالة بنجاح!', error:'خطأ في الإرسال. حاول مرة أخرى.', subscribe:'اشتراك', contactTitle:'اتصل بنا', namePlaceholder:'اسمك', phonePlaceholder:'235+...', emailPlaceholder:'بريدك@example.com', messagePlaceholder:'رسالتك...' },
     pages: { news:'الأخبار', radio:'الراديو والبرامج', projects:'المشاريع والشراكات', gallery:'معرض الصور', about:'من نحن', contact:'اتصل بنا', agenda:'الأجندة' },
     misc: { seeAll:'عرض الكل', loading:'جارٍ التحميل...', noData:'لا توجد بيانات متاحة', views:'مشاهدات', listens:'استماعات', share:'مشاركة', duration:'المدة', download:'تحميل', listen:'استمع', search:'بحث...' },
     home: {

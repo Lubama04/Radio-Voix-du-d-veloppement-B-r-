@@ -15,7 +15,6 @@ export default function SiteHeader() {
   const { toggle, isPlaying } = usePlayer()
   const [menuOpen, setMenuOpen] = useState(false)
   const [langOpen, setLangOpen] = useState(false)
-  const [scrolled, setScrolled] = useState(false)
   const location = useLocation()
   const langRef = useRef<HTMLDivElement>(null)
 
@@ -31,12 +30,6 @@ export default function SiteHeader() {
     { to: '/contact',    label: t.nav.contact },
   ]
   const mobileNavLinks = navLinks.filter(l => !l.mobileHidden)
-
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 10)
-    window.addEventListener('scroll', onScroll, { passive: true })
-    return () => window.removeEventListener('scroll', onScroll)
-  }, [])
 
   useEffect(() => {
     const handler = (e: MouseEvent) => {
@@ -55,31 +48,30 @@ export default function SiteHeader() {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${
-        scrolled ? 'shadow-md bg-white/98 backdrop-blur-md' : 'bg-white border-b-2'
-      }`}
-      style={{ borderBottomColor: scrolled ? 'transparent' : 'var(--color-brand-primary)' }}
+      className="fixed top-0 left-0 right-0 z-40"
+      style={{
+        backgroundColor: '#FAFAF7',
+        borderBottom: '1px solid #E8E4DC',
+        boxShadow: '0 2px 12px rgba(27, 67, 50, 0.08)',
+        height: '68px',
+      }}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
+        <div className="flex items-center justify-between h-full">
 
           {/* Logo + Nom */}
           <Link to="/" className="flex items-center gap-3 flex-shrink-0">
             <img
               src="/logo.png"
               alt="Radio La Voix du Développement de Béré 96.7 FM"
-              className="w-10 h-10 rounded-full object-cover flex-shrink-0"
-              width="40"
-              height="40"
+              style={{ width: 44, height: 44, borderRadius: '50%', objectFit: 'cover', border: '2px solid #C9A84C' }}
             />
             <div className="hidden sm:block">
-              <div className="font-display font-bold text-sm leading-tight"
-                style={{ color: 'var(--color-brand-primary)' }}>
+              <div style={{ fontFamily: 'Playfair Display, serif', fontWeight: 700, fontSize: '0.9rem', color: '#1B4332', lineHeight: 1.2 }}>
                 La Voix du Développement
               </div>
-              <div className="text-xs font-bold leading-tight"
-                style={{ color: 'var(--color-accent)' }}>
-                96.7 FM, Béré, Tchad
+              <div style={{ fontSize: '0.72rem', fontWeight: 700, color: '#9B2226', letterSpacing: '0.04em' }}>
+                96.7 FM · Béré, Tchad
               </div>
             </div>
           </Link>
@@ -90,12 +82,11 @@ export default function SiteHeader() {
               <Link
                 key={link.to}
                 to={link.to}
-                className={`px-3 py-2 rounded-lg text-sm font-semibold transition-all duration-150 ${
-                  isActive(link.to)
-                    ? 'text-white'
-                    : 'text-gray-700 hover:text-white hover:bg-[var(--color-brand-primary)]'
-                }`}
-                style={isActive(link.to) ? { background: 'var(--color-brand-primary)' } : undefined}
+                style={isActive(link.to)
+                  ? { background: '#D8F3DC', color: '#1B4332', borderRadius: 8, padding: '6px 12px', fontWeight: 600, fontSize: '0.88rem' }
+                  : { color: '#2C2C2C', fontWeight: 600, fontSize: '0.88rem', padding: '6px 12px' }
+                }
+                className="transition-colors duration-150 hover:!text-[#1B4332]"
               >
                 {link.label}
               </Link>
@@ -108,10 +99,12 @@ export default function SiteHeader() {
             {/* Bouton EN DIRECT */}
             <button
               onClick={toggle}
-              className={`hidden sm:flex items-center gap-2 px-4 py-2 rounded-full text-sm font-bold text-white transition-all duration-200 ${
-                isPlaying ? 'animate-pulse-slow' : ''
-              }`}
-              style={{ background: 'var(--color-accent)' }}
+              className={`hidden sm:flex ${isPlaying ? 'animate-pulse-slow' : ''}`}
+              style={{
+                background: '#9B2226', color: 'white', borderRadius: '9999px', padding: '8px 18px',
+                fontWeight: 700, fontSize: '0.82rem', letterSpacing: '0.04em', border: 'none',
+                alignItems: 'center', gap: 8, boxShadow: '0 4px 14px rgba(155,34,38,0.3)',
+              }}
               aria-label="Écouter en direct"
             >
               <span className={`w-2 h-2 rounded-full bg-white ${isPlaying ? 'animate-ping' : ''}`} />

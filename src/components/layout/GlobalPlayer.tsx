@@ -23,7 +23,7 @@ export default function GlobalPlayer() {
             <div className="text-xs font-bold truncate" style={{ color: 'var(--color-brand-primary)' }}>
               {isLoading ? t.live.loading : isPlaying ? t.live.on : t.live.off}
             </div>
-            <div className="text-sm font-semibold truncate text-gray-800">{currentShow}</div>
+            <div className="text-sm font-semibold truncate" style={{ color: 'var(--color-brand-primary)' }}>{currentShow}</div>
           </div>
         </div>
 
