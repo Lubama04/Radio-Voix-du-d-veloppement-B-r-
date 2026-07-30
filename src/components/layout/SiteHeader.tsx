@@ -23,11 +23,14 @@ export default function SiteHeader() {
     { to: '/',           label: t.nav.home },
     { to: '/actualites', label: t.nav.news },
     { to: '/radio',      label: t.nav.radio },
+    { to: '/agenda',     label: 'Agenda', mobileHidden: true },
     { to: '/projets',    label: t.nav.projects },
     { to: '/galerie',    label: t.nav.gallery },
+    { to: '/frequences', label: 'Fréquences', mobileHidden: true },
     { to: '/apropos',    label: t.nav.about },
     { to: '/contact',    label: t.nav.contact },
   ]
+  const mobileNavLinks = navLinks.filter(l => !l.mobileHidden)
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 10)
@@ -76,7 +79,7 @@ export default function SiteHeader() {
               </div>
               <div className="text-xs font-bold leading-tight"
                 style={{ color: 'var(--color-accent)' }}>
-                96.7 FM — Béré, Tchad
+                96.7 FM, Béré, Tchad
               </div>
             </div>
           </Link>
@@ -179,7 +182,7 @@ export default function SiteHeader() {
             style={{ backgroundColor: '#ffffff' }}
           >
             <nav className="px-4 py-4 space-y-1">
-              {navLinks.map(link => (
+              {mobileNavLinks.map(link => (
                 <Link
                   key={link.to}
                   to={link.to}
@@ -198,7 +201,7 @@ export default function SiteHeader() {
                 style={{ background: 'var(--color-accent)' }}
               >
                 <span className={`w-2 h-2 rounded-full bg-white ${isPlaying ? 'animate-ping' : ''}`} />
-                {t.live.label} — 96.7 FM
+                {t.live.label}, 96.7 FM
               </button>
               {/* Sélecteur langue dans le drawer */}
               <div className="flex gap-2 pt-2 border-t" style={{ borderColor: 'var(--color-border)' }}>

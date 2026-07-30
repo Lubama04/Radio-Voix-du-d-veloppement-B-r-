@@ -25,7 +25,7 @@ const OBJETS = [
 ]
 
 export default function ContactPage() {
-  useDocumentTitle('Nous Contacter | Radio Voix de Béré — Béré, Tchad')
+  useDocumentTitle('Nous contacter | Radio Voix de Béré, Béré, Tchad')
   const { t } = useLang()
   const { config } = useConfig()
   const [form, setForm] = useState({ nom:'', telephone:'', email:'', objet:'information', message:'' })
@@ -203,7 +203,7 @@ export default function ContactPage() {
                   style={{ background: 'var(--color-accent)' }}>FM</div>
                 <div>
                   <div className="font-semibold text-gray-900">Antenne</div>
-                  <div className="text-sm text-gray-600">96.7 FM — 24h/24, 7j/7</div>
+                  <div className="text-sm text-gray-600">96.7 FM, 24h/24, 7j/7</div>
                 </div>
               </div>
             </div>

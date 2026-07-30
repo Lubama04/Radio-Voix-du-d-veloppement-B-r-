@@ -50,7 +50,7 @@ export default function ActualitesPage() {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        {/* Barre recherche + filtres */}
+        {/* Barre recherche + filtre catégorie */}
         <div className="flex flex-col sm:flex-row gap-4 mb-8">
           <div className="relative flex-1">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
@@ -61,26 +61,18 @@ export default function ActualitesPage() {
               style={{ borderColor: 'var(--color-border)', '--tw-ring-color': 'var(--color-brand-primary)' } as React.CSSProperties}
             />
           </div>
-        </div>
-
-        {/* Chips catégories */}
-        <div className="flex gap-2 flex-wrap mb-8">
-          <button onClick={() => setSelectedCat('all')}
-            className={`px-4 py-2 rounded-full text-sm font-semibold transition-all border ${
-              selectedCat === 'all' ? 'text-white border-transparent' : 'bg-white border-gray-200 text-gray-700 hover:border-green-500'
-            }`}
-            style={selectedCat === 'all' ? { background: 'var(--color-brand-primary)' } : {}}>
-            Toutes
-          </button>
-          {categories.map(c => (
-            <button key={c.slug} onClick={() => setSelectedCat(c.slug)}
-              className={`px-4 py-2 rounded-full text-sm font-semibold transition-all border ${
-                selectedCat === c.slug ? 'text-white border-transparent' : 'bg-white border-gray-200 text-gray-700 hover:border-green-500'
-              }`}
-              style={selectedCat === c.slug ? { background: c.couleur } : {}}>
-              {c.nom_fr}
-            </button>
-          ))}
+          <select
+            value={selectedCat}
+            onChange={e => setSelectedCat(e.target.value)}
+            aria-label="Filtrer par catégorie"
+            className="px-4 py-3 rounded-xl border text-sm font-semibold cursor-pointer focus:outline-none"
+            style={{ borderColor: 'var(--color-border)', color: 'var(--color-brand-primary)', minWidth: '200px' }}
+          >
+            <option value="all">Toutes les catégories</option>
+            {categories.map(c => (
+              <option key={c.slug} value={c.slug}>{c.nom_fr}</option>
+            ))}
+          </select>
         </div>
 
         <div className="flex gap-8">

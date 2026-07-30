@@ -11,18 +11,40 @@ interface Translations {
   forms: { name:string; phone:string; email:string; message:string; subject:string; send:string; success:string; error:string; subscribe:string }
   pages: { news:string; radio:string; projects:string; gallery:string; about:string; contact:string; agenda:string }
   misc: { seeAll:string; loading:string; noData:string; views:string; listens:string; share:string; duration:string; download:string; listen:string; search:string }
+  home: {
+    statLabels: [string, string, string, string]
+    exploreTitle: string
+    exploreSubtitle: string
+    missionTitle: string
+    missionText: string
+    locationTitle: string
+    valeurs: { title: string; desc: string }[]
+  }
 }
 
 const T: Record<Lang, Translations> = {
   fr: {
-    nav: { home:'Accueil', news:'Actualités', radio:'Radio', projects:'Projets', gallery:'Galerie', about:'À Propos', contact:'Contact' },
-    hero: { badge:'Antenne en direct', title:'La voix qui porte le développement', subtitle:'Radio communautaire 96.7 FM · Béré, Province de la Tandjilé, Tchad', cta1:'Écouter en direct', cta2:'Découvrir la radio' },
-    live: { label:'En Direct', on:'En cours d\'antenne', off:'Hors antenne', loading:'Connexion...' },
+    nav: { home:'Accueil', news:'Actualités', radio:'Radio', projects:'Projets', gallery:'Galerie', about:'À propos', contact:'Contact' },
+    hero: { badge:'Antenne en direct', title:'La voix qui porte le développement', subtitle:'Radio communautaire 96.7 FM · Béré, province de la Tandjilé, Tchad', cta1:'Écouter en direct', cta2:'Découvrir la radio' },
+    live: { label:'En direct', on:'En cours d\'antenne', off:'Hors antenne', loading:'Connexion...' },
     sections: { latestNews:'Dernières actualités', programs:'Programmes du jour', mission:'Notre mission', location:'Nous trouver', partners:'Partenaires', podcasts:'Podcasts récents', schedule:'Grille des programmes', gallery:'Galerie photos', team:'Notre équipe', agenda:'Agenda Béré' },
     footer: { rights:'Tous droits réservés', description:'Radio communautaire au service du développement local de Béré et de la province de la Tandjilé, au Tchad.' },
     forms: { name:'Nom complet', phone:'Téléphone', email:'Email', message:'Message', subject:'Objet', send:'Envoyer', success:'Message envoyé avec succès !', error:'Erreur lors de l\'envoi. Réessayez.', subscribe:'S\'abonner' },
-    pages: { news:'Actualités', radio:'Radio & Émissions', projects:'Projets & Partenariats', gallery:'Galerie Photos', about:'À Propos', contact:'Nous Contacter', agenda:'Agenda' },
+    pages: { news:'Actualités', radio:'Radio et émissions', projects:'Projets et partenariats', gallery:'Galerie photos', about:'À propos', contact:'Nous contacter', agenda:'Agenda' },
     misc: { seeAll:'Voir tout', loading:'Chargement...', noData:'Aucune donnée disponible', views:'vues', listens:'écoutes', share:'Partager', duration:'Durée', download:'Télécharger', listen:'Écouter', search:'Rechercher...' },
+    home: {
+      statLabels: ['Fréquence officielle', 'Province de la Tandjilé', 'En continu', 'Fondée'],
+      exploreTitle: 'Explorez notre radio',
+      exploreSubtitle: 'Tout ce que vous pouvez faire sur notre site',
+      missionTitle: 'Notre mission',
+      missionText: 'Radio communautaire implantée à Béré depuis 2023, la Radio Voix du Développement de Béré est au service des populations de la Tandjilé. Nous informons, nous éduquons et nous connectons les communautés rurales avec le monde.',
+      locationTitle: 'Nous trouver',
+      valeurs: [
+        { title: 'Information', desc: 'Informer et éduquer les communautés de la Tandjilé avec une information locale fiable.' },
+        { title: 'Développement', desc: 'Contribuer au développement local durable de Béré et de ses environs.' },
+        { title: 'Communauté', desc: 'Être la voix des citoyens, des agriculteurs, des femmes et des jeunes de la province.' },
+      ],
+    },
   },
   en: {
     nav: { home:'Home', news:'News', radio:'Radio', projects:'Projects', gallery:'Gallery', about:'About', contact:'Contact' },
@@ -33,6 +55,19 @@ const T: Record<Lang, Translations> = {
     forms: { name:'Full name', phone:'Phone', email:'Email', message:'Message', subject:'Subject', send:'Send', success:'Message sent successfully!', error:'Error sending. Please try again.', subscribe:'Subscribe' },
     pages: { news:'News', radio:'Radio & Shows', projects:'Projects & Partnerships', gallery:'Photo Gallery', about:'About Us', contact:'Contact Us', agenda:'Agenda' },
     misc: { seeAll:'See all', loading:'Loading...', noData:'No data available', views:'views', listens:'listens', share:'Share', duration:'Duration', download:'Download', listen:'Listen', search:'Search...' },
+    home: {
+      statLabels: ['Official frequency', 'Province of Tandjilé', 'Continuous broadcast', 'Founded'],
+      exploreTitle: 'Explore our radio',
+      exploreSubtitle: 'Everything you can do on our website',
+      missionTitle: 'Our mission',
+      missionText: 'Community radio established in Béré since 2023, Radio Voice of Development serves the people of Tandjilé. We inform, educate and connect rural communities with the world.',
+      locationTitle: 'Find us',
+      valeurs: [
+        { title: 'Information', desc: 'Inform and educate Tandjilé communities with reliable local information.' },
+        { title: 'Development', desc: 'Contribute to the sustainable local development of Béré and surrounding areas.' },
+        { title: 'Community', desc: 'Be the voice of citizens, farmers, women and young people of the province.' },
+      ],
+    },
   },
   ar: {
     nav: { home:'الرئيسية', news:'الأخبار', radio:'الراديو', projects:'المشاريع', gallery:'المعرض', about:'من نحن', contact:'اتصل بنا' },
@@ -43,6 +78,19 @@ const T: Record<Lang, Translations> = {
     forms: { name:'الاسم الكامل', phone:'الهاتف', email:'البريد الإلكتروني', message:'الرسالة', subject:'الموضوع', send:'إرسال', success:'تم إرسال الرسالة بنجاح!', error:'خطأ في الإرسال. حاول مرة أخرى.', subscribe:'اشتراك' },
     pages: { news:'الأخبار', radio:'الراديو والبرامج', projects:'المشاريع والشراكات', gallery:'معرض الصور', about:'من نحن', contact:'اتصل بنا', agenda:'الأجندة' },
     misc: { seeAll:'عرض الكل', loading:'جارٍ التحميل...', noData:'لا توجد بيانات متاحة', views:'مشاهدات', listens:'استماعات', share:'مشاركة', duration:'المدة', download:'تحميل', listen:'استمع', search:'بحث...' },
+    home: {
+      statLabels: ['التردد الرسمي', 'مقاطعة تانجيلي', 'بث مستمر', 'تأسست'],
+      exploreTitle: 'استكشف راديونا',
+      exploreSubtitle: 'كل ما يمكنك فعله على موقعنا',
+      missionTitle: 'مهمتنا',
+      missionText: 'راديو مجتمعي في بيري منذ 2023، يخدم سكان تانجيلي. نخبر ونعلم ونربط المجتمعات الريفية بالعالم.',
+      locationTitle: 'أين نحن',
+      valeurs: [
+        { title: 'المعلومات', desc: 'إعلام وتعليم مجتمعات تانجيلي بمعلومات محلية موثوقة.' },
+        { title: 'التنمية', desc: 'المساهمة في التنمية المحلية المستدامة لبيري ومحيطها.' },
+        { title: 'المجتمع', desc: 'أن نكون صوت المواطنين والمزارعين والنساء والشباب في المقاطعة.' },
+      ],
+    },
   },
 }
 

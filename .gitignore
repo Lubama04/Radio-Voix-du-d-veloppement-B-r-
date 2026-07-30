@@ -7,3 +7,5 @@ dist/
 .vite/
 .claude/
 *.zip
+/Document*.jpeg
+/Photo*.jpeg

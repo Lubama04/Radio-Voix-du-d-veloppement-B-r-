@@ -1,20 +1,11 @@
 import { useEffect, useState } from 'react'
-import { Radio, Users, MapPin, Star } from 'lucide-react'
+import { Radio, Users, Star } from 'lucide-react'
 import { useLang } from '@/contexts/LanguageContext'
 import { useDocumentTitle } from '@/hooks/useDocumentTitle'
 import { db } from '@/lib/supabase'
 import SectionHeader from '@/components/shared/SectionHeader'
 import GoogleMap from '@/components/shared/GoogleMap'
 import type { Partenaire } from '@/types/database'
-
-const EQUIPE = [
-  { nom: 'Jean-Pierre Moïse', fonction: 'Directeur & Fondateur', photo: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&q=80', bio: 'Fondateur de la radio depuis 2010, journaliste communautaire engagé.' },
-  { nom: 'Fatimé Harouna', fonction: 'Rédactrice en chef', photo: 'https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=200&q=80', bio: 'Journaliste professionnelle, responsable de la couverture locale.' },
-  { nom: 'Théophile Nadji', fonction: 'Responsable technique', photo: 'https://images.unsplash.com/photo-1522529599102-193c0d76b5b6?w=200&q=80', bio: 'Technicien son expérimenté, garant de la qualité de diffusion.' },
-  { nom: 'Adèle Yombé', fonction: 'Animatrice principale', photo: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&q=80', bio: 'Voix emblématique de la radio, animatrice de plusieurs émissions phares.' },
-  { nom: 'Éric Dossia', fonction: 'Correspondant terrain', photo: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=200&q=80', bio: 'Journaliste de terrain couvrant la province de la Tandjilé.' },
-  { nom: 'Marie-Claire Bao', fonction: 'Animatrice Jeunesse', photo: 'https://images.unsplash.com/photo-1529390079861-591de354faf5?w=200&q=80', bio: 'Responsable des émissions dédiées aux jeunes de Béré.' },
-]
 
 export default function AProposPage() {
   useDocumentTitle('À Propos | Radio La Voix du Développement de Béré')
@@ -45,20 +36,21 @@ export default function AProposPage() {
           <SectionHeader title="Notre histoire" align="center" />
           <div className="prose prose-lg mx-auto text-gray-700">
             <p>
-              Née en 2010 à Béré, dans la province de la Tandjilé, La Voix du Développement de Béré
-              s'est imposée comme la radio de référence des populations rurales de la Tandjilé Centre.
-              Fondée avec la conviction que l'information locale est un droit fondamental pour chaque
-              communauté, notre station émet en continu sur la fréquence 96.7 FM.
+              Autorisée par la HAMA (Haute Autorité des Médias et de l'Audiovisuel du Tchad) par
+              décision n° 016/HAMA/SO/2023 du 16 mai 2023, la Radio Voix de Développement de Béré
+              est une radio privée associative au service du développement local. Implantée à Béré,
+              dans le département de la Tandjilé Centre, province de la Tandjilé, elle émet sur la
+              fréquence 96.7 FM pour les populations de la région.
             </p>
             <p>
-              En plus d'une décennie d'antenne, nous avons accompagné les grandes étapes du développement
-              de notre province : campagnes de vaccination, sensibilisation agricole, couverture des
-              événements locaux, mais aussi musique, culture et patrimoine des peuples de la Tandjilé.
+              Depuis son autorisation, nous accompagnons les grandes étapes du développement de notre
+              province : campagnes de vaccination, sensibilisation agricole, couverture des événements
+              locaux, mais aussi musique, culture et patrimoine des peuples de la Tandjilé.
             </p>
             <p>
-              Aujourd'hui, La Voix du Développement de Béré franchit un nouveau cap avec le lancement
-              de son site web officiel et de son application en ligne, portant notre signal bien au-delà
-              des ondes FM — jusqu'aux enfants de Béré dispersés aux quatre coins du monde.
+              Aujourd'hui, la Radio Voix de Développement de Béré franchit un nouveau cap avec le
+              lancement de son site web officiel et de son application en ligne, portant notre signal
+              bien au-delà des ondes FM, jusqu'aux enfants de Béré dispersés aux quatre coins du monde.
             </p>
           </div>
         </div>
@@ -67,7 +59,7 @@ export default function AProposPage() {
       {/* Mission & Valeurs */}
       <section className="py-16 px-4 sm:px-6 lg:px-8" style={{ background: 'var(--color-brand-light)' }}>
         <div className="max-w-7xl mx-auto">
-          <SectionHeader title="Mission & Valeurs" align="center" />
+          <SectionHeader title="Mission et valeurs" align="center" />
           <div className="grid sm:grid-cols-3 gap-6 mt-8">
             {[
               { icon: Radio,  title: 'Informer',      desc: 'Produire et diffuser une information locale fiable, vérifiée et utile pour les communautés de la Tandjilé.' },
@@ -94,17 +86,18 @@ export default function AProposPage() {
       <section className="py-16 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           <SectionHeader title={t.sections.team} subtitle="Les femmes et hommes qui font vivre la radio au quotidien" align="center" />
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-6 mt-8">
-            {EQUIPE.map((m, i) => (
-              <div key={i} className="text-center">
-                <img src={m.photo} alt={m.nom} loading="lazy"
-                  className="w-20 h-20 rounded-full object-cover mx-auto mb-3 shadow-md"
-                  style={{ border: '3px solid var(--color-brand-primary)' }} />
-                <div className="font-bold text-sm text-gray-900">{m.nom}</div>
-                <div className="text-xs text-gray-500 mt-1">{m.fonction}</div>
-              </div>
-            ))}
-          </div>
+          <figure className="mt-8">
+            <img
+              src="/photos/equipe-radio-bere.jpg"
+              alt="L'équipe de la Radio Voix de Développement de Béré devant les locaux de la station"
+              loading="lazy"
+              className="w-full rounded-2xl object-cover shadow-md max-h-[480px]"
+              style={{ border: '3px solid var(--color-brand-primary)' }}
+            />
+            <figcaption className="text-center text-sm text-gray-500 mt-3">
+              L'équipe de la Radio Voix de Développement de Béré
+            </figcaption>
+          </figure>
         </div>
       </section>
 

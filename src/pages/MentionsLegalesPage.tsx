@@ -12,7 +12,7 @@ export default function MentionsLegalesPage() {
         <h2>Éditeur du site</h2>
         <p>
           <strong>Radio La Voix du Développement de Béré</strong><br />
-          96.7 FM — Béré, Département de la Tandjilé Centre<br />
+          96.7 FM, Béré, Département de la Tandjilé Centre<br />
           Province de la Tandjilé, République du Tchad
         </p>
         <h2>Réalisation</h2>

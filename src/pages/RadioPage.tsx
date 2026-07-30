@@ -64,7 +64,7 @@ export default function RadioPage() {
         <div className="relative max-w-2xl mx-auto px-4">
           <div className="live-badge inline-flex mb-6">
             <span className={`live-dot ${isPlaying ? 'animate-ping' : ''}`} />
-            {isPlaying ? t.live.on : t.live.label} — 96.7 FM
+            {isPlaying ? t.live.on : t.live.label}, 96.7 FM
           </div>
 
           {/* Visualiseur audio */}

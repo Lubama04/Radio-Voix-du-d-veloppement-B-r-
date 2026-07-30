@@ -5,7 +5,7 @@ interface Props {
 
 export default function GoogleMap({
   lat = '9.3167', lng = '16.0833', zoom = 12,
-  title = 'Localisation Radio Béré — Tandjilé, Tchad',
+  title = 'Localisation Radio Béré, Tandjilé, Tchad',
   height = '300px', className = ''
 }: Props) {
   const src = `https://maps.google.com/maps?q=${lat},${lng}&z=${zoom}&output=embed`

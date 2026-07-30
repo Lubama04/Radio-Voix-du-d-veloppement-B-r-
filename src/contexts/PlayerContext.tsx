@@ -21,7 +21,7 @@ interface PlayerCtx extends PlayerState {
 const PlayerContext = createContext<PlayerCtx | null>(null)
 
 const STREAM_URL = import.meta.env.VITE_STREAM_URL || ''
-const DEFAULT_SHOW = 'La Voix du Développement de Béré — 96.7 FM'
+const DEFAULT_SHOW = 'La Voix du Développement de Béré, 96.7 FM'
 
 export function PlayerProvider({ children }: { children: ReactNode }) {
   const audioRef = useRef<HTMLAudioElement | null>(null)

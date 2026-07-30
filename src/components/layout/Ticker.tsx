@@ -5,7 +5,7 @@ import { db } from '@/lib/supabase'
 import type { TickerMsg } from '@/types/database'
 
 const FALLBACK: TickerMsg[] = [
-  { id:'1', texte:'🔴 EN DIRECT — Écoutez La Voix du Développement de Béré sur 96.7 FM', lien_url:'/radio', priorite:5, actif:true, date_debut:'', created_at:'' },
+  { id:'1', texte:'🔴 EN DIRECT, écoutez La Voix du Développement de Béré sur 96.7 FM', lien_url:'/radio', priorite:5, actif:true, date_debut:'', created_at:'' },
   { id:'2', texte:'📻 Suivez notre grille de programmes en ligne', lien_url:'/radio', priorite:4, actif:true, date_debut:'', created_at:'' },
   { id:'3', texte:'📞 Contactez-nous sur WhatsApp pour participer à nos émissions', lien_url:'/contact', priorite:3, actif:true, date_debut:'', created_at:'' },
 ]

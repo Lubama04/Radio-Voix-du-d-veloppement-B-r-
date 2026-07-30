@@ -13,21 +13,17 @@ import type { ActualiteView, ProgrammeView } from '@/types/database'
 
 const NAV_CARDS = [
   { to: '/actualites', icon: Newspaper, title: 'Actualités', desc: 'Nouvelles de Béré, de la Tandjilé et du Tchad', badge: { text: 'Mis à jour', color: '#CC0000' }, img: 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=600&q=70' },
-  { to: '/radio',      icon: Radio,     title: 'Radio & Émissions', desc: 'Grille des programmes, podcasts, journaux et écoute en direct', badge: { text: '96.7 FM', color: '#006400' }, img: 'https://images.unsplash.com/photo-1478737270239-2f02b77fc618?w=600&q=70' },
-  { to: '/projets',    icon: Briefcase, title: 'Projets & Partenariats', desc: 'Nos projets de développement local et nos partenaires', badge: null, img: 'https://images.unsplash.com/photo-1531545514256-b1400bc00f31?w=600&q=70' },
-  { to: '/galerie',    icon: ImageIcon,  title: 'Galerie Photos', desc: 'Studio, terrain, événements et équipe en images', badge: null, img: 'https://images.unsplash.com/photo-1527631746610-bca00a040d60?w=600&q=70' },
-  { to: '/apropos',    icon: Info,       title: 'À Propos', desc: 'Notre histoire, notre mission et notre équipe depuis Béré', badge: null, img: 'https://images.unsplash.com/photo-1593113630400-ea4288922559?w=600&q=70' },
-  { to: '/contact',    icon: Phone,      title: 'Nous Contacter', desc: 'Téléphone, WhatsApp, email et formulaire de contact', badge: { text: 'Répondons vite', color: '#CC0000' }, img: 'https://images.unsplash.com/photo-1534536281715-e28d76689b4d?w=600&q=70' },
+  { to: '/radio',      icon: Radio,     title: 'Radio et émissions', desc: 'Grille des programmes, podcasts, journaux et écoute en direct', badge: { text: '96.7 FM', color: '#006400' }, img: 'https://images.unsplash.com/photo-1478737270239-2f02b77fc618?w=600&q=70' },
+  { to: '/projets',    icon: Briefcase, title: 'Projets et partenariats', desc: 'Nos projets de développement local et nos partenaires', badge: null, img: 'https://images.unsplash.com/photo-1531545514256-b1400bc00f31?w=600&q=70' },
+  { to: '/galerie',    icon: ImageIcon,  title: 'Galerie photos', desc: 'Studio, terrain, événements et équipe en images', badge: null, img: 'https://images.unsplash.com/photo-1527631746610-bca00a040d60?w=600&q=70' },
+  { to: '/apropos',    icon: Info,       title: 'À propos', desc: 'Notre histoire, notre mission et notre équipe depuis Béré', badge: null, img: 'https://images.unsplash.com/photo-1593113630400-ea4288922559?w=600&q=70' },
+  { to: '/contact',    icon: Phone,      title: 'Nous contacter', desc: 'Téléphone, WhatsApp, email et formulaire de contact', badge: { text: 'Répondons vite', color: '#CC0000' }, img: 'https://images.unsplash.com/photo-1534536281715-e28d76689b4d?w=600&q=70' },
 ]
 
-const VALEURS = [
-  { icon: Mic,    title: 'Information', desc: 'Informer, éduquer et connecter les communautés de la Tandjilé avec une information locale fiable.' },
-  { icon: Sprout, title: 'Développement', desc: 'Contribuer au développement local durable de Béré et de ses environs par le média communautaire.' },
-  { icon: Heart,  title: 'Communauté', desc: 'Être la voix des citoyens ordinaires, des agriculteurs, des femmes et des jeunes de la province.' },
-]
+const VALEUR_ICONS = [Mic, Sprout, Heart]
 
 export default function HomePage() {
-  useDocumentTitle('La Voix du Développement de Béré — 96.7 FM | Béré, Tandjilé, Tchad')
+  useDocumentTitle('La Voix du Développement de Béré, 96.7 FM | Béré, Tandjilé, Tchad')
   const { t } = useLang()
   const { toggle, isPlaying, openPlayer } = usePlayer()
   const [articles, setArticles] = useState<ActualiteView[]>([])
@@ -73,15 +69,15 @@ export default function HomePage() {
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24 w-full">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             {/* Gauche — Texte */}
-            <div>
+            <div className="animate-hero-in">
               <div className="live-badge inline-flex mb-6">
                 <span className="live-dot" />
                 🔴 {t.hero.badge}
               </div>
-              <h1 className="font-display text-white mb-4 leading-tight">
+              <h1 className="font-display text-white mb-4 leading-tight" style={{ fontWeight: 800, letterSpacing: '-0.02em' }}>
                 {t.hero.title}
               </h1>
-              <p className="text-white/80 text-lg mb-8 max-w-lg">{t.hero.subtitle}</p>
+              <p className="text-white/85 text-lg mb-8 max-w-lg">{t.hero.subtitle}</p>
               <div className="flex flex-wrap gap-4">
                 <button onClick={handleLive}
                   className="btn-accent flex items-center gap-2 text-base px-8 py-4">
@@ -101,9 +97,11 @@ export default function HomePage() {
                 <div className="absolute inset-0 rounded-3xl opacity-20"
                   style={{ background: 'var(--color-accent)', filter: 'blur(40px)', transform: 'scale(0.9)' }} />
                 <img
-                  src="https://images.unsplash.com/photo-1598743400863-0201dc7f7d8a?w=500&q=80"
-                  alt="Animatrice radio africaine en studio"
-                  loading="lazy"
+                  src="/photos/studio-radio-bere.jpg"
+                  alt="Studio de la Radio Voix de Développement de Béré"
+                  loading="eager"
+                  // @ts-expect-error fetchpriority n'est pas encore dans les types React 18, mais l'attribut HTML est valide
+                  fetchpriority="high"
                   className="relative rounded-3xl w-80 h-80 object-cover shadow-2xl"
                   style={{ border: '4px solid rgba(255,255,255,0.2)' }}
                 />
@@ -120,16 +118,16 @@ export default function HomePage() {
       </section>
 
       {/* ── CHIFFRES CLÉS ── */}
-      <div style={{ background: 'var(--color-brand-primary)' }}>
+      <div style={{ background: '#004d00' }}>
         <div className="max-w-7xl mx-auto px-4 py-4">
           <div className="grid grid-cols-2 sm:grid-cols-4 divide-x divide-white/20">
             {[
-              { val: '96.7 FM', label: 'Fréquence officielle' },
-              { val: 'Béré', label: 'Province de la Tandjilé' },
-              { val: '24h/24', label: 'En continu' },
-              { val: '2010', label: 'Fondée' },
+              { val: '96.7 FM', label: t.home.statLabels[0] },
+              { val: 'Béré', label: t.home.statLabels[1] },
+              { val: '24h/24', label: t.home.statLabels[2] },
+              { val: '2023', label: t.home.statLabels[3] },
             ].map((s, i) => (
-              <div key={i} className="flex flex-col items-center py-3 px-4">
+              <div key={i} className="flex flex-col items-center py-3 px-4 border-t sm:border-t-0 border-white/20 first:border-t-0">
                 <div className="font-display font-bold text-xl sm:text-2xl text-white">{s.val}</div>
                 <div className="text-white/60 text-xs text-center">{s.label}</div>
               </div>
@@ -141,8 +139,8 @@ export default function HomePage() {
       {/* ── CARTES DE NAVIGATION ── */}
       <section className="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
         <SectionHeader
-          title="Explorez notre radio"
-          subtitle="Tout ce que vous pouvez faire sur notre site"
+          title={t.home.exploreTitle}
+          subtitle={t.home.exploreSubtitle}
         />
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {NAV_CARDS.map(card => (
@@ -241,25 +239,26 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div>
-              <SectionHeader title={t.sections.mission} />
+              <SectionHeader title={t.home.missionTitle} />
               <p className="text-gray-700 text-lg leading-relaxed mb-8">
-                Radio communautaire implantée à Béré depuis 2010, La Voix du Développement de Béré
-                est au service des populations de la Tandjilé. Nous informons, nous éduquons et
-                nous connectons les communautés rurales avec le monde.
+                {t.home.missionText}
               </p>
               <div className="space-y-4">
-                {VALEURS.map((v, i) => (
-                  <div key={i} className="flex items-start gap-4">
-                    <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
-                      style={{ background: 'var(--color-brand-primary)' }}>
-                      <v.icon className="w-5 h-5 text-white" />
+                {t.home.valeurs.map((v, i) => {
+                  const Icon = VALEUR_ICONS[i]
+                  return (
+                    <div key={i} className="flex items-start gap-4">
+                      <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
+                        style={{ background: 'var(--color-brand-primary)' }}>
+                        <Icon className="w-5 h-5 text-white" />
+                      </div>
+                      <div>
+                        <h4 className="font-bold text-gray-900 mb-1">{v.title}</h4>
+                        <p className="text-sm text-gray-600">{v.desc}</p>
+                      </div>
                     </div>
-                    <div>
-                      <h4 className="font-bold text-gray-900 mb-1">{v.title}</h4>
-                      <p className="text-sm text-gray-600">{v.desc}</p>
-                    </div>
-                  </div>
-                ))}
+                  )
+                })}
               </div>
               <Link to="/apropos" className="btn-primary mt-8 inline-flex">En savoir plus</Link>
             </div>

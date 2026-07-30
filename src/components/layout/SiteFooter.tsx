@@ -12,8 +12,10 @@ export default function SiteFooter() {
     { to: '/',           label: t.nav.home },
     { to: '/actualites', label: t.nav.news },
     { to: '/radio',      label: t.nav.radio },
+    { to: '/agenda',     label: 'Agenda' },
     { to: '/projets',    label: t.nav.projects },
     { to: '/galerie',    label: t.nav.gallery },
+    { to: '/frequences', label: 'Fréquences' },
     { to: '/apropos',    label: t.nav.about },
     { to: '/contact',    label: t.nav.contact },
   ]

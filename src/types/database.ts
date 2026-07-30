@@ -50,7 +50,7 @@ export interface Database {
 export interface Actualite {
   id: string; titre: string; titre_en?: string; titre_ar?: string
   slug?: string; contenu: string; extrait?: string
-  categorie_id?: number; auteur?: string; image_url?: string
+  categorie_id?: number; auteur?: string; image_url?: string; image_alt?: string
   vues: number; a_la_une: boolean; ticker: boolean; publie: boolean
   date_publication: string; created_at: string; updated_at: string
 }

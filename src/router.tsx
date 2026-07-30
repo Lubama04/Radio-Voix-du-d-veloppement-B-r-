@@ -11,6 +11,9 @@ import GaleriePage from '@/pages/GaleriePage'
 import AProposPage from '@/pages/AProposPage'
 import ContactPage from '@/pages/ContactPage'
 import MentionsLegalesPage from '@/pages/MentionsLegalesPage'
+import AgendaPage from '@/pages/AgendaPage'
+import FrequencesPage from '@/pages/FrequencesPage'
+import ArticlePage from '@/pages/ArticlePage'
 
 const rootRoute = createRootRoute({
   component: () => (
@@ -41,10 +44,14 @@ const galerieRoute        = createRoute({ getParentRoute: () => rootRoute, path:
 const aproposRoute        = createRoute({ getParentRoute: () => rootRoute, path: '/apropos',        component: AProposPage })
 const contactRoute        = createRoute({ getParentRoute: () => rootRoute, path: '/contact',        component: ContactPage })
 const mentionsRoute       = createRoute({ getParentRoute: () => rootRoute, path: '/mentions-legales', component: MentionsLegalesPage })
+const agendaRoute         = createRoute({ getParentRoute: () => rootRoute, path: '/agenda',           component: AgendaPage })
+const frequencesRoute     = createRoute({ getParentRoute: () => rootRoute, path: '/frequences',       component: FrequencesPage })
+const articleRoute        = createRoute({ getParentRoute: () => rootRoute, path: '/actualites/$slug', component: ArticlePage })
 
 const routeTree = rootRoute.addChildren([
   indexRoute, actualitesRoute, radioRoute, projetsRoute,
   galerieRoute, aproposRoute, contactRoute, mentionsRoute,
+  agendaRoute, frequencesRoute, articleRoute,
 ])
 
 export const router = createRouter({ routeTree, defaultPreload: 'intent' })
