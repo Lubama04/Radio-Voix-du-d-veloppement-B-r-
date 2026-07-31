@@ -2,6 +2,7 @@ import { Play, Headphones, Clock } from 'lucide-react'
 import { usePlayer } from '@/contexts/PlayerContext'
 import { db } from '@/lib/supabase'
 import SafeImage from '@/components/shared/SafeImage'
+import TranslatedText from '@/components/shared/TranslatedText'
 import type { PodcastView } from '@/types/database'
 
 interface Props { podcast: PodcastView }
@@ -49,7 +50,8 @@ export default function PodcastCard({ podcast }: Props) {
         )}
       </div>
       <div className="p-4 flex flex-col flex-1">
-        <h3 className="font-display font-bold text-sm text-gray-900 line-clamp-2 mb-2">{podcast.titre}</h3>
+        <TranslatedText as="h3" text={podcast.titre}
+          className="font-display font-bold text-sm text-gray-900 line-clamp-2 mb-2" />
         {podcast.animateur && <p className="text-xs text-gray-500 mb-2">{podcast.animateur}</p>}
         <div className="flex items-center justify-between text-xs text-gray-400 mt-auto pt-3 border-t"
           style={{ borderColor: 'var(--color-border)' }}>

@@ -24,10 +24,10 @@ export default function SiteHeader() {
     { to: '/',           label: t.nav.home },
     { to: '/actualites', label: t.nav.news },
     { to: '/radio',      label: t.nav.radio },
-    { to: '/agenda',     label: 'Agenda', mobileHidden: true },
+    { to: '/agenda',     label: t.nav.agenda, mobileHidden: true },
     { to: '/projets',    label: t.nav.projects },
     { to: '/galerie',    label: t.nav.gallery },
-    { to: '/frequences', label: 'Fréquences', mobileHidden: true },
+    { to: '/frequences', label: t.nav.frequences, mobileHidden: true },
     { to: '/apropos',    label: t.nav.about },
     { to: '/contact',    label: t.nav.contact },
   ]

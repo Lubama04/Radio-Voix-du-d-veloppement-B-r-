@@ -2,8 +2,10 @@ import { createContext, useContext, useState, useEffect, ReactNode } from 'react
 
 export type Lang = 'fr' | 'en' | 'ar'
 
+interface CardText { title: string; desc: string; badge?: string }
+
 interface Translations {
-  nav: { home:string; news:string; radio:string; projects:string; gallery:string; about:string; contact:string }
+  nav: { home:string; news:string; radio:string; projects:string; gallery:string; about:string; contact:string; agenda:string; frequences:string }
   hero: { badge:string; title:string; subtitle:string; cta1:string; cta2:string }
   live: { label:string; on:string; off:string; loading:string }
   sections: { latestNews:string; programs:string; mission:string; location:string; partners:string; podcasts:string; schedule:string; gallery:string; team:string; agenda:string }
@@ -21,11 +23,13 @@ interface Translations {
     locationTitle: string
     valeurs: { title: string; desc: string }[]
   }
+  cards: { news: CardText; radio: CardText; projects: CardText; gallery: CardText; about: CardText; contact: CardText }
+  legal: { mentions: string; rights: string; madeBy: string; privacy: string }
 }
 
 const T: Record<Lang, Translations> = {
   fr: {
-    nav: { home:'Accueil', news:'Actualités', radio:'Radio', projects:'Projets', gallery:'Galerie', about:'À propos', contact:'Contact' },
+    nav: { home:'Accueil', news:'Actualités', radio:'Radio', projects:'Projets', gallery:'Galerie', about:'À propos', contact:'Contact', agenda:'Agenda', frequences:'Fréquences' },
     hero: { badge:'Antenne en direct 96.7 FM', title:'La voix qui porte le développement', subtitle:'Radio privée associative 96.7 FM · Béré, province de la Tandjilé, Tchad', cta1:'Écouter en direct', cta2:'Découvrir la radio' },
     live: { label:'En direct', on:'En cours d\'antenne', off:'Hors antenne', loading:'Connexion...' },
     sections: { latestNews:'Dernières actualités', programs:'Programmes du jour', mission:'Notre mission', location:'Nous trouver', partners:'Nos partenaires', podcasts:'Podcasts récents', schedule:'Grille des programmes', gallery:'Galerie photos', team:'Notre équipe', agenda:'Agenda Béré' },
@@ -47,9 +51,18 @@ const T: Record<Lang, Translations> = {
         { title: 'Communauté', desc: 'Être la voix des citoyens, des agriculteurs, des femmes et des jeunes de la province.' },
       ],
     },
+    cards: {
+      news: { title: 'Actualités', desc: 'Nouvelles de Béré, de la Tandjilé et du Tchad', badge: 'Mis à jour' },
+      radio: { title: 'Radio et émissions', desc: 'Grille des programmes, podcasts, journaux et écoute en direct', badge: '96.7 FM' },
+      projects: { title: 'Projets et partenariats', desc: 'Nos projets de développement local et nos partenaires' },
+      gallery: { title: 'Galerie photos', desc: 'Studio, terrain, événements et équipe en images' },
+      about: { title: 'À propos', desc: 'Notre histoire, notre mission et notre équipe depuis Béré' },
+      contact: { title: 'Nous contacter', desc: 'Téléphone, WhatsApp, email et formulaire de contact', badge: 'Répondons vite' },
+    },
+    legal: { mentions: 'Mentions légales', rights: 'Tous droits réservés', madeBy: 'Développé par', privacy: 'Confidentialité' },
   },
   en: {
-    nav: { home:'Home', news:'News', radio:'Radio', projects:'Projects', gallery:'Gallery', about:'About', contact:'Contact' },
+    nav: { home:'Home', news:'News', radio:'Radio', projects:'Projects', gallery:'Gallery', about:'About', contact:'Contact', agenda:'Agenda', frequences:'Frequencies' },
     hero: { badge:'Live on air', title:'The voice that carries development', subtitle:'Private associative radio 96.7 FM · Béré, Province of Tandjilé, Chad', cta1:'Listen live', cta2:'Discover the radio' },
     live: { label:'Live', on:'On air', off:'Off air', loading:'Connecting...' },
     sections: { latestNews:'Latest news', programs:'Today\'s programs', mission:'Our mission', location:'Find us', partners:'Our partners', podcasts:'Recent podcasts', schedule:'Program schedule', gallery:'Photo gallery', team:'Our team', agenda:'Béré agenda' },
@@ -71,9 +84,18 @@ const T: Record<Lang, Translations> = {
         { title: 'Community', desc: 'Be the voice of citizens, farmers, women and young people of the province.' },
       ],
     },
+    cards: {
+      news: { title: 'News', desc: 'News from Béré, Tandjilé and Chad', badge: 'Updated' },
+      radio: { title: 'Radio and shows', desc: 'Program schedule, podcasts, news bulletins and live listening', badge: '96.7 FM' },
+      projects: { title: 'Projects and partnerships', desc: 'Our local development projects and our partners' },
+      gallery: { title: 'Photo gallery', desc: 'Studio, field, events and team in pictures' },
+      about: { title: 'About us', desc: 'Our history, our mission and our team from Béré' },
+      contact: { title: 'Contact us', desc: 'Phone, WhatsApp, email and contact form', badge: 'Quick reply' },
+    },
+    legal: { mentions: 'Legal notice', rights: 'All rights reserved', madeBy: 'Developed by', privacy: 'Privacy' },
   },
   ar: {
-    nav: { home:'الرئيسية', news:'الأخبار', radio:'الراديو', projects:'المشاريع', gallery:'المعرض', about:'من نحن', contact:'اتصل بنا' },
+    nav: { home:'الرئيسية', news:'الأخبار', radio:'الراديو', projects:'المشاريع', gallery:'المعرض', about:'من نحن', contact:'اتصل بنا', agenda:'الأجندة', frequences:'الترددات' },
     hero: { badge:'البث المباشر', title:'الصوت الذي يحمل التنمية', subtitle:'راديو خاص جمعوي 96.7 FM · بيري، مقاطعة تانجيلي، تشاد', cta1:'استمع مباشرة', cta2:'اكتشف الراديو' },
     live: { label:'مباشر', on:'على الهواء', off:'خارج الهواء', loading:'جارٍ الاتصال...' },
     sections: { latestNews:'آخر الأخبار', programs:'برامج اليوم', mission:'مهمتنا', location:'أين نحن', partners:'شركاؤنا', podcasts:'البودكاست الأخيرة', schedule:'جدول البرامج', gallery:'معرض الصور', team:'فريقنا', agenda:'أجندة بيري' },
@@ -95,6 +117,15 @@ const T: Record<Lang, Translations> = {
         { title: 'المجتمع', desc: 'أن نكون صوت المواطنين والمزارعين والنساء والشباب في المقاطعة.' },
       ],
     },
+    cards: {
+      news: { title: 'الأخبار', desc: 'أخبار بيري وتانجيلي وتشاد', badge: 'محدّث' },
+      radio: { title: 'الراديو والبرامج', desc: 'جدول البرامج، البودكاست، النشرات الإخبارية والاستماع المباشر', badge: '96.7 FM' },
+      projects: { title: 'المشاريع والشراكات', desc: 'مشاريع التنمية المحلية وشركاؤنا' },
+      gallery: { title: 'معرض الصور', desc: 'الاستوديو، الميدان، الفعاليات والفريق في صور' },
+      about: { title: 'من نحن', desc: 'تاريخنا ومهمتنا وفريقنا من بيري' },
+      contact: { title: 'اتصل بنا', desc: 'هاتف، واتساب، بريد إلكتروني ونموذج اتصال', badge: 'نرد بسرعة' },
+    },
+    legal: { mentions: 'الإشعارات القانونية', rights: 'جميع الحقوق محفوظة', madeBy: 'طوّره', privacy: 'الخصوصية' },
   },
 }
 

@@ -5,6 +5,7 @@ import { fr } from 'date-fns/locale'
 import { useLang } from '@/contexts/LanguageContext'
 import { useDocumentTitle } from '@/hooks/useDocumentTitle'
 import ArticleCard from '@/components/shared/ArticleCard'
+import TranslatedText from '@/components/shared/TranslatedText'
 import type { ActualiteView, CategorieActu } from '@/types/database'
 
 export default function ActualitesPage() {
@@ -127,7 +128,8 @@ export default function ActualitesPage() {
                         {i+1}
                       </span>
                       <div>
-                        <h4 className="text-sm font-bold text-gray-900 line-clamp-2 leading-snug">{a.titre}</h4>
+                        <TranslatedText as="h3" text={a.titre}
+                          className="text-sm font-bold text-gray-900 line-clamp-2 leading-snug" />
                         <div className="flex items-center gap-2 text-xs text-gray-400 mt-1">
                           <Eye className="w-3 h-3" />{a.vues}
                           <Clock className="w-3 h-3 ml-1" />

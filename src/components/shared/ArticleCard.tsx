@@ -3,6 +3,7 @@ import { Clock, Eye } from 'lucide-react'
 import { formatDistanceToNow } from 'date-fns'
 import { fr } from 'date-fns/locale'
 import SafeImage from '@/components/shared/SafeImage'
+import TranslatedText from '@/components/shared/TranslatedText'
 import type { ActualiteView } from '@/types/database'
 
 interface Props {
@@ -24,9 +25,8 @@ export default function ArticleCard({ article, variant = 'default' }: Props) {
         <div className="text-xs font-semibold mb-1" style={{ color: article.categorie_couleur || 'var(--color-brand-primary)' }}>
           {article.categorie_nom}
         </div>
-        <h4 className="text-sm font-bold text-gray-900 group-hover:text-green-700 transition-colors line-clamp-2 leading-snug">
-          {article.titre}
-        </h4>
+        <TranslatedText as="h3" text={article.titre}
+          className="text-sm font-bold text-gray-900 group-hover:text-green-700 transition-colors line-clamp-2 leading-snug" />
         <div className="text-xs text-gray-400 mt-1 flex items-center gap-1">
           <Clock className="w-3 h-3" />{timeAgo}
         </div>
@@ -47,7 +47,8 @@ export default function ArticleCard({ article, variant = 'default' }: Props) {
         {article.categorie_nom && (
           <span className="badge-red text-xs mb-2 inline-flex">{article.categorie_nom}</span>
         )}
-        <h3 className="font-display font-bold text-xl text-white leading-tight mb-2">{article.titre}</h3>
+        <TranslatedText as="h3" text={article.titre}
+          className="font-display font-bold text-xl text-white leading-tight mb-2" />
         <div className="flex items-center gap-3 text-white/60 text-xs">
           <span className="flex items-center gap-1"><Clock className="w-3 h-3" />{timeAgo}</span>
           <span className="flex items-center gap-1"><Eye className="w-3 h-3" />{article.vues} vues</span>
@@ -75,11 +76,11 @@ export default function ArticleCard({ article, variant = 'default' }: Props) {
         )}
       </div>
       <div className="p-4 flex flex-col flex-1">
-        <h3 className="font-display font-bold text-base text-gray-900 group-hover:text-green-700 transition-colors mb-2 line-clamp-2 leading-snug">
-          {article.titre}
-        </h3>
+        <TranslatedText as="h3" text={article.titre}
+          className="font-display font-bold text-base text-gray-900 group-hover:text-green-700 transition-colors mb-2 line-clamp-2 leading-snug" />
         {article.extrait && (
-          <p className="text-sm text-gray-600 line-clamp-2 mb-3 flex-1">{article.extrait}</p>
+          <TranslatedText as="p" text={article.extrait}
+            className="text-sm text-gray-600 line-clamp-2 mb-3 flex-1" />
         )}
         <div className="flex items-center justify-between text-xs pt-3 border-t mt-auto"
           style={{ borderColor: '#DEDBD3', color: '#6B6B6B' }}>

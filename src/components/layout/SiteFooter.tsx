@@ -12,10 +12,10 @@ export default function SiteFooter() {
     { to: '/',           label: t.nav.home },
     { to: '/actualites', label: t.nav.news },
     { to: '/radio',      label: t.nav.radio },
-    { to: '/agenda',     label: 'Agenda' },
+    { to: '/agenda',     label: t.nav.agenda },
     { to: '/projets',    label: t.nav.projects },
     { to: '/galerie',    label: t.nav.gallery },
-    { to: '/frequences', label: 'Fréquences' },
+    { to: '/frequences', label: t.nav.frequences },
     { to: '/apropos',    label: t.nav.about },
     { to: '/contact',    label: t.nav.contact },
   ]
@@ -124,15 +124,15 @@ export default function SiteFooter() {
           <p className="text-xs text-white/40 text-center">
             © {year} La Voix du Développement de Béré · 96.7 FM · Béré, Province de la Tandjilé, Tchad
             <br />
-            {t.footer.rights} · {t.footer.madeBy}{' '}
+            {t.legal.rights} · {t.legal.madeBy}{' '}
             <a href="https://flaugustbusiness.com" target="_blank" rel="noopener noreferrer"
               className="transition-colors underline hover:!text-[var(--color-gold)]">
               ETS FLANGUST BUSINESS
             </a>
           </p>
           <div className="flex gap-4 text-xs text-white/40">
-            <Link to="/mentions-legales" className="hover:text-white/70 transition-colors">Mentions légales</Link>
-            <Link to="/contact" className="hover:text-white/70 transition-colors">Contact</Link>
+            <Link to="/mentions-legales" className="hover:text-white/70 transition-colors">{t.legal.mentions}</Link>
+            <Link to="/contact" className="hover:text-white/70 transition-colors">{t.nav.contact}</Link>
           </div>
         </div>
       </div>

@@ -6,6 +6,7 @@ import { useDocumentTitle } from '@/hooks/useDocumentTitle'
 import { db } from '@/lib/supabase'
 import SectionHeader from '@/components/shared/SectionHeader'
 import PodcastCard from '@/components/shared/PodcastCard'
+import TranslatedText from '@/components/shared/TranslatedText'
 import type { ProgrammeView, PodcastView, Journal } from '@/types/database'
 
 const JOURS = ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam']
@@ -146,7 +147,7 @@ export default function RadioPage() {
                     {p.heure_debut.slice(0,5)} – {p.heure_fin.slice(0,5)}
                   </div>
                   <div className="flex-1 min-w-0">
-                    <div className="font-bold text-gray-900 truncate">{p.titre}</div>
+                    <TranslatedText as="div" text={p.titre} className="font-bold text-gray-900 truncate" />
                     {p.animateur && <div className="text-xs text-gray-500">{p.animateur}</div>}
                   </div>
                   {p.categorie_nom && (
@@ -181,7 +182,7 @@ export default function RadioPage() {
                     <Mic className="w-6 h-6" style={{ color: 'var(--color-brand-primary)' }} />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <div className="font-bold text-gray-900 text-sm truncate">{j.titre}</div>
+                    <TranslatedText as="div" text={j.titre} className="font-bold text-gray-900 text-sm truncate" />
                     <div className="text-xs text-gray-500 capitalize">{j.horaire} {j.heure_diffusion ? `· ${j.heure_diffusion.slice(0,5)}` : ''}</div>
                     {j.duree_secondes && <div className="text-xs text-gray-400">{formatDur(j.duree_secondes)}</div>}
                   </div>

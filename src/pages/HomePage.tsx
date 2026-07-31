@@ -12,12 +12,12 @@ import Ticker from '@/components/layout/Ticker'
 import type { ActualiteView, ProgrammeView } from '@/types/database'
 
 const NAV_CARDS = [
-  { to: '/actualites', icon: Newspaper, title: 'Actualités', desc: 'Nouvelles de Béré, de la Tandjilé et du Tchad', badge: { text: 'Mis à jour', color: '#9B2226' }, img: '/photos/studio-radio-bere.jpg', alt: 'Studio de diffusion de la Radio Voix de Béré' },
-  { to: '/radio',      icon: Radio,     title: 'Radio et émissions', desc: 'Grille des programmes, podcasts, journaux et écoute en direct', badge: { text: '96.7 FM', color: '#1B4332' }, img: 'https://images.unsplash.com/photo-1478737270239-2f02b77fc618?w=600&q=75&auto=format&fit=crop', alt: 'Studio de radio avec microphone professionnel' },
-  { to: '/projets',    icon: Briefcase, title: 'Projets et partenariats', desc: 'Nos projets de développement local et nos partenaires', badge: null, img: '/photos/equipe-radio-bere.jpg', alt: "L'équipe de la Radio Voix de Béré" },
-  { to: '/galerie',    icon: ImageIcon,  title: 'Galerie photos', desc: 'Studio, terrain, événements et équipe en images', badge: null, img: 'https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?w=600&q=75&auto=format&fit=crop', alt: 'Paysage de savane africaine au coucher de soleil' },
-  { to: '/apropos',    icon: Info,       title: 'À propos', desc: 'Notre histoire, notre mission et notre équipe depuis Béré', badge: null, img: '/photos/equipe-radio-bere.jpg', alt: "L'équipe de la Radio Voix de Béré devant les locaux de la station" },
-  { to: '/contact',    icon: Phone,      title: 'Nous contacter', desc: 'Téléphone, WhatsApp, email et formulaire de contact', badge: { text: 'Répondons vite', color: '#9B2226' }, img: 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=600&q=75&auto=format&fit=crop', alt: 'Professionnel de santé africain consultant son téléphone' },
+  { key: 'news' as const,     to: '/actualites', icon: Newspaper, badgeColor: '#9B2226', img: '/photos/studio-radio-bere.jpg', alt: 'Studio de diffusion de la Radio Voix de Béré' },
+  { key: 'radio' as const,    to: '/radio',      icon: Radio,     badgeColor: '#1B4332', img: 'https://images.unsplash.com/photo-1478737270239-2f02b77fc618?w=600&q=75&auto=format&fit=crop', alt: 'Studio de radio avec microphone professionnel' },
+  { key: 'projects' as const, to: '/projets',    icon: Briefcase, badgeColor: null, img: '/photos/equipe-radio-bere.jpg', alt: "L'équipe de la Radio Voix de Béré" },
+  { key: 'gallery' as const,  to: '/galerie',    icon: ImageIcon, badgeColor: null, img: 'https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?w=600&q=75&auto=format&fit=crop', alt: 'Paysage de savane africaine au coucher de soleil' },
+  { key: 'about' as const,    to: '/apropos',    icon: Info,      badgeColor: null, img: '/photos/equipe-radio-bere.jpg', alt: "L'équipe de la Radio Voix de Béré devant les locaux de la station" },
+  { key: 'contact' as const,  to: '/contact',    icon: Phone,     badgeColor: '#9B2226', img: 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=600&q=75&auto=format&fit=crop', alt: 'Professionnel de santé africain consultant son téléphone' },
 ]
 
 export default function HomePage() {
@@ -146,17 +146,19 @@ export default function HomePage() {
           subtitle={t.home.exploreSubtitle}
         />
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {NAV_CARDS.map(card => (
+          {NAV_CARDS.map(card => {
+            const text = t.cards[card.key]
+            return (
             <Link key={card.to} to={card.to} className="card group flex flex-col cursor-pointer">
               {/* Image */}
               <div className="relative h-[180px] overflow-hidden">
                 <SafeImage src={card.img} alt={card.alt} loading="lazy"
                   className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                 />
-                {card.badge && (
+                {text.badge && card.badgeColor && (
                   <span className="absolute top-2 right-2 badge text-xs font-bold text-white"
-                    style={{ background: card.badge.color }}>
-                    {card.badge.text}
+                    style={{ background: card.badgeColor }}>
+                    {text.badge}
                   </span>
                 )}
               </div>
@@ -165,17 +167,17 @@ export default function HomePage() {
                 <div className="flex items-center gap-2 mb-2">
                   <card.icon className="w-5 h-5" style={{ color: 'var(--color-gold)' }} />
                   <h3 className="font-display transition-colors" style={{ fontSize: '1.1rem', fontWeight: 700, color: 'var(--color-brand-primary)' }}>
-                    {card.title}
+                    {text.title}
                   </h3>
                 </div>
-                <p className="flex-1" style={{ fontSize: '0.85rem', color: 'var(--color-gray-medium)' }}>{card.desc}</p>
+                <p className="flex-1" style={{ fontSize: '0.85rem', color: 'var(--color-gray-medium)' }}>{text.desc}</p>
                 <div className="flex items-center gap-1 mt-3 text-sm"
                   style={{ color: 'var(--color-brand-primary)', fontWeight: 700 }}>
                   Découvrir <ChevronRight className="w-4 h-4" />
                 </div>
               </div>
             </Link>
-          ))}
+          )})}
         </div>
       </section>
 
