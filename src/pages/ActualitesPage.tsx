@@ -6,13 +6,12 @@ import { useLang } from '@/contexts/LanguageContext'
 import { useDocumentTitle } from '@/hooks/useDocumentTitle'
 import ArticleCard from '@/components/shared/ArticleCard'
 import TranslatedText from '@/components/shared/TranslatedText'
-import type { ActualiteView, CategorieActu } from '@/types/database'
+import type { ActualiteView } from '@/types/database'
 
 export default function ActualitesPage() {
   useDocumentTitle('Actualités | Radio Voix de Béré 96.7 FM')
   const { t } = useLang()
   const [articles, setArticles] = useState<ActualiteView[]>([])
-  const [categories, setCategories] = useState<CategorieActu[]>([])
   const [selectedCat, setSelectedCat] = useState<string>('all')
   const [search, setSearch] = useState('')
   const [loading, setLoading] = useState(false)
@@ -45,9 +44,9 @@ export default function ActualitesPage() {
     <main className="pt-16">
       {/* Hero compact */}
       <div className="py-12 px-4 text-center text-white"
-        style={{ background: 'linear-gradient(135deg, var(--color-brand-dark), var(--color-brand-secondary))' }}>
+        style={{ background: 'linear-gradient(135deg, #004D2A 0%, #006B3C 60%, #008A4B 100%)' }}>
         <h1 className="font-display font-bold text-4xl mb-2">{t.pages.news}</h1>
-        <p className="text-white/70">Toutes les actualités de Béré, de la Tandjilé et du Tchad</p>
+        <p style={{ color: 'rgba(255,255,255,0.85)' }}>Toutes les actualités de Béré, de la Tandjilé et du Tchad</p>
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -66,13 +65,30 @@ export default function ActualitesPage() {
             value={selectedCat}
             onChange={e => setSelectedCat(e.target.value)}
             aria-label="Filtrer par catégorie"
-            className="px-4 py-3 rounded-xl border text-sm font-semibold cursor-pointer focus:outline-none"
-            style={{ borderColor: 'var(--color-border)', color: 'var(--color-brand-primary)', minWidth: '200px' }}
+            className="px-4 py-3 rounded-xl border text-sm
+                       font-semibold cursor-pointer focus:outline-none"
+            style={{
+              borderColor: '#DEDBD3',
+              color: '#006B3C',
+              minWidth: '220px',
+              background: 'white'
+            }}
           >
             <option value="all">Toutes les catégories</option>
-            {categories.map(c => (
-              <option key={c.slug} value={c.slug}>{c.nom_fr}</option>
-            ))}
+            <option value="local">Local</option>
+            <option value="national">National</option>
+            <option value="international">International</option>
+            <option value="sport">Sport</option>
+            <option value="culture">Culture</option>
+            <option value="sante">Santé</option>
+            <option value="agriculture">Agriculture</option>
+            <option value="education">Éducation</option>
+            <option value="societe">Société</option>
+            <option value="securite">Sécurité</option>
+            <option value="religion">Religion</option>
+            <option value="economie">Économie</option>
+            <option value="environnement">Environnement</option>
+            <option value="autre">Autre</option>
           </select>
         </div>
 

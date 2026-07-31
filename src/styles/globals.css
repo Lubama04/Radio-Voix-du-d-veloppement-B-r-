@@ -5,8 +5,8 @@
 
 :root {
   /* Palette principale — équilibre vert profond + ivoire + bordeaux + or */
-  --color-brand-primary:    #1B4332;  /* vert forêt profond */
-  --color-brand-secondary:  #2D6A4F;  /* vert moyen */
+  --color-brand-primary:    #006B3C;  /* vert vif du logo */
+  --color-brand-secondary:  #005A32;  /* vert moyen */
   --color-brand-light:      #D8F3DC;  /* vert très clair */
   --color-accent:           #9B2226;  /* bordeaux/rouge profond */
   --color-accent-hover:     #6A040F;  /* bordeaux foncé */
@@ -21,7 +21,7 @@
   --color-white:            #FFFFFF;
 
   /* Alias rétrocompatibles utilisés par les composants existants */
-  --color-brand-dark:      #243B2F;
+  --color-brand-dark:      #004D2A;
   --color-surface:         var(--color-white);
   --color-surface-alt:     var(--color-ivory-alt);
   --color-text-primary:    var(--color-anthracite);
@@ -328,7 +328,7 @@ img { max-width: 100%; height: auto; }
   100% { transform: translateX(-50%); }
 }
 @keyframes bars {
-  0%, 100% { transform: scaleY(0.35); }
+  0%, 100% { transform: scaleY(0.25); }
   50%       { transform: scaleY(1); }
 }
 @keyframes livePulse {

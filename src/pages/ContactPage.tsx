@@ -70,9 +70,9 @@ export default function ContactPage() {
     <main className="pt-16">
       {/* Hero */}
       <div className="py-12 px-4 text-center text-white relative overflow-hidden"
-        style={{ background: 'linear-gradient(135deg, var(--color-brand-dark), var(--color-brand-secondary))' }}>
+        style={{ background: 'linear-gradient(135deg, #004D2A 0%, #006B3C 60%, #008A4B 100%)' }}>
         <h1 className="font-display font-bold text-4xl mb-2">{t.pages.contact}</h1>
-        <p className="text-white/70">Écrivez-nous ou appelez-nous directement</p>
+        <p style={{ color: 'rgba(255,255,255,0.85)' }}>Écrivez-nous ou appelez-nous directement</p>
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">

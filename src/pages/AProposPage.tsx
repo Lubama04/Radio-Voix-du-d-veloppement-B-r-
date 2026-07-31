@@ -22,12 +22,12 @@ export default function AProposPage() {
     <main className="pt-16">
       {/* Hero avec logo */}
       <div className="py-16 text-center text-white"
-        style={{ background: 'linear-gradient(135deg, var(--color-brand-dark), var(--color-brand-secondary))' }}>
+        style={{ background: 'linear-gradient(135deg, #004D2A 0%, #006B3C 60%, #008A4B 100%)' }}>
         <div className="w-24 h-24 rounded-full bg-white/10 flex items-center justify-center mx-auto mb-6">
           <Radio className="w-12 h-12 text-white" />
         </div>
         <h1 className="font-display font-bold text-4xl mb-2">La Voix du Développement de Béré</h1>
-        <p className="text-white/70 text-lg">96.7 FM · Béré, Province de la Tandjilé, Tchad</p>
+        <p className="text-lg" style={{ color: 'rgba(255,255,255,0.85)' }}>96.7 FM · Béré, Province de la Tandjilé, Tchad</p>
         <p className="text-white/50 mt-2 italic">"La voix qui porte le développement"</p>
       </div>
 
@@ -120,7 +120,6 @@ export default function AProposPage() {
                   { label: 'Province', value: 'Province de la Tandjilé' },
                   { label: 'Pays', value: 'Tchad' },
                   { label: 'Fréquence', value: '96.7 FM' },
-                  { label: 'Puissance', value: 'À préciser' },
                 ].map((item, i) => (
                   <div key={i} className="flex items-center gap-4 py-2 border-b"
                     style={{ borderColor: 'var(--color-border)' }}>

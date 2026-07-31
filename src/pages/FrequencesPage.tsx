@@ -17,9 +17,9 @@ export default function FrequencesPage() {
   return (
     <main className="pt-16">
       <div className="py-12 px-4 text-center"
-        style={{ background: 'linear-gradient(135deg, var(--color-brand-dark), var(--color-brand-secondary))' }}>
+        style={{ background: 'linear-gradient(135deg, #004D2A 0%, #006B3C 60%, #008A4B 100%)' }}>
         <h1 className="font-display font-bold text-4xl mb-2" style={{ color: '#FFFFFF' }}>Fréquences et autorisation</h1>
-        <p style={{ color: 'rgba(255,255,255,0.82)' }}>Informations officielles de diffusion</p>
+        <p style={{ color: 'rgba(255,255,255,0.85)' }}>Informations officielles de diffusion</p>
       </div>
 
       <section className="py-16 px-4 sm:px-6 lg:px-8">

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Play, Pause, Mic, Clock, Headphones, ChevronRight } from 'lucide-react'
+import { Play, Pause, Mic, Headphones, Radio } from 'lucide-react'
 import { useLang } from '@/contexts/LanguageContext'
 import { usePlayer } from '@/contexts/PlayerContext'
 import { useDocumentTitle } from '@/hooks/useDocumentTitle'
@@ -17,18 +17,19 @@ export default function RadioPage() {
   const { t } = useLang()
   const { isPlaying, isLoading, toggle, openPlayer } = usePlayer()
   const [selectedDay, setSelectedDay] = useState(new Date().getDay())
-  const [programmes, setProgrammes] = useState<ProgrammeView[]>([])
+  const [programmes] = useState<ProgrammeView[]>([])
+  // Chargement des programmes désactivé pour l'instant.
+  // Décommenter le fetch quand les vrais programmes seront configurés via le panneau d'administration.
   const [podcasts, setPodcasts] = useState<PodcastView[]>([])
   const [journaux, setJournaux] = useState<Journal[]>([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     Promise.all([
-      db.vProgrammes().select('*').eq('jour_semaine', selectedDay).order('heure_debut'),
+      // db.vProgrammes().select('*').eq('jour_semaine', selectedDay).order('heure_debut'),
       db.vPodcasts().select('*').order('date_diffusion', { ascending: false }).limit(8),
       db.journauxParles().select('*').eq('publie', true).order('date_diffusion', { ascending: false }).limit(6),
-    ]).then(([p, pod, j]) => {
-      if (p.data)   setProgrammes(p.data as ProgrammeView[])
+    ]).then(([pod, j]) => {
       if (pod.data) setPodcasts(pod.data as PodcastView[])
       if (j.data)   setJournaux(j.data as Journal[])
       setLoading(false)
@@ -54,7 +55,7 @@ export default function RadioPage() {
     <main className="pt-16">
       {/* ── HERO DIRECT ── */}
       <section className="py-20 text-center text-white relative overflow-hidden"
-        style={{ background: 'linear-gradient(135deg, var(--color-brand-dark), var(--color-brand-secondary))' }}>
+        style={{ background: 'linear-gradient(135deg, #004D2A 0%, #006B3C 60%, #008A4B 100%)' }}>
         <div className="absolute inset-0 opacity-5">
           <svg viewBox="0 0 200 200" className="w-full h-full">
             {[30,50,70,90,110].map((r, i) => (
@@ -79,7 +80,7 @@ export default function RadioPage() {
           )}
 
           <h1 className="font-display font-bold text-3xl sm:text-5xl mb-4">Radio & Émissions</h1>
-          <p className="text-white/80 mb-8">Écoutez en direct, réécouter en podcast, consultez la grille</p>
+          <p className="mb-8" style={{ color: 'rgba(255,255,255,0.85)' }}>Écoutez en direct, réécouter en podcast, consultez la grille</p>
 
           <button
             onClick={handleLive}
@@ -161,9 +162,14 @@ export default function RadioPage() {
             })}
           </div>
         ) : (
-          <div className="text-center py-12 text-gray-500">
-            <Clock className="w-12 h-12 mx-auto mb-3 opacity-30" />
-            <p>Aucun programme pour ce jour</p>
+          <div className="text-center py-12">
+            <div className="w-14 h-14 rounded-2xl flex items-center justify-center mx-auto mb-4"
+              style={{ background: '#E8F5EE' }}>
+              <Radio className="w-7 h-7" style={{ color: '#006B3C' }} />
+            </div>
+            <p className="font-medium mb-1" style={{ color: '#1C1C1C' }}>
+              Les programmes seront bientôt disponibles.
+            </p>
           </div>
         )}
       </section>

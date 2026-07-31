@@ -27,14 +27,29 @@ export default function GlobalPlayer() {
           </div>
         </div>
 
-        {/* Visualiseur (seulement si en cours) */}
-        {isPlaying && (
-          <div className="hidden sm:flex items-end gap-0.5 h-8">
-            {[...Array(5)].map((_, i) => (
-              <div key={i} className={`audio-bar h-full bar-${i+1}`} style={{ height: `${40 + i * 10}%` }} />
-            ))}
-          </div>
-        )}
+        {/* Visualiseur audio */}
+        <div className="hidden sm:flex items-end gap-[3px] h-8 flex-shrink-0">
+          {[0.4, 0.7, 1.0, 0.8, 0.5, 0.9, 0.6, 0.75, 0.45, 0.85].map((height, i) => (
+            <div
+              key={i}
+              style={{
+                width: 3,
+                borderRadius: 2,
+                background: '#006B3C',
+                height: isPlaying ? undefined : `${height * 12}px`,
+                minHeight: 4,
+                maxHeight: 32,
+                transformOrigin: 'bottom',
+                animation: isPlaying
+                  ? `bars ${0.8 + (i % 4) * 0.2}s ease-in-out ${i * 0.08}s infinite`
+                  : 'none',
+                transform: isPlaying ? undefined : 'scaleY(1)',
+                opacity: isPlaying ? 1 : 0.35,
+                transition: 'opacity 0.4s ease',
+              }}
+            />
+          ))}
+        </div>
 
         {/* Contrôles */}
         <div className="flex items-center gap-3">

@@ -74,7 +74,8 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
   }, [])
 
   const openPlayer  = useCallback(() => setState(s => ({ ...s, showPlayer: true })), [])
-  const closePlayer = useCallback(() => { pause(); setState(s => ({ ...s, showPlayer: false })) }, [pause])
+  // Réduit le player sans arrêter le son — l'audio continue en arrière-plan.
+  const closePlayer = useCallback(() => setState(s => ({ ...s, showPlayer: false })), [])
 
   return (
     <PlayerContext.Provider value={{ ...state, play, pause, toggle, setVolume, openPlayer, closePlayer }}>
