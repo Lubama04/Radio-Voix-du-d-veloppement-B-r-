@@ -81,10 +81,10 @@ export default function ArticleCard({ article, variant = 'default' }: Props) {
         {article.extrait && (
           <p className="text-sm text-gray-600 line-clamp-2 mb-3 flex-1">{article.extrait}</p>
         )}
-        <div className="flex items-center justify-between text-xs text-gray-400 mt-auto pt-3 border-t"
-          style={{ borderColor: 'var(--color-border)' }}>
+        <div className="flex items-center justify-between text-xs pt-3 border-t mt-auto"
+          style={{ borderColor: '#DEDBD3', color: '#6B6B6B' }}>
           <span className="flex items-center gap-1"><Clock className="w-3 h-3" />{timeAgo}</span>
-          <span className="flex items-center gap-1"><Eye className="w-3 h-3" />{article.vues}</span>
+          <span className="flex items-center gap-1"><Eye className="w-3 h-3" />{article.vues} vue{article.vues !== 1 ? 's' : ''}</span>
         </div>
       </div>
     </Link>
