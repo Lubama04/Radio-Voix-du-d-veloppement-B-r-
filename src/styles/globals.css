@@ -21,7 +21,7 @@
   --color-white:            #FFFFFF;
 
   /* Alias rétrocompatibles utilisés par les composants existants */
-  --color-brand-dark:      #0D2B1F;
+  --color-brand-dark:      #243B2F;
   --color-surface:         var(--color-white);
   --color-surface-alt:     var(--color-ivory-alt);
   --color-text-primary:    var(--color-anthracite);
@@ -112,9 +112,12 @@ img { max-width: 100%; height: auto; }
 }
 
 /* ─── RTL ───────────────────────────────────────── */
+/* Portée volontairement étroite : [dir="rtl"] .flex ciblait TOUT élément
+   flex du site (specificité 0,2,0), ce qui écrasait .flex-col (0,1,0) sur
+   le layout racine et cassait l'empilement vertical header/contenu/footer.
+   Seule une classe d'opt-in explicite est retournée en RTL désormais. */
 [dir="rtl"] { font-family: 'Noto Sans Arabic', var(--font-body); }
-[dir="rtl"] .flex { flex-direction: row-reverse; }
-[dir="rtl"] .flex-row { flex-direction: row-reverse; }
+[dir="rtl"] .flex-row-rtl { flex-direction: row-reverse; }
 [dir="rtl"] .text-left { text-align: right; }
 [dir="rtl"] .text-right { text-align: left; }
 [dir="rtl"] .ml-auto { margin-left: 0; margin-right: auto; }
@@ -122,7 +125,6 @@ img { max-width: 100%; height: auto; }
 [dir="rtl"] .pl-4 { padding-left: 0; padding-right: 1rem; }
 [dir="rtl"] .pr-4 { padding-right: 0; padding-left: 1rem; }
 [dir="rtl"] .left-3 { left: auto; right: 0.75rem; }
-[dir="rtl"] nav { flex-direction: row-reverse; }
 
 /* ─── COMPOSANTS ────────────────────────────────── */
 @layer components {

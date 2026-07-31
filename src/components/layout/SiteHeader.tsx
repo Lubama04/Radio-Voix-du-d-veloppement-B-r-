@@ -13,7 +13,8 @@ const LANGS: { code: Lang; flag: string; label: string }[] = [
 
 export default function SiteHeader() {
   const { t, lang, setLang } = useLang()
-  const { toggle, isPlaying } = usePlayer()
+  const { toggle, isPlaying, openPlayer } = usePlayer()
+  const handleLiveClick = () => { openPlayer(); toggle() }
   const [menuOpen, setMenuOpen] = useState(false)
   const [langOpen, setLangOpen] = useState(false)
   const location = useLocation()
@@ -100,7 +101,7 @@ export default function SiteHeader() {
 
             {/* Bouton EN DIRECT */}
             <button
-              onClick={toggle}
+              onClick={handleLiveClick}
               className={`hidden sm:flex ${isPlaying ? 'animate-pulse-slow' : ''}`}
               style={{
                 background: '#9B2226', color: 'white', borderRadius: '9999px', padding: '8px 18px',
@@ -191,7 +192,7 @@ export default function SiteHeader() {
               ))}
               {/* EN DIRECT dans le menu mobile */}
               <button
-                onClick={toggle}
+                onClick={handleLiveClick}
                 className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-base font-bold text-white mt-2"
                 style={{ background: 'var(--color-accent)' }}
               >

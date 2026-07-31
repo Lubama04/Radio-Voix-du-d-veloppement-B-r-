@@ -60,7 +60,7 @@ export default function HomePage() {
 
       {/* ── HERO ── */}
       <section className="relative min-h-[85vh] sm:min-h-[70vh] flex items-center overflow-hidden"
-        style={{ background: 'linear-gradient(135deg, #1B4332 0%, #0D2B1F 100%)' }}>
+        style={{ background: 'linear-gradient(135deg, #1B4332 0%, #243B2F 100%)' }}>
         {/* Pattern d'onde radio SVG en overlay */}
         <div className="absolute inset-0 opacity-5">
           <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
@@ -120,7 +120,7 @@ export default function HomePage() {
       </section>
 
       {/* ── CHIFFRES CLÉS ── */}
-      <div style={{ background: '#0D2B1F', borderTop: '1px solid rgba(201, 168, 76, 0.3)' }}>
+      <div style={{ background: '#243B2F', borderTop: '1px solid rgba(201, 168, 76, 0.3)' }}>
         <div className="max-w-7xl mx-auto px-4 py-4">
           <div className="grid grid-cols-2 sm:grid-cols-4">
             {[

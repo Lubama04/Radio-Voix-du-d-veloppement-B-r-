@@ -22,7 +22,7 @@ export default function AProposPage() {
     <main className="pt-16">
       {/* Hero avec logo */}
       <div className="py-16 text-center text-white"
-        style={{ background: 'linear-gradient(135deg, var(--color-brand-dark), var(--color-brand-primary))' }}>
+        style={{ background: 'linear-gradient(135deg, var(--color-brand-dark), var(--color-brand-secondary))' }}>
         <div className="w-24 h-24 rounded-full bg-white/10 flex items-center justify-center mx-auto mb-6">
           <Radio className="w-12 h-12 text-white" />
         </div>

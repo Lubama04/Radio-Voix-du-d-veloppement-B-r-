@@ -5,7 +5,7 @@ export default function MentionsLegalesPage() {
   return (
     <main className="pt-16">
       <div className="py-12 px-4 text-center text-white"
-        style={{ background: 'linear-gradient(135deg, var(--color-brand-dark), var(--color-brand-primary))' }}>
+        style={{ background: 'linear-gradient(135deg, var(--color-brand-dark), var(--color-brand-secondary))' }}>
         <h1 className="font-display font-bold text-3xl">Mentions légales</h1>
       </div>
       <div className="max-w-3xl mx-auto px-4 py-16 prose prose-sm text-gray-700">

@@ -53,7 +53,7 @@ export default function RadioPage() {
     <main className="pt-16">
       {/* ── HERO DIRECT ── */}
       <section className="py-20 text-center text-white relative overflow-hidden"
-        style={{ background: 'linear-gradient(135deg, var(--color-brand-dark), var(--color-brand-primary))' }}>
+        style={{ background: 'linear-gradient(135deg, var(--color-brand-dark), var(--color-brand-secondary))' }}>
         <div className="absolute inset-0 opacity-5">
           <svg viewBox="0 0 200 200" className="w-full h-full">
             {[30,50,70,90,110].map((r, i) => (

@@ -1,11 +1,9 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { Search, Newspaper, Clock, Eye } from 'lucide-react'
 import { formatDistanceToNow } from 'date-fns'
 import { fr } from 'date-fns/locale'
 import { useLang } from '@/contexts/LanguageContext'
 import { useDocumentTitle } from '@/hooks/useDocumentTitle'
-import { db } from '@/lib/supabase'
-import SectionHeader from '@/components/shared/SectionHeader'
 import ArticleCard from '@/components/shared/ArticleCard'
 import type { ActualiteView, CategorieActu } from '@/types/database'
 
@@ -16,23 +14,25 @@ export default function ActualitesPage() {
   const [categories, setCategories] = useState<CategorieActu[]>([])
   const [selectedCat, setSelectedCat] = useState<string>('all')
   const [search, setSearch] = useState('')
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(false)
   const [featured, setFeatured] = useState<ActualiteView | null>(null)
 
-  useEffect(() => {
-    Promise.all([
-      db.vActualites().select('*').order('date_publication', { ascending: false }).limit(30),
-      db.categoriesActu().select('*').eq('actif', true).order('ordre'),
-    ]).then(([a, c]) => {
-      if (a.data) {
-        const all = a.data as ActualiteView[]
-        setFeatured(all.find(x => x.a_la_une) || all[0] || null)
-        setArticles(all)
-      }
-      if (c.data) setCategories(c.data as CategorieActu[])
-      setLoading(false)
-    })
-  }, [])
+  // Chargement Supabase désactivé le temps que les premières vraies actualités soient publiées.
+  // Décommenter quand du contenu réel est prêt.
+  // useEffect(() => {
+  //   Promise.all([
+  //     db.vActualites().select('*').order('date_publication', { ascending: false }).limit(30),
+  //     db.categoriesActu().select('*').eq('actif', true).order('ordre'),
+  //   ]).then(([a, c]) => {
+  //     if (a.data) {
+  //       const all = a.data as ActualiteView[]
+  //       setFeatured(all.find(x => x.a_la_une) || all[0] || null)
+  //       setArticles(all)
+  //     }
+  //     if (c.data) setCategories(c.data as CategorieActu[])
+  //     setLoading(false)
+  //   })
+  // }, [])
 
   const filtered = articles.filter(a => {
     const matchCat = selectedCat === 'all' || a.categorie_slug === selectedCat
@@ -44,7 +44,7 @@ export default function ActualitesPage() {
     <main className="pt-16">
       {/* Hero compact */}
       <div className="py-12 px-4 text-center text-white"
-        style={{ background: 'linear-gradient(135deg, var(--color-brand-dark), var(--color-brand-primary))' }}>
+        style={{ background: 'linear-gradient(135deg, var(--color-brand-dark), var(--color-brand-secondary))' }}>
         <h1 className="font-display font-bold text-4xl mb-2">{t.pages.news}</h1>
         <p className="text-white/70">Toutes les actualités de Béré, de la Tandjilé et du Tchad</p>
       </div>
@@ -96,9 +96,18 @@ export default function ActualitesPage() {
                 ))}
               </div>
             ) : (
-              <div className="text-center py-16 text-gray-500">
-                <Newspaper className="w-16 h-16 mx-auto mb-4 opacity-20" />
-                <p className="font-medium">Aucun article trouvé</p>
+              <div className="text-center py-24">
+                <div className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-6"
+                  style={{ background: '#E8F5EE' }}>
+                  <Newspaper className="w-8 h-8" style={{ color: '#2E7D52' }} />
+                </div>
+                <h3 className="font-display font-bold text-xl mb-3" style={{ color: '#1E2A22' }}>
+                  Actualités en cours de rédaction
+                </h3>
+                <p className="text-sm" style={{ color: '#6B6B6B' }}>
+                  Notre équipe prépare les premières actualités.<br />
+                  Revenez bientôt.
+                </p>
               </div>
             )}
           </div>

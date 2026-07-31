@@ -8,7 +8,7 @@ const FALLBACK: TickerMsg[] = [
   { id:'1', texte:'LA VOIX DU DÉVELOPPEMENT DE BÉRÉ  ·  96.7 FM  ·  En direct de Béré, province de la Tandjilé, Tchad', lien_url:'/radio', priorite:5, actif:true, date_debut:'', created_at:'' },
   { id:'2', texte:'Retrouvez notre grille de programmes et nos émissions en ligne', lien_url:'/radio', priorite:4, actif:true, date_debut:'', created_at:'' },
   { id:'3', texte:'Contactez-nous pour participer à nos émissions ou proposer un événement local', lien_url:'/contact', priorite:3, actif:true, date_debut:'', created_at:'' },
-  { id:'4', texte:'Radio Voix de Développement  ·  Autorisation HAMA N° 016/2023  ·  Service public communautaire', lien_url:'/frequences', priorite:2, actif:true, date_debut:'', created_at:'' },
+  { id:'4', texte:'Radio Voix de Développement  ·  Autorisation HAMA N° 016/2023  ·  Radio privée associative', lien_url:'/frequences', priorite:2, actif:true, date_debut:'', created_at:'' },
 ]
 
 export default function Ticker() {
