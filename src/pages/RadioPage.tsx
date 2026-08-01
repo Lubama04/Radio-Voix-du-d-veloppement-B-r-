@@ -79,7 +79,7 @@ export default function RadioPage() {
             </div>
           )}
 
-          <h1 className="font-display font-bold text-3xl sm:text-5xl mb-4">Radio & Émissions</h1>
+          <h1 className="font-display font-bold text-3xl sm:text-5xl mb-4" style={{ color: '#FFFFFF' }}>Radio & Émissions</h1>
           <p className="mb-8" style={{ color: 'rgba(255,255,255,0.85)' }}>Écoutez en direct, réécouter en podcast, consultez la grille</p>
 
           <button

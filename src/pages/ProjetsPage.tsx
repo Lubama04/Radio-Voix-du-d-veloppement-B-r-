@@ -8,7 +8,7 @@ export default function ProjetsPage() {
     <main className="pt-16">
       <div className="py-12 px-4 text-center text-white"
         style={{ background: 'linear-gradient(135deg, #004D2A 0%, #006B3C 60%, #008A4B 100%)' }}>
-        <h1 className="font-display font-bold text-4xl mb-2">Projets et partenariats</h1>
+        <h1 className="font-display font-bold text-4xl mb-2" style={{ color: '#FFFFFF' }}>Projets et partenariats</h1>
         <p style={{ color: 'rgba(255,255,255,0.85)' }}>Nos initiatives au service du développement local</p>
       </div>
 

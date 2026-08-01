@@ -44,7 +44,7 @@ export default function GaleriePage() {
     <main className="pt-16">
       <div className="py-12 px-4 text-center text-white"
         style={{ background: 'linear-gradient(135deg, #004D2A 0%, #006B3C 60%, #008A4B 100%)' }}>
-        <h1 className="font-display font-bold text-4xl mb-2">Galerie photos</h1>
+        <h1 className="font-display font-bold text-4xl mb-2" style={{ color: '#FFFFFF' }}>Galerie photos</h1>
         <p style={{ color: 'rgba(255,255,255,0.85)' }}>Studio, terrain, événements et équipe en images</p>
       </div>
 

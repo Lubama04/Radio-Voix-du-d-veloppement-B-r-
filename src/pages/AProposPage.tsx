@@ -26,7 +26,7 @@ export default function AProposPage() {
         <div className="w-24 h-24 rounded-full bg-white/10 flex items-center justify-center mx-auto mb-6">
           <Radio className="w-12 h-12 text-white" />
         </div>
-        <h1 className="font-display font-bold text-4xl mb-2">La Voix du Développement de Béré</h1>
+        <h1 className="font-display font-bold text-4xl mb-2" style={{ color: '#FFFFFF' }}>La Voix du Développement de Béré</h1>
         <p className="text-lg" style={{ color: 'rgba(255,255,255,0.85)' }}>96.7 FM · Béré, Province de la Tandjilé, Tchad</p>
         <p className="text-white/50 mt-2 italic">"La voix qui porte le développement"</p>
       </div>
