@@ -1,11 +1,12 @@
 import { Play, Pause, Volume2, VolumeX, X, Radio } from 'lucide-react'
 import { usePlayer } from '@/contexts/PlayerContext'
 import { useLang } from '@/contexts/LanguageContext'
+import { CONFIG } from '@/config'
 
 export default function GlobalPlayer() {
   const { isPlaying, isLoading, volume, currentShow, showPlayer, toggle, setVolume, closePlayer } = usePlayer()
   const { t } = useLang()
-  const streamUrl = import.meta.env.VITE_STREAM_URL
+  const streamUrl = CONFIG.STREAM_PRIMARY || CONFIG.STREAM_BACKUP
 
   if (!showPlayer) return null
 

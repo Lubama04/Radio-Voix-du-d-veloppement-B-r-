@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, useRef, useCallback, ReactNode } from 'react'
+import { CONFIG } from '@/config'
 
 interface PlayerState {
   isPlaying: boolean
@@ -20,7 +21,8 @@ interface PlayerCtx extends PlayerState {
 
 const PlayerContext = createContext<PlayerCtx | null>(null)
 
-const STREAM_URL = import.meta.env.VITE_STREAM_URL || ''
+const STREAM_PRIMARY = CONFIG.STREAM_PRIMARY
+const STREAM_BACKUP  = CONFIG.STREAM_BACKUP
 const DEFAULT_SHOW = 'La Voix du Développement de Béré, 96.7 FM'
 
 export function PlayerProvider({ children }: { children: ReactNode }) {
@@ -30,7 +32,7 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
     isLoading:   false,
     volume:      0.8,
     currentShow: DEFAULT_SHOW,
-    streamUrl:   STREAM_URL,
+    streamUrl:   STREAM_PRIMARY,
     showPlayer:  false,
   })
 
@@ -47,16 +49,27 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
     return audioRef.current
   }, [])
 
-  const play = useCallback(() => {
-    if (!STREAM_URL) return
+  const play = useCallback(async () => {
+    if (!STREAM_PRIMARY && !STREAM_BACKUP) return
     const audio = getAudio()
-    audio.src = STREAM_URL
     audio.volume = state.volume
-    audio.play().then(() => {
-      setState(s => ({ ...s, isPlaying: true, isLoading: false, showPlayer: true }))
-    }).catch(() => {
-      setState(s => ({ ...s, isPlaying: false, isLoading: false }))
-    })
+    setState(s => ({ ...s, isLoading: true }))
+
+    const tryPlay = async (url: string): Promise<boolean> => {
+      if (!url) return false
+      audio.src = url
+      try {
+        await audio.play()
+        return true
+      } catch {
+        return false
+      }
+    }
+
+    const played = await tryPlay(STREAM_PRIMARY) || await tryPlay(STREAM_BACKUP)
+    setState(s => played
+      ? { ...s, isPlaying: true, isLoading: false, showPlayer: true }
+      : { ...s, isPlaying: false, isLoading: false })
   }, [getAudio, state.volume])
 
   const pause = useCallback(() => {

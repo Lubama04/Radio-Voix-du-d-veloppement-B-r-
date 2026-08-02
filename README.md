@@ -73,7 +73,7 @@ Manifest configuré avec icônes, thème vert, raccourcis vers Direct et Actuali
 
 ## 🔴 Streaming radio
 
-Configurer `VITE_STREAM_URL` avec l'URL du flux Icecast/HLS quand le streaming sera prêt.
+Configurer `VITE_STREAM_PRIMARY` (et optionnellement `VITE_STREAM_BACKUP`) avec l'URL du flux Icecast/HLS quand le streaming sera prêt.
 
 ---
 Réalisé par **ETS FLANGUST BUSINESS** · flaugustb@gmail.com

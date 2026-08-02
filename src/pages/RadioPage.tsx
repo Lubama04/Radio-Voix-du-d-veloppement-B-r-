@@ -8,9 +8,10 @@ import SectionHeader from '@/components/shared/SectionHeader'
 import PodcastCard from '@/components/shared/PodcastCard'
 import TranslatedText from '@/components/shared/TranslatedText'
 import type { ProgrammeView, PodcastView, Journal } from '@/types/database'
+import { CONFIG } from '@/config'
 
 const JOURS = ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam']
-const STREAM_URL = import.meta.env.VITE_STREAM_URL
+const STREAM_URL = CONFIG.STREAM_PRIMARY || CONFIG.STREAM_BACKUP
 
 export default function RadioPage() {
   useDocumentTitle('Radio en Direct & Émissions | Voix de Béré 96.7 FM')
