@@ -113,10 +113,10 @@ export default function GaleriePage() {
             aria-label="Photo suivante">
             <ChevronRight className="w-10 h-10" />
           </button>
-          <div className="absolute bottom-4 max-w-xl px-4 text-white/70 text-sm text-center">
-            <div className="font-semibold text-white">{filtered[lightbox].titre}</div>
-            {filtered[lightbox].legende && <p className="mt-1">{filtered[lightbox].legende}</p>}
-            <p className="mt-1 text-white/50">{lightbox + 1}/{filtered.length}</p>
+          <div className="absolute bottom-4 max-w-xl px-4 text-sm text-center" style={{ color: '#FFFFFF' }}>
+            <div className="font-semibold" style={{ color: '#FFFFFF' }}>{filtered[lightbox].titre}</div>
+            {filtered[lightbox].legende && <p className="mt-1" style={{ color: '#FFFFFF' }}>{filtered[lightbox].legende}</p>}
+            <p className="mt-1" style={{ color: '#FFFFFF' }}>{lightbox + 1}/{filtered.length}</p>
           </div>
         </div>
       )}
