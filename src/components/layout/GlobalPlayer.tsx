@@ -1,14 +1,59 @@
 import { Play, Pause, Volume2, VolumeX, X, Radio } from 'lucide-react'
 import { usePlayer } from '@/contexts/PlayerContext'
 import { useLang } from '@/contexts/LanguageContext'
+import { useBroadcast, getBroadcastMessage, formatCountdown } from '@/contexts/BroadcastContext'
 import { CONFIG } from '@/config'
 
 export default function GlobalPlayer() {
   const { isPlaying, isLoading, volume, currentShow, showPlayer, toggle, setVolume, closePlayer } = usePlayer()
   const { t } = useLang()
+  const { is_on_air, statut, tchad_hour, heure_debut, heure_fin, minutes_avant_diffusion, message_maint, error } = useBroadcast()
   const streamUrl = CONFIG.STREAM_PRIMARY || CONFIG.STREAM_BACKUP
 
   if (!showPlayer) return null
+
+  if (statut === 'maintenance') {
+    return (
+      <div className="global-player safe-bottom">
+        <div className="max-w-7xl mx-auto px-4 h-full flex items-center justify-between gap-4">
+          <div className="flex items-center gap-3 min-w-0">
+            <div className="w-10 h-10 rounded-full flex-shrink-0 flex items-center justify-center" style={{ background: '#6B6B6B' }}>
+              <Radio className="w-5 h-5 text-white" />
+            </div>
+            <p className="text-sm font-semibold truncate" style={{ color: 'var(--color-brand-primary)' }}>{message_maint}</p>
+          </div>
+          <button onClick={closePlayer} className="p-2 text-gray-400 hover:text-gray-700 flex-shrink-0" aria-label="Fermer le player">
+            <X className="w-5 h-5" />
+          </button>
+        </div>
+      </div>
+    )
+  }
+
+  if (!is_on_air) {
+    return (
+      <div className="global-player safe-bottom">
+        <div className="max-w-7xl mx-auto px-4 h-full flex items-center justify-between gap-4">
+          <div className="flex items-center gap-3 min-w-0">
+            <div className="w-10 h-10 rounded-full flex-shrink-0 flex items-center justify-center" style={{ background: '#6B6B6B' }}>
+              <Radio className="w-5 h-5 text-white" />
+            </div>
+            <div className="min-w-0">
+              <p className="text-sm font-semibold truncate" style={{ color: 'var(--color-brand-primary)' }}>
+                {getBroadcastMessage(tchad_hour, heure_debut, heure_fin, error)}
+              </p>
+              {minutes_avant_diffusion > 0 && (
+                <p className="text-xs text-gray-500">Reprise dans {formatCountdown(minutes_avant_diffusion)}</p>
+              )}
+            </div>
+          </div>
+          <button onClick={closePlayer} className="p-2 text-gray-400 hover:text-gray-700 flex-shrink-0" aria-label="Fermer le player">
+            <X className="w-5 h-5" />
+          </button>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="global-player safe-bottom">

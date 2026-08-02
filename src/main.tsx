@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client'
 import { RouterProvider } from '@tanstack/react-router'
 import { LanguageProvider } from '@/contexts/LanguageContext'
 import { PlayerProvider } from '@/contexts/PlayerContext'
+import { BroadcastProvider } from '@/contexts/BroadcastContext'
 import { router } from '@/router'
 import '@/styles/globals.css'
 
@@ -10,10 +11,12 @@ import '@/styles/globals.css'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <LanguageProvider>
-      <PlayerProvider>
-        <RouterProvider router={router} />
-      </PlayerProvider>
-    </LanguageProvider>
+    <BroadcastProvider>
+      <LanguageProvider>
+        <PlayerProvider>
+          <RouterProvider router={router} />
+        </PlayerProvider>
+      </LanguageProvider>
+    </BroadcastProvider>
   </StrictMode>
 )

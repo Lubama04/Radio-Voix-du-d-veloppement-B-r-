@@ -8,6 +8,7 @@ interface PlayerState {
   currentShow: string
   streamUrl: string
   showPlayer: boolean
+  streamError: boolean
 }
 
 interface PlayerCtx extends PlayerState {
@@ -25,8 +26,46 @@ const STREAM_PRIMARY = CONFIG.STREAM_PRIMARY
 const STREAM_BACKUP  = CONFIG.STREAM_BACKUP
 const DEFAULT_SHOW = 'La Voix du Développement de Béré, 96.7 FM'
 
+function createWatchdog(
+  audio: HTMLAudioElement,
+  onFail: () => void
+): () => void {
+  let lastTime = -1
+  let stuckCount = 0
+
+  const interval = setInterval(() => {
+    if (audio.paused) {
+      stuckCount = 0
+      return
+    }
+    if (audio.currentTime === lastTime) {
+      stuckCount++
+      if (stuckCount >= CONFIG.WATCHDOG_STUCK_LIMIT) {
+        clearInterval(interval)
+        audio.removeEventListener('error', onError)
+        onFail()
+      }
+    } else {
+      stuckCount = 0
+      lastTime = audio.currentTime
+    }
+  }, CONFIG.WATCHDOG_INTERVAL_MS)
+
+  const onError = () => {
+    clearInterval(interval)
+    onFail()
+  }
+  audio.addEventListener('error', onError)
+
+  return () => {
+    clearInterval(interval)
+    audio.removeEventListener('error', onError)
+  }
+}
+
 export function PlayerProvider({ children }: { children: ReactNode }) {
   const audioRef = useRef<HTMLAudioElement | null>(null)
+  const watchdogCleanupRef = useRef<(() => void) | null>(null)
   const [state, setState] = useState<PlayerState>({
     isPlaying:   false,
     isLoading:   false,
@@ -34,6 +73,7 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
     currentShow: DEFAULT_SHOW,
     streamUrl:   STREAM_PRIMARY,
     showPlayer:  false,
+    streamError: false,
   })
 
   const getAudio = useCallback(() => {
@@ -53,7 +93,10 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
     if (!STREAM_PRIMARY && !STREAM_BACKUP) return
     const audio = getAudio()
     audio.volume = state.volume
-    setState(s => ({ ...s, isLoading: true }))
+    setState(s => ({ ...s, isLoading: true, streamError: false }))
+
+    watchdogCleanupRef.current?.()
+    watchdogCleanupRef.current = null
 
     const tryPlay = async (url: string): Promise<boolean> => {
       if (!url) return false
@@ -67,13 +110,41 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
     }
 
     const played = await tryPlay(STREAM_PRIMARY) || await tryPlay(STREAM_BACKUP)
-    setState(s => played
-      ? { ...s, isPlaying: true, isLoading: false, showPlayer: true }
-      : { ...s, isPlaying: false, isLoading: false })
+
+    if (!played) {
+      setState(s => ({ ...s, isPlaying: false, isLoading: false }))
+      return
+    }
+
+    setState(s => ({ ...s, isPlaying: true, isLoading: false, showPlayer: true }))
+
+    // Timeout 15s si jamais playing n'est pas atteint
+    const playTimeout = setTimeout(() => {
+      if (!audio.paused) return
+      watchdogCleanupRef.current?.()
+      watchdogCleanupRef.current = null
+      setState(s => ({
+        ...s,
+        isPlaying: false,
+        isLoading: false,
+        streamError: true,
+      }))
+    }, CONFIG.PLAY_TIMEOUT_MS)
+
+    audio.addEventListener('playing', () => {
+      clearTimeout(playTimeout)
+    }, { once: true })
+
+    watchdogCleanupRef.current = createWatchdog(audio, () => {
+      watchdogCleanupRef.current = null
+      setState(s => ({ ...s, isPlaying: false, isLoading: false, streamError: true }))
+    })
   }, [getAudio, state.volume])
 
   const pause = useCallback(() => {
     audioRef.current?.pause()
+    watchdogCleanupRef.current?.()
+    watchdogCleanupRef.current = null
     setState(s => ({ ...s, isPlaying: false }))
   }, [])
 

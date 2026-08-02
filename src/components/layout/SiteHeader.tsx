@@ -3,6 +3,7 @@ import { Link, useLocation } from '@tanstack/react-router'
 import { Menu, X, Globe, ChevronDown, Check } from 'lucide-react'
 import { useLang, type Lang } from '@/contexts/LanguageContext'
 import { usePlayer } from '@/contexts/PlayerContext'
+import { useBroadcast } from '@/contexts/BroadcastContext'
 import SafeImage from '@/components/shared/SafeImage'
 import PWAInstallButton from '@/components/shared/PWAInstallButton'
 
@@ -15,7 +16,8 @@ const LANGS: { code: Lang; flag: string; label: string }[] = [
 export default function SiteHeader() {
   const { t, lang, setLang } = useLang()
   const { toggle, isPlaying, openPlayer } = usePlayer()
-  const handleLiveClick = () => { openPlayer(); toggle() }
+  const { is_on_air } = useBroadcast()
+  const handleLiveClick = () => { openPlayer(); if (is_on_air) toggle() }
   const [menuOpen, setMenuOpen] = useState(false)
   const [langOpen, setLangOpen] = useState(false)
   const location = useLocation()
@@ -110,7 +112,7 @@ export default function SiteHeader() {
               onClick={handleLiveClick}
               className={`hidden sm:flex ${isPlaying ? 'animate-pulse-slow' : ''}`}
               style={{
-                background: '#9B2226', color: 'white', borderRadius: '9999px', padding: '8px 18px',
+                background: is_on_air ? '#8B1A1A' : '#6B6B6B', color: 'white', borderRadius: '9999px', padding: '8px 18px',
                 fontWeight: 700, fontSize: '0.82rem', letterSpacing: '0.04em', border: 'none',
                 alignItems: 'center', gap: 8, boxShadow: '0 4px 14px rgba(155,34,38,0.3)',
               }}
@@ -200,7 +202,7 @@ export default function SiteHeader() {
               <button
                 onClick={handleLiveClick}
                 className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-base font-bold text-white mt-2"
-                style={{ background: 'var(--color-accent)' }}
+                style={{ background: is_on_air ? '#8B1A1A' : '#6B6B6B' }}
               >
                 <span className={`w-2 h-2 rounded-full bg-white ${isPlaying ? 'animate-ping' : ''}`} />
                 {t.live.label}, 96.7 FM

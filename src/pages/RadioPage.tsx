@@ -9,6 +9,7 @@ import PodcastCard from '@/components/shared/PodcastCard'
 import TranslatedText from '@/components/shared/TranslatedText'
 import type { ProgrammeView, PodcastView, Journal } from '@/types/database'
 import { CONFIG } from '@/config'
+import { useBroadcast, getBroadcastMessage, formatCountdown } from '@/contexts/BroadcastContext'
 
 const JOURS = ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam']
 const STREAM_URL = CONFIG.STREAM_PRIMARY || CONFIG.STREAM_BACKUP
@@ -17,6 +18,7 @@ export default function RadioPage() {
   useDocumentTitle('Radio en Direct & Émissions | Voix de Béré 96.7 FM')
   const { t } = useLang()
   const { isPlaying, isLoading, toggle, openPlayer } = usePlayer()
+  const { is_on_air, tchad_hour, heure_debut, heure_fin, minutes_avant_diffusion, error } = useBroadcast()
   const [selectedDay, setSelectedDay] = useState(new Date().getDay())
   const [programmes] = useState<ProgrammeView[]>([])
   // Chargement des programmes désactivé pour l'instant.
@@ -85,7 +87,7 @@ export default function RadioPage() {
 
           <button
             onClick={handleLive}
-            disabled={!STREAM_URL}
+            disabled={!STREAM_URL || !is_on_air}
             className="inline-flex items-center gap-3 px-10 py-5 rounded-full font-bold text-lg text-white transition-all hover:scale-105 disabled:opacity-60 shadow-xl"
             style={{ background: 'var(--color-accent)' }}
           >
@@ -99,9 +101,14 @@ export default function RadioPage() {
             {isLoading ? t.live.loading : isPlaying ? 'Pause' : t.hero.cta1}
           </button>
 
-          {!STREAM_URL && (
+          {!STREAM_URL ? (
             <p className="text-white/50 text-sm mt-4">Le streaming sera disponible prochainement</p>
-          )}
+          ) : !is_on_air ? (
+            <p className="text-white/70 text-sm mt-4">
+              {getBroadcastMessage(tchad_hour, heure_debut, heure_fin, error)}
+              {minutes_avant_diffusion > 0 && ` — reprise dans ${formatCountdown(minutes_avant_diffusion)}`}
+            </p>
+          ) : null}
         </div>
       </section>
 
