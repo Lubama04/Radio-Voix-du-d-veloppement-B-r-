@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 Disallow: /api/
-Sitemap: https://radio-voix-du-d-veloppement-b-r.vercel.app/sitemap.xml
+Sitemap: https://rvd967-bere.com/sitemap.xml
