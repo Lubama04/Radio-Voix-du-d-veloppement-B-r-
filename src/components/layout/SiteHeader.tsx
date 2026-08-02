@@ -4,6 +4,7 @@ import { Menu, X, Globe, ChevronDown, Check } from 'lucide-react'
 import { useLang, type Lang } from '@/contexts/LanguageContext'
 import { usePlayer } from '@/contexts/PlayerContext'
 import SafeImage from '@/components/shared/SafeImage'
+import PWAInstallButton from '@/components/shared/PWAInstallButton'
 
 const LANGS: { code: Lang; flag: string; label: string }[] = [
   { code: 'fr', flag: '🇫🇷', label: 'Français' },
@@ -98,6 +99,11 @@ export default function SiteHeader() {
 
           {/* Actions droite */}
           <div className="flex items-center gap-2">
+
+            {/* Bouton installer l'application (desktop) */}
+            <div className="hidden lg:block">
+              <PWAInstallButton />
+            </div>
 
             {/* Bouton EN DIRECT */}
             <button

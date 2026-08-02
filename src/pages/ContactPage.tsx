@@ -164,17 +164,18 @@ export default function ContactPage() {
                   <div className="text-sm text-gray-600">Béré, Département de la Tandjilé Centre<br />Province de la Tandjilé, Tchad</div>
                 </div>
               </div>
-              {config.telephone && (
-                <div className="flex items-center gap-3">
-                  <Phone className="w-5 h-5 flex-shrink-0" style={{ color: 'var(--color-brand-primary)' }} />
-                  <div>
-                    <div className="font-semibold text-gray-900">Téléphone</div>
-                    <a href={`tel:${config.telephone}`} className="text-sm hover:underline" style={{ color: 'var(--color-brand-primary)' }}>
-                      {config.telephone}
-                    </a>
-                  </div>
+              <div className="flex items-start gap-3">
+                <Phone className="w-5 h-5 mt-0.5 flex-shrink-0" style={{ color: 'var(--color-brand-primary)' }} />
+                <div>
+                  <div className="font-semibold text-gray-900 mb-1">Téléphone</div>
+                  <a href="tel:+23566036569" className="block text-sm hover:underline" style={{ color: 'var(--color-brand-primary)' }}>
+                    +235 66 03 65 69
+                  </a>
+                  <a href="tel:+23566668080" className="block text-sm hover:underline" style={{ color: 'var(--color-brand-primary)' }}>
+                    +235 66 66 80 80
+                  </a>
                 </div>
-              )}
+              </div>
               {config.whatsapp && (
                 <div className="flex items-center gap-3">
                   <MessageCircle className="w-5 h-5 flex-shrink-0 text-green-500" />

@@ -16,7 +16,7 @@ const PHOTOS: Photo[] = [
   {
     url: '/photos/equipe-radio-bere.jpg',
     titre: "L'équipe de la radio",
-    legende: "L'équipe de la Radio Voix de Développement de Béré devant les locaux de la station, Béré, province de la Tandjilé.",
+    legende: "L'équipe de la Radio Voix de Développement de Béré devant les locaux de la station.",
     cat: 'Équipe',
   },
   {
@@ -24,6 +24,12 @@ const PHOTOS: Photo[] = [
     titre: 'Le studio de diffusion',
     legende: "Notre technicien en cabine de diffusion avec la console de mixage et le microphone professionnel.",
     cat: 'Studio',
+  },
+  {
+    url: '/photos/visite-prefet-maire-bere.jpg',
+    titre: 'Visite du préfet et du maire',
+    legende: 'Visite officielle du préfet et du maire de Béré à la Radio Voix de Développement, province de la Tandjilé.',
+    cat: 'Événements',
   },
 ]
 

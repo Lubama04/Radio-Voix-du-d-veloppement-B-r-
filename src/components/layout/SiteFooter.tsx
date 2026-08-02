@@ -102,12 +102,13 @@ export default function SiteFooter() {
                 <MapPin className="w-4 h-4 mt-0.5 flex-shrink-0 text-white/40" />
                 <span>{t.footer.address}</span>
               </li>
-              {config.telephone && (
-                <li className="flex items-center gap-2" style={linkStyle}>
-                  <Phone className="w-4 h-4 flex-shrink-0 text-white/40" />
-                  <a href={`tel:${config.telephone}`} className="hover:!text-white transition-colors">{config.telephone}</a>
-                </li>
-              )}
+              <li className="flex items-start gap-2" style={linkStyle}>
+                <Phone className="w-4 h-4 mt-0.5 flex-shrink-0 text-white/40" />
+                <span className="flex flex-col gap-1">
+                  <a href="tel:+23566036569" className="hover:!text-white transition-colors">+235 66 03 65 69</a>
+                  <a href="tel:+23566668080" className="hover:!text-white transition-colors">+235 66 66 80 80</a>
+                </span>
+              </li>
               {config.email && (
                 <li className="flex items-center gap-2" style={linkStyle}>
                   <Mail className="w-4 h-4 flex-shrink-0 text-white/40" />
