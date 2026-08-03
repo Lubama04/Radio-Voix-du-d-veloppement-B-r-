@@ -26,6 +26,7 @@ export interface Database {
       categories_actualites: { Row: Row<CategorieActu>; Insert: Omit<CategorieActu,'id'> & Record<string, unknown>; Update: Upd<CategorieActu>; Relationships: [] }
       categories_emissions: { Row: Row<CategorieEmission>; Insert: Omit<CategorieEmission,'id'> & Record<string, unknown>; Update: Upd<CategorieEmission>; Relationships: [] }
       emissions:  { Row: Row<Emission>; Insert: Ins<Emission>; Update: Upd<Emission>; Relationships: [] }
+      player_errors: { Row: Row<PlayerError>; Insert: Ins<PlayerError>; Update: Upd<PlayerError>; Relationships: [] }
     }
     Views: {
       v_actualites: { Row: Row<ActualiteView>; Relationships: [] }
@@ -150,4 +151,11 @@ export interface GalerieItem {
   id: string; titre: string; description?: string; url: string
   thumbnail?: string; categorie?: string; legende?: string
   auteur?: string; date_prise?: string; ordre: number; publie: boolean; created_at: string
+}
+
+export interface PlayerError {
+  id: string; type?: string; message?: string; stream_url?: string
+  browser?: string; browser_ver?: string; os?: string; device_type?: string
+  connection_type?: string; was_playing?: boolean; duration_ms?: number
+  created_at: string
 }

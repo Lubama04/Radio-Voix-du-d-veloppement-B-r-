@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useRef, useCallback, ReactNode } from 'react'
 import { CONFIG } from '@/config'
+import { supabase } from '@/lib/supabase'
 
 interface PlayerState {
   isPlaying: boolean
@@ -66,6 +67,46 @@ function createWatchdog(
 export function PlayerProvider({ children }: { children: ReactNode }) {
   const audioRef = useRef<HTMLAudioElement | null>(null)
   const watchdogCleanupRef = useRef<(() => void) | null>(null)
+  const lastErrorLog = useRef<number>(0)
+
+  async function logPlayerError(
+    type: string,
+    message: string,
+    streamUrl: string,
+    durationMs: number
+  ) {
+    const now = Date.now()
+    if (now - lastErrorLog.current < CONFIG.ERROR_THROTTLE_MS) return
+    lastErrorLog.current = now
+
+    const ua = navigator.userAgent
+    const conn = (navigator as Navigator & {
+      connection?: { effectiveType?: string }
+    }).connection
+
+    try {
+      await supabase.from('player_errors').insert({
+        type,
+        message,
+        stream_url:      streamUrl,
+        browser:         /Chrome/.test(ua)  ? 'Chrome'
+                       : /Firefox/.test(ua) ? 'Firefox'
+                       : /Safari/.test(ua)  ? 'Safari' : 'Autre',
+        os:              /Android/.test(ua)     ? 'Android'
+                       : /iPhone|iPad/.test(ua) ? 'iOS'
+                       : /Windows/.test(ua)     ? 'Windows'
+                       : /Linux/.test(ua)       ? 'Linux' : 'Autre',
+        device_type:     /Mobile/.test(ua)  ? 'mobile'
+                       : /iPad/.test(ua)    ? 'tablet' : 'desktop',
+        connection_type: conn?.effectiveType ?? 'unknown',
+        duration_ms:     durationMs,
+        was_playing:     durationMs > 0,
+      })
+    } catch {
+      // Silencieux — ne jamais bloquer l'UI pour un log
+    }
+  }
+
   const [state, setState] = useState<PlayerState>({
     isPlaying:   false,
     isLoading:   false,
@@ -113,6 +154,7 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
 
     if (!played) {
       setState(s => ({ ...s, isPlaying: false, isLoading: false }))
+      logPlayerError('play_failed', 'Échec du démarrage de la lecture', STREAM_PRIMARY || STREAM_BACKUP, 0)
       return
     }
 
@@ -129,6 +171,7 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
         isLoading: false,
         streamError: true,
       }))
+      logPlayerError('play_timeout', `Lecture non démarrée après ${CONFIG.PLAY_TIMEOUT_MS}ms`, audio.src, audio.currentTime * 1000)
     }, CONFIG.PLAY_TIMEOUT_MS)
 
     audio.addEventListener('playing', () => {
@@ -138,6 +181,7 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
     watchdogCleanupRef.current = createWatchdog(audio, () => {
       watchdogCleanupRef.current = null
       setState(s => ({ ...s, isPlaying: false, isLoading: false, streamError: true }))
+      logPlayerError('watchdog_stuck', 'Flux bloqué ou erreur audio détectée par le watchdog', audio.src, audio.currentTime * 1000)
     })
   }, [getAudio, state.volume])
 

@@ -36,6 +36,24 @@ export default defineConfig({
         navigateFallbackDenylist: [/^\/(sitemap\.xml|robots\.txt)$/],
         runtimeCaching: [
           {
+            // Flux audio — jamais mis en cache
+            // NetworkOnly garantit aussi le passage
+            // des Range Requests sans interception
+            urlPattern: ({ url }: { url: URL }) => {
+              const streamDomains = [
+                'stream.rvd967-bere.com',
+                'zeno.fm',
+                'stream.zeno.fm',
+                'listen.zeno.fm',
+              ]
+              return streamDomains.some(d =>
+                url.hostname === d ||
+                url.hostname.endsWith('.' + d)
+              )
+            },
+            handler: 'NetworkOnly' as const,
+          },
+          {
             urlPattern: /^https:\/\/.*\.supabase\.co\/.*/i,
             handler: 'NetworkFirst',
             options: {
