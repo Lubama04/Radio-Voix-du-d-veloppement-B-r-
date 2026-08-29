@@ -1,0 +1,32 @@
+<svg width="1200" height="1200" viewBox="0 0 1200 1200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="badgeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF" />
+      <stop offset="100%" stop-color="#FCEFE3" />
+    </linearGradient>
+  </defs>
+
+  <!-- Badge / monogramme -->
+  <g>
+    <rect x="330" y="90" width="540" height="540" rx="96" fill="url(#badgeGrad)" />
+    <rect x="330" y="90" width="540" height="540" rx="96" fill="none" stroke="#F09C3C" stroke-width="10" />
+
+    <!-- Monogramme "F" stylisé -->
+    <g fill="#A84800">
+      <rect x="470" y="230" width="70" height="260" rx="14" />
+      <rect x="470" y="230" width="200" height="66" rx="14" />
+      <rect x="470" y="350" width="170" height="62" rx="14" />
+    </g>
+
+    <!-- Accent vert -->
+    <rect x="470" y="512" width="200" height="26" rx="13" fill="#00843C" />
+  </g>
+
+  <!-- Wordmark -->
+  <text x="600" y="800" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-weight="700" font-size="108" fill="#FFFFFF" letter-spacing="4">FLAUGUST</text>
+  <text x="600" y="905" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-weight="700" font-size="82" fill="#FFFFFF" letter-spacing="10">BUSINESS</text>
+
+  <!-- Ligne d'accent -->
+  <rect x="420" y="945" width="150" height="8" rx="4" fill="#F09C3C" />
+  <rect x="630" y="945" width="150" height="8" rx="4" fill="#00843C" />
+</svg>
