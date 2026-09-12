@@ -1,4 +1,4 @@
-import { createRootRoute, createRoute, createRouter, Outlet } from '@tanstack/react-router'
+import { createRootRoute, createRoute, createRouter, Outlet, useLocation } from '@tanstack/react-router'
 import SiteHeader from '@/components/layout/SiteHeader'
 import SiteFooter from '@/components/layout/SiteFooter'
 import GlobalPlayer from '@/components/layout/GlobalPlayer'
@@ -14,9 +14,26 @@ import MentionsLegalesPage from '@/pages/MentionsLegalesPage'
 import AgendaPage from '@/pages/AgendaPage'
 import FrequencesPage from '@/pages/FrequencesPage'
 import ArticlePage from '@/pages/ArticlePage'
+import VerifyPage from '@/pages/VerifyPage'
+import AdminLoginPage from '@/pages/admin/AdminLoginPage'
+import LaissezPasserAdminPage from '@/pages/admin/LaissezPasserAdminPage'
 
-const rootRoute = createRootRoute({
-  component: () => (
+// Le laissez-passer (vérification publique) et l'administration sont des
+// surfaces autonomes — pas de header/footer/player du site public, qui
+// dénaturerait leur mise en page sobre et institutionnelle.
+function RootLayout() {
+  const location = useLocation()
+  const isStandalone = location.pathname.startsWith('/verify/') || location.pathname.startsWith('/admin')
+
+  if (isStandalone) {
+    return (
+      <div className="min-h-screen flex flex-col">
+        <Outlet />
+      </div>
+    )
+  }
+
+  return (
     <div className="min-h-screen flex flex-col">
       <a
         href="#main-content"
@@ -33,7 +50,11 @@ const rootRoute = createRootRoute({
       <GlobalPlayer />
       <PWAInstallBanner />
     </div>
-  ),
+  )
+}
+
+const rootRoute = createRootRoute({
+  component: RootLayout,
 })
 
 const indexRoute          = createRoute({ getParentRoute: () => rootRoute, path: '/',                component: HomePage })
@@ -47,11 +68,15 @@ const mentionsRoute       = createRoute({ getParentRoute: () => rootRoute, path:
 const agendaRoute         = createRoute({ getParentRoute: () => rootRoute, path: '/agenda',           component: AgendaPage })
 const frequencesRoute     = createRoute({ getParentRoute: () => rootRoute, path: '/frequences',       component: FrequencesPage })
 const articleRoute        = createRoute({ getParentRoute: () => rootRoute, path: '/actualites/$slug', component: ArticlePage })
+const verifyRoute         = createRoute({ getParentRoute: () => rootRoute, path: '/verify/$token',    component: VerifyPage })
+const adminLoginRoute     = createRoute({ getParentRoute: () => rootRoute, path: '/admin/login',       component: AdminLoginPage })
+const adminLPRoute        = createRoute({ getParentRoute: () => rootRoute, path: '/admin/laissez-passer', component: LaissezPasserAdminPage })
 
 const routeTree = rootRoute.addChildren([
   indexRoute, actualitesRoute, radioRoute, projetsRoute,
   galerieRoute, aproposRoute, contactRoute, mentionsRoute,
   agendaRoute, frequencesRoute, articleRoute,
+  verifyRoute, adminLoginRoute, adminLPRoute,
 ])
 
 export const router = createRouter({ routeTree, defaultPreload: 'intent' })

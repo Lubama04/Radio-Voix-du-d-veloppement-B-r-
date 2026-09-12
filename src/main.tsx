@@ -4,6 +4,7 @@ import { RouterProvider } from '@tanstack/react-router'
 import { LanguageProvider } from '@/contexts/LanguageContext'
 import { PlayerProvider } from '@/contexts/PlayerContext'
 import { BroadcastProvider } from '@/contexts/BroadcastContext'
+import { AuthProvider } from '@/contexts/AuthContext'
 import { router } from '@/router'
 import '@/styles/globals.css'
 
@@ -14,7 +15,9 @@ createRoot(document.getElementById('root')!).render(
     <BroadcastProvider>
       <LanguageProvider>
         <PlayerProvider>
-          <RouterProvider router={router} />
+          <AuthProvider>
+            <RouterProvider router={router} />
+          </AuthProvider>
         </PlayerProvider>
       </LanguageProvider>
     </BroadcastProvider>

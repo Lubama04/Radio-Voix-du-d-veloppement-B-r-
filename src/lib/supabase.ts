@@ -35,6 +35,8 @@ export const db = {
   categoriesActu:    () => supabase.from('categories_actualites'),
   categoriesEmission:() => supabase.from('categories_emissions'),
   emissions:         () => supabase.from('emissions'),
+  laissezPasser:     () => supabase.from('laissez_passer'),
+  verificationsLP:   () => supabase.from('verifications_lp'),
 
   // Vues
   vActualites: () => supabase.from('v_actualites'),

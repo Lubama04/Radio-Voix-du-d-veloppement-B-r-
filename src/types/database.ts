@@ -27,6 +27,13 @@ export interface Database {
       categories_emissions: { Row: Row<CategorieEmission>; Insert: Omit<CategorieEmission,'id'> & Record<string, unknown>; Update: Upd<CategorieEmission>; Relationships: [] }
       emissions:  { Row: Row<Emission>; Insert: Ins<Emission>; Update: Upd<Emission>; Relationships: [] }
       player_errors: { Row: Row<PlayerError>; Insert: Ins<PlayerError>; Update: Upd<PlayerError>; Relationships: [] }
+      laissez_passer: {
+        Row: Row<LaissezPasser>
+        Insert: Ins<LaissezPasser, 'verification_token'|'statut'|'verifications_count'|'derniere_verification'|'date_revocation'|'motif_revocation'|'created_by'|'updated_at'>
+        Update: Upd<LaissezPasser>
+        Relationships: []
+      }
+      verifications_lp: { Row: Row<VerificationLP>; Insert: Ins<VerificationLP>; Update: Upd<VerificationLP>; Relationships: [] }
     }
     Views: {
       v_actualites: { Row: Row<ActualiteView>; Relationships: [] }
@@ -158,4 +165,52 @@ export interface PlayerError {
   browser?: string; browser_ver?: string; os?: string; device_type?: string
   connection_type?: string; was_playing?: boolean; duration_ms?: number
   created_at: string
+}
+
+export interface LaissezPasser {
+  id: string
+  verification_token: string
+  nom: string
+  prenoms: string
+  photo_url: string | null
+  fonction: string
+  matricule: string
+  categorie: string
+  telephone_professionnel: string | null
+  observations?: string | null
+  date_delivrance: string
+  date_expiration: string
+  statut: 'valide' | 'expire' | 'revoque'
+  date_revocation: string | null
+  motif_revocation: string | null
+  verifications_count: number
+  derniere_verification: string | null
+  created_by: string | null
+  created_at: string
+  updated_at: string
+}
+
+export interface VerificationLP {
+  id: string
+  lp_id: string
+  token_verifie: string
+  resultat: 'valide' | 'expire' | 'revoque' | 'invalide'
+  ip_partielle: string | null
+  user_agent: string | null
+  verifie_le: string
+}
+
+export interface VerificationResult {
+  authentifie: boolean
+  statut: 'valide' | 'expire' | 'revoque' | 'invalide'
+  message: string
+  nom?: string
+  prenoms?: string
+  fonction?: string
+  matricule?: string
+  categorie?: string
+  photo_url?: string | null
+  date_delivrance?: string
+  date_expiration?: string
+  date_revocation?: string | null
 }

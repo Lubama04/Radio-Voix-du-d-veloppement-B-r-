@@ -1,4 +1,6 @@
 User-agent: *
 Allow: /
 Disallow: /api/
+Disallow: /admin/
+Disallow: /verify/
 Sitemap: https://rvd967-bere.com/sitemap.xml

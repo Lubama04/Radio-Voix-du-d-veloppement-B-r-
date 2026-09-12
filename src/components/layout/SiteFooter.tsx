@@ -134,6 +134,7 @@ export default function SiteFooter() {
           <div className="flex gap-4 text-xs text-white/40">
             <Link to="/mentions-legales" className="hover:text-white/70 transition-colors">{t.legal.mentions}</Link>
             <Link to="/contact" className="hover:text-white/70 transition-colors">{t.nav.contact}</Link>
+            <Link to="/admin/login" className="hover:text-white/70 transition-colors">Administration</Link>
           </div>
         </div>
       </div>
