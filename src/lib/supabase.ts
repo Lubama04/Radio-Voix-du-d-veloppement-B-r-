@@ -10,9 +10,13 @@ if (!supabaseUrl || !supabaseAnon) {
 
 export const supabase = createClient<Database>(supabaseUrl, supabaseAnon, {
   auth: {
-    persistSession:       false, // pas d'auth côté public
-    autoRefreshToken:     false,
-    detectSessionInUrl:   false,
+    // Le back-office admin a une vraie session Supabase Auth : elle doit
+    // survivre au rechargement de page et se rafraîchir automatiquement.
+    // detectSessionInUrl est nécessaire pour le lien d'invitation envoyé
+    // par email (le token arrive dans le fragment d'URL).
+    persistSession:       true,
+    autoRefreshToken:     true,
+    detectSessionInUrl:   true,
   },
   global: {
     headers: { 'x-application-name': 'voix-bere-pwa' }
@@ -37,6 +41,10 @@ export const db = {
   emissions:         () => supabase.from('emissions'),
   laissezPasser:     () => supabase.from('laissez_passer'),
   verificationsLP:   () => supabase.from('verifications_lp'),
+  adminUsers:        () => supabase.from('admin_users'),
+  auditLog:          () => supabase.from('audit_log'),
+  mediatheque:       () => supabase.from('mediatheque'),
+  broadcastConfig:   () => supabase.from('broadcast_config'),
 
   // Vues
   vActualites: () => supabase.from('v_actualites'),

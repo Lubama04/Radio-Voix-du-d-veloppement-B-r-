@@ -12,8 +12,8 @@ type Upd<T>    = Partial<T> & Record<string, unknown>
 export interface Database {
   public: {
     Tables: {
-      actualites: { Row: Row<Actualite>; Insert: Ins<Actualite>; Update: Upd<Actualite>; Relationships: [] }
-      programmes: { Row: Row<Programme>; Insert: Ins<Programme>; Update: Upd<Programme>; Relationships: [] }
+      actualites: { Row: Row<Actualite>; Insert: Ins<Actualite, 'updated_at'>; Update: Upd<Actualite>; Relationships: [] }
+      programmes: { Row: Row<Programme>; Insert: Ins<Programme, 'updated_at'>; Update: Upd<Programme>; Relationships: [] }
       podcasts:   { Row: Row<Podcast>;   Insert: Ins<Podcast>;   Update: Upd<Podcast>; Relationships: [] }
       journaux_parles: { Row: Row<Journal>; Insert: Ins<Journal>; Update: Upd<Journal>; Relationships: [] }
       agenda:     { Row: Row<Evenement>; Insert: Ins<Evenement>; Update: Upd<Evenement>; Relationships: [] }
@@ -34,6 +34,10 @@ export interface Database {
         Relationships: []
       }
       verifications_lp: { Row: Row<VerificationLP>; Insert: Ins<VerificationLP>; Update: Upd<VerificationLP>; Relationships: [] }
+      admin_users: { Row: Row<AdminUser>; Insert: Ins<AdminUser, 'actif'|'updated_at'>; Update: Upd<AdminUser>; Relationships: [] }
+      audit_log: { Row: Row<AuditLogEntry>; Insert: Ins<AuditLogEntry>; Update: Upd<AuditLogEntry>; Relationships: [] }
+      mediatheque: { Row: Row<MediaItem>; Insert: Ins<MediaItem>; Update: Upd<MediaItem>; Relationships: [] }
+      broadcast_config: { Row: Row<BroadcastConfig>; Insert: Ins<BroadcastConfig>; Update: Upd<BroadcastConfig>; Relationships: [] }
     }
     Views: {
       v_actualites: { Row: Row<ActualiteView>; Relationships: [] }
@@ -57,8 +61,8 @@ export interface Database {
 
 export interface Actualite {
   id: string; titre: string; titre_en?: string; titre_ar?: string
-  slug?: string; contenu: string; extrait?: string
-  categorie_id?: number; auteur?: string; image_url?: string; image_alt?: string
+  slug?: string; contenu: string; extrait?: string | null
+  categorie_id?: number | null; auteur?: string | null; image_url?: string | null; image_alt?: string
   vues: number; a_la_une: boolean; ticker: boolean; publie: boolean
   date_publication: string; created_at: string; updated_at: string
 }
@@ -87,9 +91,9 @@ export interface Emission {
 
 export interface Programme {
   id: string; emission_id?: string; titre: string
-  animateur?: string; jour_semaine: number
+  animateur?: string | null; jour_semaine: number
   heure_debut: string; heure_fin: string
-  categorie_id?: number; langue: string; actif: boolean
+  categorie_id?: number | null; langue: string; actif: boolean
   created_at: string; updated_at: string
 }
 
@@ -100,9 +104,9 @@ export interface ProgrammeView extends Programme {
 }
 
 export interface Podcast {
-  id: string; emission_id?: string; titre: string; slug?: string
-  description?: string; audio_url: string; image_url?: string
-  duree_secondes?: number; categorie_id?: number; animateur?: string
+  id: string; emission_id?: string | null; titre: string; slug?: string
+  description?: string | null; audio_url: string; image_url?: string | null
+  duree_secondes?: number; categorie_id?: number | null; animateur?: string
   langue: string; ecoutes: number; featured: boolean; publie: boolean
   date_diffusion: string; created_at: string
 }
@@ -150,7 +154,7 @@ export interface ConfigRadio {
 }
 
 export interface TickerMsg {
-  id: string; texte: string; lien_url?: string
+  id: string; texte: string; lien_url?: string | null
   priorite: number; actif: boolean; date_debut: string; date_fin?: string; created_at: string
 }
 
@@ -198,6 +202,31 @@ export interface VerificationLP {
   ip_partielle: string | null
   user_agent: string | null
   verifie_le: string
+}
+
+export interface AdminUser {
+  id: string; email: string; nom: string
+  role: 'super_admin' | 'admin' | 'editeur'
+  actif: boolean; created_at: string; updated_at: string
+}
+
+export interface AuditLogEntry {
+  id: string; user_id: string | null; user_email: string | null
+  action: string; table_name?: string | null; record_id?: string | null
+  details?: Json | null; created_at: string
+}
+
+export interface MediaItem {
+  id: string; nom: string; url: string
+  type: 'image' | 'document' | 'audio' | 'video' | null
+  taille?: number | null; bucket: string; chemin?: string | null
+  tags?: string[] | null; uploaded_by?: string | null; created_at: string
+}
+
+export interface BroadcastConfig {
+  id: number; heure_debut: number; heure_fin: number; fuseau: string
+  statut: 'auto' | 'on_air' | 'off' | 'maintenance'
+  message_off: string; message_maint: string; updated_at: string
 }
 
 export interface VerificationResult {

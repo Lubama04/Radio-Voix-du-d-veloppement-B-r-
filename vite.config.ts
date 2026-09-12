@@ -8,7 +8,7 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: 'autoUpdate',
-      includeAssets: ['favicon.png', 'apple-touch-icon.png', 'logo.png', 'robots.txt'],
+      includeAssets: ['favicon.ico', 'favicon-32.png', 'favicon.png', 'apple-touch-icon.png', 'logo.png', 'robots.txt'],
       manifest: {
         name: 'La Voix du Développement de Béré',
         short_name: 'Voix Béré 96.7',
