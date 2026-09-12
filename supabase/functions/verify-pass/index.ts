@@ -3,7 +3,12 @@ import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
 
 const cors = {
   'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'content-type, x-application-name',
+  // authorization + x-client-info + apikey : envoyés par défaut par
+  // supabase-js sur tout appel functions.invoke() ; x-application-name :
+  // header custom ajouté par le client de ce projet (voir src/lib/supabase.ts).
+  // Sans eux, le préflight CORS échoue et l'appel n'atteint jamais la fonction
+  // (même bug déjà rencontré et corrigé sur broadcast-status et translate).
+  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type, x-application-name',
 }
 
 // Rate limiting simple en mémoire
