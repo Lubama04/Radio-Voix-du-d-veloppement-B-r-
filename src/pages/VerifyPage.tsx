@@ -94,13 +94,20 @@ export default function VerifyPage() {
 
               {statutKey === 'valide' && (
                 <div>
-                  {result?.photo_url && (
+                  {result?.photo_url ? (
                     <SafeImage
                       src={result.photo_url}
-                      alt={`${result.prenoms ?? ''} ${result.nom ?? ''}`}
+                      alt={`Photo de ${result.prenoms ?? ''} ${result.nom ?? ''}`}
                       className="w-24 h-24 rounded-full object-cover mx-auto mb-4"
                       style={{ border: '3px solid #007A33' }}
                     />
+                  ) : (
+                    <div
+                      className="w-24 h-24 rounded-full mx-auto mb-4 flex items-center justify-center text-4xl"
+                      style={{ background: '#E8F5EE', border: '3px solid #007A33' }}
+                    >
+                      👤
+                    </div>
                   )}
                   <p className="font-display font-bold text-xl" style={{ color: 'var(--color-anthracite)' }}>
                     {result?.prenoms} {result?.nom}

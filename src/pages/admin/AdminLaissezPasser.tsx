@@ -122,6 +122,49 @@ export default function AdminLaissezPasser() {
     fetchLP()
   }
 
+  const rehabiliter = async (id: string) => {
+    const confirme = window.confirm(
+      'Réhabiliter ce laissez-passer ? Il redeviendra valide.'
+    )
+    if (!confirme) return
+
+    const { error } = await supabase
+      .from('laissez_passer')
+      .update({
+        statut: 'valide',
+        date_revocation: null,
+        motif_revocation: null,
+      })
+      .eq('id', id)
+
+    if (!error) {
+      await logAction('rehabiliter_laissez_passer', 'laissez_passer', id)
+      fetchLP()
+    }
+  }
+
+  const supprimer = async (id: string, nom: string) => {
+    const confirme1 = window.confirm(
+      `Supprimer définitivement le laissez-passer de ${nom} ?`
+    )
+    if (!confirme1) return
+
+    const confirme2 = window.confirm(
+      'Cette action est irréversible. Confirmer la suppression ?'
+    )
+    if (!confirme2) return
+
+    const { error } = await supabase
+      .from('laissez_passer')
+      .delete()
+      .eq('id', id)
+
+    if (!error) {
+      await logAction('supprimer_laissez_passer', 'laissez_passer', id, { nom })
+      fetchLP()
+    }
+  }
+
   const copyUrl = (token: string) => {
     navigator.clipboard.writeText(`https://rvd967-bere.com/verify/${token}`)
   }
@@ -333,6 +376,30 @@ export default function AdminLaissezPasser() {
                         <button title="Révoquer" onClick={() => setRevoking(lp)}
                           className="p-1.5 rounded hover:bg-red-50 text-red-600"><Ban className="w-4 h-4" /></button>
                       )}
+                      {lp.statut === 'revoque' && (
+                        <button
+                          onClick={() => rehabiliter(lp.id)}
+                          style={{
+                            padding: '4px 12px', borderRadius: 6,
+                            border: '1px solid #007A33',
+                            background: '#E8F5EE', color: '#007A33',
+                            fontWeight: 600, fontSize: 13, cursor: 'pointer',
+                          }}
+                        >
+                          Réhabiliter
+                        </button>
+                      )}
+                      <button
+                        onClick={() => supprimer(lp.id, lp.nom + ' ' + lp.prenoms)}
+                        style={{
+                          padding: '4px 12px', borderRadius: 6,
+                          border: '1px solid #CC0000',
+                          background: '#FFF0F0', color: '#CC0000',
+                          fontWeight: 600, fontSize: 13, cursor: 'pointer',
+                        }}
+                      >
+                        Supprimer
+                      </button>
                     </div>
                   </td>
                 </tr>
