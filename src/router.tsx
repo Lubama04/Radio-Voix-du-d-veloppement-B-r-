@@ -36,9 +36,14 @@ import AdminUtilisateurs from '@/pages/admin/AdminUtilisateurs'
 // dénaturerait leur mise en page sobre et institutionnelle.
 function RootLayout() {
   const location = useLocation()
-  const isStandalone = location.pathname.startsWith('/verify/') || location.pathname.startsWith('/admin')
+  const path = location.pathname
 
-  if (isStandalone) {
+  const isAdmin  = path === '/admin' ||
+                   path === '/admin/login' ||
+                   path.startsWith('/admin/')
+  const isVerify = path.startsWith('/verify/')
+
+  if (isAdmin || isVerify) {
     return (
       <div className="min-h-screen flex flex-col">
         <Outlet />
