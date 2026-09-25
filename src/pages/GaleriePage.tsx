@@ -73,7 +73,7 @@ export default function GaleriePage() {
               {filtered.map((photo, i) => (
                 <div key={i} className="relative group overflow-hidden rounded-xl cursor-pointer"
                   onClick={() => openLightbox(photo)}>
-                  <SafeImage src={photo.url} alt={photo.titre} loading="lazy"
+                  <SafeImage src={photo.url} alt={photo.titre} loading={i === 0 ? 'eager' : 'lazy'}
                     className="w-full object-cover transition-transform duration-300 group-hover:scale-105" />
                   <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-all flex items-center justify-center">
                     <ZoomIn className="w-8 h-8 text-white opacity-0 group-hover:opacity-100 transition-opacity" />

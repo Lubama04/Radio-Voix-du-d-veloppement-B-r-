@@ -1,11 +1,22 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import { VitePWA } from 'vite-plugin-pwa'
+import webfontDownload from 'vite-plugin-webfont-dl'
 import path from 'path'
 
 export default defineConfig({
   plugins: [
     react(),
+    // Polices auto-hébergées au build — évite la requête bloquante vers
+    // Google Fonts. ital,wght conservé pour Playfair Display (utilisé en
+    // italique sur AProposPage) : identique aux poids déjà chargés
+    // manuellement dans index.html avant ce changement.
+    webfontDownload([
+      'https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap',
+      'https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700&display=swap',
+    ], {
+      assetsSubfolder: 'fonts',
+    }),
     VitePWA({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.ico', 'favicon-32.png', 'favicon.png', 'apple-touch-icon.png', 'logo.png', 'robots.txt'],

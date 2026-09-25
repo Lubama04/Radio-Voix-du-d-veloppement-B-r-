@@ -23,6 +23,15 @@ export const supabase = createClient<Database>(supabaseUrl, supabaseAnon, {
   }
 })
 
+// Ping silencieux au démarrage — réveille la connexion Supabase avant que
+// l'utilisateur n'interagisse (utile après une période d'inactivité).
+// Le query builder est "thenable" mais pas une vraie Promise : .then()
+// n'expose pas .catch(), d'où la forme à deux arguments ci-dessous.
+supabase.from('config_radio')
+  .select('cle')
+  .limit(1)
+  .then(() => {}, () => {})
+
 // ─── HELPERS TYPÉS ───────────────────────────────────────────
 export const db = {
   actualites:        () => supabase.from('actualites'),
