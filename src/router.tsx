@@ -1,3 +1,4 @@
+import { lazy, Suspense } from 'react'
 import { createRootRoute, createRoute, createRouter, Outlet, useLocation } from '@tanstack/react-router'
 import SiteHeader from '@/components/layout/SiteHeader'
 import SiteFooter from '@/components/layout/SiteFooter'
@@ -15,21 +16,33 @@ import AgendaPage from '@/pages/AgendaPage'
 import FrequencesPage from '@/pages/FrequencesPage'
 import ArticlePage from '@/pages/ArticlePage'
 import VerifyPage from '@/pages/VerifyPage'
-import AdminLoginPage from '@/pages/admin/AdminLoginPage'
-import AdminLayout from '@/pages/admin/AdminLayout'
-import AdminDashboard from '@/pages/admin/AdminDashboard'
-import AdminActualites from '@/pages/admin/AdminActualites'
-import AdminArticleEditor from '@/pages/admin/AdminArticleEditor'
-import AdminProgrammes from '@/pages/admin/AdminProgrammes'
-import AdminPodcasts from '@/pages/admin/AdminPodcasts'
-import AdminGalerie from '@/pages/admin/AdminGalerie'
-import AdminAgenda from '@/pages/admin/AdminAgenda'
-import AdminLaissezPasser from '@/pages/admin/AdminLaissezPasser'
-import AdminMediatheque from '@/pages/admin/AdminMediatheque'
-import AdminConfiguration from '@/pages/admin/AdminConfiguration'
-import AdminTicker from '@/pages/admin/AdminTicker'
-import AdminMessages from '@/pages/admin/AdminMessages'
-import AdminUtilisateurs from '@/pages/admin/AdminUtilisateurs'
+
+// Le back-office (Tiptap/ProseMirror inclus) est chargé en différé — sans
+// ça, chaque visiteur public téléchargerait tout l'admin (~680 Ko) rien
+// que pour lire une page du site vitrine.
+const AdminLoginPage      = lazy(() => import('@/pages/admin/AdminLoginPage'))
+const AdminLayout         = lazy(() => import('@/pages/admin/AdminLayout'))
+const AdminDashboard      = lazy(() => import('@/pages/admin/AdminDashboard'))
+const AdminActualites     = lazy(() => import('@/pages/admin/AdminActualites'))
+const AdminArticleEditor  = lazy(() => import('@/pages/admin/AdminArticleEditor'))
+const AdminProgrammes     = lazy(() => import('@/pages/admin/AdminProgrammes'))
+const AdminPodcasts       = lazy(() => import('@/pages/admin/AdminPodcasts'))
+const AdminGalerie        = lazy(() => import('@/pages/admin/AdminGalerie'))
+const AdminAgenda         = lazy(() => import('@/pages/admin/AdminAgenda'))
+const AdminLaissezPasser  = lazy(() => import('@/pages/admin/AdminLaissezPasser'))
+const AdminMediatheque    = lazy(() => import('@/pages/admin/AdminMediatheque'))
+const AdminConfiguration  = lazy(() => import('@/pages/admin/AdminConfiguration'))
+const AdminTicker         = lazy(() => import('@/pages/admin/AdminTicker'))
+const AdminMessages       = lazy(() => import('@/pages/admin/AdminMessages'))
+const AdminUtilisateurs   = lazy(() => import('@/pages/admin/AdminUtilisateurs'))
+
+function AdminFallback() {
+  return (
+    <div className="min-h-screen flex items-center justify-center" style={{ background: '#F4F1EB' }}>
+      <div className="w-8 h-8 border-2 rounded-full animate-spin" style={{ borderColor: '#007A33', borderTopColor: 'transparent' }} />
+    </div>
+  )
+}
 
 // Le laissez-passer (vérification publique) et l'administration sont des
 // surfaces autonomes — pas de header/footer/player du site public, qui
@@ -46,7 +59,9 @@ function RootLayout() {
   if (isAdmin || isVerify) {
     return (
       <div className="min-h-screen flex flex-col">
-        <Outlet />
+        <Suspense fallback={<AdminFallback />}>
+          <Outlet />
+        </Suspense>
       </div>
     )
   }

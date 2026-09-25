@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Suspense } from 'react'
 import { Outlet, Link, useLocation, useNavigate } from '@tanstack/react-router'
 import {
   LayoutDashboard, Newspaper, Mic, Headphones, Image, CalendarDays,
@@ -112,50 +112,57 @@ export default function AdminLayout() {
   )
 
   return (
-    <div className="min-h-screen flex" style={{ background: '#F4F1EB' }}>
-      {/* Sidebar desktop */}
-      <aside className="hidden lg:flex flex-col flex-shrink-0" style={{ width: 240, background: '#1E2A22' }}>
+    <div style={{ background: '#F4F1EB' }}>
+      {/* Sidebar — fixed à gauche, pleine hauteur. Hors-écran par défaut sur
+          mobile (drawer), toujours visible à partir de lg. */}
+      <aside
+        className={`fixed inset-y-0 left-0 z-40 flex flex-col w-60 overflow-y-auto
+          transition-transform duration-200 ease-out
+          ${drawerOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0`}
+        style={{ background: '#1E2A22' }}
+      >
         {sidebarContent}
       </aside>
 
-      {/* Sidebar mobile (drawer) */}
+      {/* Overlay sombre derrière le drawer mobile */}
       {drawerOpen && (
-        <>
-          <div className="fixed inset-0 z-40 bg-black/40 lg:hidden" onClick={() => setDrawerOpen(false)} />
-          <aside className="fixed inset-y-0 left-0 z-50 flex flex-col lg:hidden" style={{ width: 240, background: '#1E2A22' }}>
-            {sidebarContent}
-          </aside>
-        </>
+        <div className="fixed inset-0 top-16 z-20 bg-black/40 lg:hidden" onClick={() => setDrawerOpen(false)} />
       )}
 
-      <div className="flex-1 flex flex-col min-w-0">
-        {/* Header */}
-        <header className="h-16 flex items-center justify-between px-4 sm:px-6 flex-shrink-0"
-          style={{ background: '#FDFCF9', borderBottom: '1px solid #E8E4DC' }}>
-          <div className="flex items-center gap-3">
-            <button onClick={() => setDrawerOpen(o => !o)} className="lg:hidden p-1.5 text-gray-500">
-              {drawerOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-            </button>
-            <div className="text-sm text-gray-500">
-              <span className="text-gray-400">Admin</span> <span className="mx-1">›</span>
-              <span className="font-semibold text-gray-800">{breadcrumbFor(location.pathname)}</span>
-            </div>
+      {/* Header — fixed en haut, décalé de la largeur de la sidebar à partir de lg */}
+      <header
+        className="fixed top-0 left-0 right-0 lg:left-60 z-30 h-16 flex items-center justify-between px-4 sm:px-6"
+        style={{ background: '#FDFCF9', borderBottom: '1px solid #DEDEDE' }}
+      >
+        <div className="flex items-center gap-3">
+          <button onClick={() => setDrawerOpen(o => !o)} className="lg:hidden p-1.5 text-gray-500">
+            {drawerOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+          </button>
+          <div className="text-sm text-gray-500">
+            <span className="text-gray-400">Admin</span> <span className="mx-1">›</span>
+            <span className="font-semibold text-gray-800">{breadcrumbFor(location.pathname)}</span>
           </div>
-          <div className="flex items-center gap-3">
-            {!roleLoading && (
-              <span className="hidden sm:inline text-sm text-gray-600">{session.user.email}</span>
-            )}
-            <span className="text-xs font-bold px-2.5 py-1 rounded-full text-white uppercase tracking-wide"
-              style={{ background: '#007A33' }}>
-              {role === 'super_admin' ? 'Super Admin' : role === 'admin' ? 'Admin' : role ? 'Éditeur' : 'Admin'}
-            </span>
-          </div>
-        </header>
+        </div>
+        <div className="flex items-center gap-3">
+          {!roleLoading && (
+            <span className="hidden sm:inline text-sm text-gray-600">{session.user.email}</span>
+          )}
+          <span className="text-xs font-bold px-2.5 py-1 rounded-full text-white uppercase tracking-wide"
+            style={{ background: '#007A33' }}>
+            {role === 'super_admin' ? 'Super Admin' : role === 'admin' ? 'Admin' : role ? 'Éditeur' : 'Admin'}
+          </span>
+        </div>
+      </header>
 
-        <main className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8">
-          <Outlet />
-        </main>
-      </div>
+      {/* Contenu — décalé pour compenser le header et la sidebar fixes ;
+          défile indépendamment du header/sidebar. */}
+      <main className="pt-16 lg:pl-60 min-h-screen overflow-y-auto">
+        <div className="p-4 sm:p-6 lg:p-8">
+          <Suspense fallback={<p className="text-gray-400 text-sm">Chargement…</p>}>
+            <Outlet />
+          </Suspense>
+        </div>
+      </main>
     </div>
   )
 }

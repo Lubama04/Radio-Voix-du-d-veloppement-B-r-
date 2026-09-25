@@ -116,9 +116,17 @@ export default function ArticlePage() {
             className="w-full rounded-2xl object-cover mb-8 max-h-96" />
         )}
 
-        <div className="prose prose-sm sm:prose-base max-w-none text-gray-700 whitespace-pre-line mb-10">
-          {article.contenu}
-        </div>
+        {/* Le contenu peut être du HTML (éditeur riche Tiptap) ou du texte
+            simple hérité des articles créés avant son introduction — on
+            détecte et on adapte le rendu en conséquence. */}
+        {/^\s*<[a-z][\s\S]*>/i.test(article.contenu) ? (
+          <div className="prose prose-sm sm:prose-base max-w-none text-gray-700 mb-10"
+            dangerouslySetInnerHTML={{ __html: article.contenu }} />
+        ) : (
+          <div className="prose prose-sm sm:prose-base max-w-none text-gray-700 whitespace-pre-line mb-10">
+            {article.contenu}
+          </div>
+        )}
 
         {/* Partage */}
         <div className="flex items-center gap-3 pt-6 border-t mb-12" style={{ borderColor: 'var(--color-border)' }}>

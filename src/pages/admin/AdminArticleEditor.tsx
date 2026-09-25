@@ -4,6 +4,7 @@ import { Upload } from 'lucide-react'
 import { db, supabase } from '@/lib/supabase'
 import { logAction } from '@/hooks/useAuditLog'
 import { useDocumentTitle } from '@/hooks/useDocumentTitle'
+import RichTextEditor from '@/components/admin/RichTextEditor'
 import type { Actualite, CategorieActu } from '@/types/database'
 
 function slugify(s: string) {
@@ -72,6 +73,12 @@ export default function AdminArticleEditor() {
   }
 
   const handleSubmit = (statutPublie: boolean) => async () => {
+    // Le contenu vide de Tiptap n'est pas une chaîne vide (ex: "<p></p>") —
+    // l'attribut required disparu avec la textarea, donc on revalide ici.
+    if (!form.titre.trim() || !form.contenu.replace(/<[^>]*>/g, '').trim()) {
+      alert('Le titre et le contenu sont obligatoires.')
+      return
+    }
     setSaving(true)
     const payload = {
       titre: form.titre,
@@ -156,10 +163,11 @@ export default function AdminArticleEditor() {
         </div>
         <div>
           <label className="block text-xs font-semibold text-gray-600 mb-1">Contenu *</label>
-          <textarea required value={form.contenu} rows={10}
-            onChange={e => setForm(f => ({ ...f, contenu: e.target.value }))}
-            placeholder="Markdown simple accepté (# titres, **gras**, listes -)"
-            className="w-full px-3 py-2 rounded-lg border text-sm font-mono resize-y" style={{ borderColor: 'var(--color-border)' }} />
+          <RichTextEditor
+            content={form.contenu || ''}
+            onChange={(html) => setForm(f => ({ ...f, contenu: html }))}
+            placeholder="Rédigez le contenu complet de l'article ici..."
+          />
         </div>
         <div className="flex gap-6">
           <label className="flex items-center gap-2 text-sm">

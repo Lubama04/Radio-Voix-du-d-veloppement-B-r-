@@ -12,6 +12,12 @@
   "dependencies": {
     "@supabase/supabase-js": "^2.45.0",
     "@tanstack/react-router": "^1.56.0",
+    "@tiptap/extension-image": "^3.31.3",
+    "@tiptap/extension-link": "^3.31.3",
+    "@tiptap/extension-placeholder": "^3.31.3",
+    "@tiptap/pm": "^3.31.3",
+    "@tiptap/react": "^3.31.3",
+    "@tiptap/starter-kit": "^3.31.3",
     "date-fns": "^3.6.0",
     "lucide-react": "^0.447.0",
     "qrcode": "^1.5.4",

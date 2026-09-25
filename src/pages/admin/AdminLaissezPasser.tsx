@@ -49,17 +49,23 @@ export default function AdminLaissezPasser() {
   const [createdQr, setCreatedQr] = useState<{ token: string; nom: string; qr: string } | null>(null)
   const [revoking, setRevoking] = useState<LaissezPasser | null>(null)
   const [motif, setMotif] = useState('')
-  const [editing, setEditing] = useState<LaissezPasser | null>(null)
   const [historique, setHistorique] = useState<{ lp: LaissezPasser; entries: VerificationLP[] } | null>(null)
 
-  const load = useCallback(async () => {
+  // Modification d'un laissez-passer existant — modal séparé du formulaire
+  // de création. Matricule, token de vérification et statut n'y sont
+  // jamais modifiables (voir handleUpdate).
+  const [editingLP, setEditingLP] = useState<LaissezPasser | null>(null)
+  const [editPhotoFile, setEditPhotoFile] = useState<File | null>(null)
+  const [updating, setUpdating] = useState(false)
+
+  const fetchLP = useCallback(async () => {
     setLoading(true)
     const { data } = await db.laissezPasser().select('*').order('date_expiration', { ascending: true })
     setItems((data as LaissezPasser[]) ?? [])
     setLoading(false)
   }, [])
 
-  useEffect(() => { load() }, [load])
+  useEffect(() => { fetchLP() }, [fetchLP])
 
   const filtered = items.filter(i => {
     if (filtre === 'Valides') return i.statut === 'valide'
@@ -77,11 +83,11 @@ export default function AdminLaissezPasser() {
   const currentYear = new Date().getFullYear()
   const nextMatricule = `RVD-${currentYear}-${String(items.length + 1).padStart(3, '0')}`
 
-  const uploadPhoto = async (): Promise<string | null> => {
-    if (!photoFile) return form.photo_url || null
-    const path = `${Date.now()}-${photoFile.name.replace(/\s+/g, '-')}`
-    const { error } = await supabase.storage.from('lp-photos').upload(path, photoFile, { upsert: true })
-    if (error) return null
+  const uploadPhoto = async (file: File | null, fallback: string | null): Promise<string | null> => {
+    if (!file) return fallback
+    const path = `${Date.now()}-${file.name.replace(/\s+/g, '-')}`
+    const { error } = await supabase.storage.from('lp-photos').upload(path, file, { upsert: true })
+    if (error) return fallback
     const { data } = supabase.storage.from('lp-photos').getPublicUrl(path)
     return data.publicUrl
   }
@@ -89,7 +95,7 @@ export default function AdminLaissezPasser() {
   const handleCreate = async (e: React.FormEvent) => {
     e.preventDefault()
     setCreating(true)
-    const photo_url = await uploadPhoto()
+    const photo_url = await uploadPhoto(photoFile, form.photo_url || null)
     const { data, error } = await db.laissezPasser().insert({
       ...form,
       matricule: form.matricule || nextMatricule,
@@ -102,25 +108,7 @@ export default function AdminLaissezPasser() {
     setCreatedQr({ token: data.verification_token, nom: `${data.prenoms} ${data.nom}`, qr })
     setForm(emptyForm)
     setPhotoFile(null)
-    load()
-  }
-
-  const handleUpdate = async (e: React.FormEvent) => {
-    e.preventDefault()
-    if (!editing) return
-    const photo_url = await uploadPhoto()
-    await db.laissezPasser().update({
-      nom: form.nom, prenoms: form.prenoms, fonction: form.fonction,
-      matricule: form.matricule, categorie: form.categorie,
-      telephone_professionnel: form.telephone_professionnel || null,
-      date_delivrance: form.date_delivrance, date_expiration: form.date_expiration,
-      photo_url: photo_url ?? editing.photo_url,
-    }).eq('id', editing.id)
-    await logAction('update_laissez_passer', 'laissez_passer', editing.id, { nom: form.nom, prenoms: form.prenoms })
-    setEditing(null)
-    setForm(emptyForm)
-    setPhotoFile(null)
-    load()
+    fetchLP()
   }
 
   const handleRevoke = async () => {
@@ -131,25 +119,44 @@ export default function AdminLaissezPasser() {
     await logAction('revoke_laissez_passer', 'laissez_passer', revoking.id, { motif })
     setRevoking(null)
     setMotif('')
-    load()
+    fetchLP()
   }
 
   const copyUrl = (token: string) => {
     navigator.clipboard.writeText(`https://rvd967-bere.com/verify/${token}`)
   }
 
-  const startEdit = (lp: LaissezPasser) => {
-    setEditing(lp)
-    setForm({
-      nom: lp.nom, prenoms: lp.prenoms, photo_url: lp.photo_url || '', fonction: lp.fonction,
-      matricule: lp.matricule, categorie: lp.categorie, telephone_professionnel: lp.telephone_professionnel || '',
-      date_delivrance: lp.date_delivrance, date_expiration: lp.date_expiration,
-    })
-  }
-
   const openHistorique = async (lp: LaissezPasser) => {
     const { data } = await db.verificationsLP().select('*').eq('lp_id', lp.id).order('verifie_le', { ascending: false }).limit(20)
     setHistorique({ lp, entries: (data as VerificationLP[]) ?? [] })
+  }
+
+  const handleUpdate = async () => {
+    if (!editingLP) return
+    setUpdating(true)
+    const photo_url = await uploadPhoto(editPhotoFile, editingLP.photo_url)
+    const { error } = await supabase
+      .from('laissez_passer')
+      .update({
+        nom: editingLP.nom,
+        prenoms: editingLP.prenoms,
+        fonction: editingLP.fonction,
+        categorie: editingLP.categorie,
+        telephone_professionnel: editingLP.telephone_professionnel,
+        date_delivrance: editingLP.date_delivrance,
+        date_expiration: editingLP.date_expiration,
+        observations: editingLP.observations,
+        photo_url,
+      })
+      .eq('id', editingLP.id)
+
+    setUpdating(false)
+    if (!error) {
+      await logAction('update_laissez_passer', 'laissez_passer', editingLP.id, { matricule: editingLP.matricule })
+      setEditingLP(null)
+      setEditPhotoFile(null)
+      fetchLP()
+    }
   }
 
   return (
@@ -177,12 +184,12 @@ export default function AdminLaissezPasser() {
         </div>
       </div>
 
-      {/* Créer / modifier */}
+      {/* Créer un laissez-passer */}
       <div className="bg-white rounded-2xl p-6 mb-8" style={{ border: '1px solid var(--color-border)' }}>
         <h2 className="font-display font-bold text-lg mb-4" style={{ color: 'var(--color-brand-primary)' }}>
-          {editing ? 'Modifier le laissez-passer' : 'Créer un laissez-passer'}
+          Créer un laissez-passer
         </h2>
-        <form onSubmit={editing ? handleUpdate : handleCreate} className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <form onSubmit={handleCreate} className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
           <div>
             <label className="block text-xs font-semibold text-gray-600 mb-1">Nom *</label>
             <input required value={form.nom} onChange={e => setForm(f => ({ ...f, nom: e.target.value }))}
@@ -238,14 +245,8 @@ export default function AdminLaissezPasser() {
           </div>
           <div className="flex items-end gap-2">
             <button type="submit" disabled={creating} className="btn-primary flex-1 justify-center disabled:opacity-60">
-              {creating ? 'Création…' : editing ? 'Enregistrer' : 'Créer le laissez-passer'}
+              {creating ? 'Création…' : 'Créer le laissez-passer'}
             </button>
-            {editing && (
-              <button type="button" onClick={() => { setEditing(null); setForm(emptyForm); setPhotoFile(null) }}
-                className="px-4 py-2.5 rounded-full border text-sm" style={{ borderColor: 'var(--color-border)' }}>
-                Annuler
-              </button>
-            )}
           </div>
         </form>
       </div>
@@ -321,8 +322,13 @@ export default function AdminLaissezPasser() {
                         className="p-1.5 rounded hover:bg-gray-100 text-gray-500"><Download className="w-4 h-4" /></button>
                       <button title="Historique" onClick={() => openHistorique(lp)}
                         className="p-1.5 rounded hover:bg-gray-100 text-gray-500"><History className="w-4 h-4" /></button>
-                      <button title="Modifier" onClick={() => startEdit(lp)}
-                        className="p-1.5 rounded hover:bg-gray-100 text-gray-500"><Pencil className="w-4 h-4" /></button>
+                      <button
+                        onClick={() => { setEditingLP(lp); setEditPhotoFile(null) }}
+                        className="flex items-center gap-1 px-3 py-1 rounded-lg text-xs font-semibold"
+                        style={{ background: '#E8F5EE', color: '#007A33' }}
+                        title="Modifier ce laissez-passer">
+                        <Pencil className="w-3.5 h-3.5" /> Modifier
+                      </button>
                       {lp.statut !== 'revoque' && (
                         <button title="Révoquer" onClick={() => setRevoking(lp)}
                           className="p-1.5 rounded hover:bg-red-50 text-red-600"><Ban className="w-4 h-4" /></button>
@@ -353,6 +359,102 @@ export default function AdminLaissezPasser() {
                 <Check className="w-4 h-4 inline mr-1" /> Confirmer la révocation
               </button>
               <button onClick={() => setRevoking(null)} className="px-4 py-2.5 rounded-full border text-sm" style={{ borderColor: 'var(--color-border)' }}>
+                Annuler
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Modal de modification */}
+      {editingLP && (
+        <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4" onClick={() => setEditingLP(null)}>
+          <div className="bg-white rounded-2xl p-6 w-full max-w-lg max-h-[85vh] overflow-y-auto" onClick={e => e.stopPropagation()}>
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="font-display font-bold" style={{ color: 'var(--color-brand-primary)' }}>
+                Modifier le laissez-passer
+              </h3>
+              <button onClick={() => setEditingLP(null)}><X className="w-5 h-5 text-gray-400" /></button>
+            </div>
+
+            <div className="grid sm:grid-cols-2 gap-4 mb-4">
+              <div>
+                <label className="block text-xs font-semibold text-gray-600 mb-1">Nom *</label>
+                <input required value={editingLP.nom} onChange={e => setEditingLP({ ...editingLP, nom: e.target.value })}
+                  className="w-full px-3 py-2 rounded-lg border text-sm" style={{ borderColor: 'var(--color-border)' }} />
+              </div>
+              <div>
+                <label className="block text-xs font-semibold text-gray-600 mb-1">Prénoms *</label>
+                <input required value={editingLP.prenoms} onChange={e => setEditingLP({ ...editingLP, prenoms: e.target.value })}
+                  className="w-full px-3 py-2 rounded-lg border text-sm" style={{ borderColor: 'var(--color-border)' }} />
+              </div>
+              <div>
+                <label className="block text-xs font-semibold text-gray-600 mb-1">Fonction *</label>
+                <input required value={editingLP.fonction} onChange={e => setEditingLP({ ...editingLP, fonction: e.target.value })}
+                  className="w-full px-3 py-2 rounded-lg border text-sm" style={{ borderColor: 'var(--color-border)' }} />
+              </div>
+              <div>
+                <label className="block text-xs font-semibold text-gray-600 mb-1">Catégorie</label>
+                <select value={editingLP.categorie} onChange={e => setEditingLP({ ...editingLP, categorie: e.target.value })}
+                  className="w-full px-3 py-2 rounded-lg border text-sm" style={{ borderColor: 'var(--color-border)' }}>
+                  {CATEGORIES.map(c => <option key={c} value={c}>{c}</option>)}
+                </select>
+              </div>
+              <div>
+                <label className="block text-xs font-semibold text-gray-600 mb-1">Téléphone professionnel</label>
+                <input value={editingLP.telephone_professionnel || ''}
+                  onChange={e => setEditingLP({ ...editingLP, telephone_professionnel: e.target.value })}
+                  className="w-full px-3 py-2 rounded-lg border text-sm" style={{ borderColor: 'var(--color-border)' }} />
+              </div>
+              <div>
+                <label className="block text-xs font-semibold text-gray-600 mb-1">
+                  Matricule <span className="text-gray-400 normal-case">(non modifiable)</span>
+                </label>
+                <input disabled value={editingLP.matricule}
+                  className="w-full px-3 py-2 rounded-lg border text-sm bg-gray-100 text-gray-500 cursor-not-allowed"
+                  style={{ borderColor: 'var(--color-border)' }} />
+              </div>
+              <div>
+                <label className="block text-xs font-semibold text-gray-600 mb-1">Date de délivrance *</label>
+                <input required type="date" value={editingLP.date_delivrance}
+                  onChange={e => setEditingLP({ ...editingLP, date_delivrance: e.target.value })}
+                  className="w-full px-3 py-2 rounded-lg border text-sm" style={{ borderColor: 'var(--color-border)' }} />
+              </div>
+              <div>
+                <label className="block text-xs font-semibold text-gray-600 mb-1">Date d'expiration *</label>
+                <input required type="date" value={editingLP.date_expiration}
+                  onChange={e => setEditingLP({ ...editingLP, date_expiration: e.target.value })}
+                  className="w-full px-3 py-2 rounded-lg border text-sm" style={{ borderColor: 'var(--color-border)' }} />
+              </div>
+            </div>
+
+            <div className="mb-4">
+              <label className="block text-xs font-semibold text-gray-600 mb-1">Observations</label>
+              <textarea rows={2} value={editingLP.observations || ''}
+                onChange={e => setEditingLP({ ...editingLP, observations: e.target.value })}
+                className="w-full px-3 py-2 rounded-lg border text-sm resize-none" style={{ borderColor: 'var(--color-border)' }} />
+            </div>
+
+            <div className="mb-6">
+              <label className="block text-xs font-semibold text-gray-600 mb-1">Photo</label>
+              <div className="flex items-center gap-3">
+                <SafeImage src={editingLP.photo_url || ''} alt={editingLP.nom} className="w-12 h-12 rounded-full object-cover flex-shrink-0" />
+                <label className="flex items-center gap-2 px-3 py-2 rounded-lg border text-sm cursor-pointer text-gray-500"
+                  style={{ borderColor: 'var(--color-border)' }}>
+                  <Upload className="w-4 h-4" />
+                  {editPhotoFile ? editPhotoFile.name : 'Changer la photo'}
+                  <input type="file" accept="image/*" className="hidden"
+                    onChange={e => setEditPhotoFile(e.target.files?.[0] ?? null)} />
+                </label>
+              </div>
+            </div>
+
+            <div className="flex gap-2">
+              <button onClick={handleUpdate} disabled={updating}
+                className="btn-primary flex-1 justify-center disabled:opacity-60">
+                {updating ? 'Enregistrement…' : 'Enregistrer les modifications'}
+              </button>
+              <button onClick={() => setEditingLP(null)} className="px-4 py-2.5 rounded-full border text-sm" style={{ borderColor: 'var(--color-border)' }}>
                 Annuler
               </button>
             </div>
