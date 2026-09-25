@@ -83,26 +83,59 @@ export default function AdminLaissezPasser() {
   const currentYear = new Date().getFullYear()
   const nextMatricule = `RVD-${currentYear}-${String(items.length + 1).padStart(3, '0')}`
 
-  const uploadPhoto = async (file: File | null, fallback: string | null): Promise<string | null> => {
-    if (!file) return fallback
-    const path = `${Date.now()}-${file.name.replace(/\s+/g, '-')}`
-    const { error } = await supabase.storage.from('lp-photos').upload(path, file, { upsert: true })
-    if (error) return fallback
-    const { data } = supabase.storage.from('lp-photos').getPublicUrl(path)
-    return data.publicUrl
+  // Nom de fichier = ID du laissez-passer (jamais le nom d'origine ou un
+  // timestamp) : sans ça, deux photos uploadées à la même seconde — ou
+  // simplement le hasard de Date.now() — s'écrasent l'une l'autre dans le
+  // bucket. L'ID étant unique et stable par titulaire, upsert:true remplace
+  // proprement l'ancienne photo du même titulaire sans jamais toucher celle
+  // d'un autre.
+  const uploadPhoto = async (
+    file: File,
+    lpId: string
+  ): Promise<string | null> => {
+    const ext = file.name.split('.').pop()?.toLowerCase() || 'jpg'
+    const fileName = `${lpId}.${ext}`
+
+    const { data, error } = await supabase.storage
+      .from('lp-photos')
+      .upload(fileName, file, {
+        upsert: true,
+        contentType: file.type,
+      })
+
+    if (error) {
+      console.error('Upload photo error:', error)
+      return null
+    }
+
+    const { data: urlData } = supabase.storage
+      .from('lp-photos')
+      .getPublicUrl(data.path)
+
+    return urlData.publicUrl
   }
 
   const handleCreate = async (e: React.FormEvent) => {
     e.preventDefault()
     setCreating(true)
-    const photo_url = await uploadPhoto(photoFile, form.photo_url || null)
+    // La ligne doit exister avant l'upload : le nom du fichier est l'ID du
+    // laissez-passer, généré par la base à l'insertion.
     const { data, error } = await db.laissezPasser().insert({
       ...form,
       matricule: form.matricule || nextMatricule,
-      photo_url,
+      photo_url: null,
     }).select('id, verification_token, nom, prenoms').single()
+
+    if (error || !data) { setCreating(false); return }
+
+    if (photoFile) {
+      const photoUrl = await uploadPhoto(photoFile, data.id)
+      if (photoUrl) {
+        await supabase.from('laissez_passer').update({ photo_url: photoUrl }).eq('id', data.id)
+      }
+    }
+
     setCreating(false)
-    if (error || !data) return
     await logAction('create_laissez_passer', 'laissez_passer', data.id, { nom: form.nom, prenoms: form.prenoms })
     const qr = await genererQRCode(data.verification_token)
     setCreatedQr({ token: data.verification_token, nom: `${data.prenoms} ${data.nom}`, qr })
@@ -177,7 +210,15 @@ export default function AdminLaissezPasser() {
   const handleUpdate = async () => {
     if (!editingLP) return
     setUpdating(true)
-    const photo_url = await uploadPhoto(editPhotoFile, editingLP.photo_url)
+
+    // Ne réuploader que si l'admin a choisi un nouveau fichier — sinon on
+    // garde la photo_url existante telle quelle.
+    let photo_url = editingLP.photo_url
+    if (editPhotoFile) {
+      const uploaded = await uploadPhoto(editPhotoFile, editingLP.id)
+      if (uploaded) photo_url = uploaded
+    }
+
     const { error } = await supabase
       .from('laissez_passer')
       .update({
