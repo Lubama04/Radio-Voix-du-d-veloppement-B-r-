@@ -7,7 +7,7 @@ interface CardText { title: string; desc: string; badge?: string }
 interface Translations {
   nav: { home:string; news:string; radio:string; projects:string; gallery:string; about:string; contact:string; agenda:string; frequences:string }
   hero: { badge:string; title:string; subtitle:string; cta1:string; cta2:string }
-  live: { label:string; on:string; off:string; loading:string }
+  live: { label:string; on:string; off:string; loading:string; error:string }
   sections: { latestNews:string; programs:string; mission:string; location:string; partners:string; podcasts:string; schedule:string; gallery:string; team:string; agenda:string }
   footer: { rights:string; description:string; col1Title:string; col2Title:string; col3Title:string; col4Title:string; madeBy:string; address:string; schedule:string }
   ticker: { label:string }
@@ -31,7 +31,7 @@ const T: Record<Lang, Translations> = {
   fr: {
     nav: { home:'Accueil', news:'Actualités', radio:'Radio', projects:'Projets', gallery:'Galerie', about:'À propos', contact:'Contact', agenda:'Agenda', frequences:'Fréquences' },
     hero: { badge:'Antenne en direct 96.7 FM', title:'La voix qui porte le développement', subtitle:'Radio privée associative 96.7 FM · Béré, province de la Tandjilé, Tchad', cta1:'Écouter en direct', cta2:'Découvrir la radio' },
-    live: { label:'En direct', on:'En cours d\'antenne', off:'Hors antenne', loading:'Connexion...' },
+    live: { label:'En direct', on:'En cours d\'antenne', off:'Hors antenne', loading:'Connexion...', error:'Flux momentanément indisponible. Réessayez dans un instant.' },
     sections: { latestNews:'Dernières actualités', programs:'Programmes du jour', mission:'Notre mission', location:'Nous trouver', partners:'Nos partenaires', podcasts:'Podcasts récents', schedule:'Grille des programmes', gallery:'Galerie photos', team:'Notre équipe', agenda:'Agenda Béré' },
     footer: { rights:'Tous droits réservés', description:'Radio privée associative au service du développement local de Béré et de la province de la Tandjilé, au Tchad.', col1Title:'La radio', col2Title:'Navigation', col3Title:'Émissions', col4Title:'Contact', madeBy:'Réalisé par', address:'Béré, Tandjilé Centre, province de la Tandjilé, Tchad', schedule:'Antenne 24h sur 24, 7 jours sur 7' },
     ticker: { label:'Fil info' },
@@ -64,7 +64,7 @@ const T: Record<Lang, Translations> = {
   en: {
     nav: { home:'Home', news:'News', radio:'Radio', projects:'Projects', gallery:'Gallery', about:'About', contact:'Contact', agenda:'Agenda', frequences:'Frequencies' },
     hero: { badge:'Live on air', title:'The voice that carries development', subtitle:'Private associative radio 96.7 FM · Béré, Province of Tandjilé, Chad', cta1:'Listen live', cta2:'Discover the radio' },
-    live: { label:'Live', on:'On air', off:'Off air', loading:'Connecting...' },
+    live: { label:'Live', on:'On air', off:'Off air', loading:'Connecting...', error:'Stream temporarily unavailable. Please try again shortly.' },
     sections: { latestNews:'Latest news', programs:'Today\'s programs', mission:'Our mission', location:'Find us', partners:'Our partners', podcasts:'Recent podcasts', schedule:'Program schedule', gallery:'Photo gallery', team:'Our team', agenda:'Béré agenda' },
     footer: { rights:'All rights reserved', description:'Private associative radio serving local development in Béré and the province of Tandjilé, Chad.', col1Title:'The radio', col2Title:'Navigation', col3Title:'Shows', col4Title:'Contact', madeBy:'Made by', address:'Béré, Tandjilé Centre, province of Tandjilé, Chad', schedule:'On air 24 hours a day, 7 days a week' },
     ticker: { label:'News feed' },
@@ -97,7 +97,7 @@ const T: Record<Lang, Translations> = {
   ar: {
     nav: { home:'الرئيسية', news:'الأخبار', radio:'الراديو', projects:'المشاريع', gallery:'المعرض', about:'من نحن', contact:'اتصل بنا', agenda:'الأجندة', frequences:'الترددات' },
     hero: { badge:'البث المباشر', title:'الصوت الذي يحمل التنمية', subtitle:'راديو خاص جمعوي 96.7 FM · بيري، مقاطعة تانجيلي، تشاد', cta1:'استمع مباشرة', cta2:'اكتشف الراديو' },
-    live: { label:'مباشر', on:'على الهواء', off:'خارج الهواء', loading:'جارٍ الاتصال...' },
+    live: { label:'مباشر', on:'على الهواء', off:'خارج الهواء', loading:'جارٍ الاتصال...', error:'البث غير متاح مؤقتًا. حاول مرة أخرى بعد قليل.' },
     sections: { latestNews:'آخر الأخبار', programs:'برامج اليوم', mission:'مهمتنا', location:'أين نحن', partners:'شركاؤنا', podcasts:'البودكاست الأخيرة', schedule:'جدول البرامج', gallery:'معرض الصور', team:'فريقنا', agenda:'أجندة بيري' },
     footer: { rights:'جميع الحقوق محفوظة', description:'راديو خاص جمعوي في خدمة التنمية المحلية في بيري ومقاطعة تانجيلي بتشاد.', col1Title:'الراديو', col2Title:'التنقل', col3Title:'البرامج', col4Title:'الاتصال', madeBy:'من إنجاز', address:'بيري، تانجيلي سنتر، مقاطعة تانجيلي، تشاد', schedule:'على الهواء 24 ساعة يومياً، 7 أيام في الأسبوع' },
     ticker: { label:'نشرة الأخبار' },

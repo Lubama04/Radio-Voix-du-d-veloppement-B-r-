@@ -5,7 +5,7 @@ import { useBroadcast, getBroadcastMessage, formatCountdown } from '@/contexts/B
 import { CONFIG } from '@/config'
 
 export default function GlobalPlayer() {
-  const { isPlaying, isLoading, volume, currentShow, showPlayer, toggle, setVolume, closePlayer } = usePlayer()
+  const { isPlaying, isLoading, streamError, volume, currentShow, showPlayer, toggle, setVolume, closePlayer } = usePlayer()
   const { t } = useLang()
   const { is_on_air, statut, tchad_hour, heure_debut, heure_fin, minutes_avant_diffusion, message_maint, error } = useBroadcast()
   const streamUrl = CONFIG.STREAM_PRIMARY || CONFIG.STREAM_BACKUP
@@ -67,7 +67,7 @@ export default function GlobalPlayer() {
           </div>
           <div className="min-w-0">
             <div className="text-xs font-bold truncate" style={{ color: 'var(--color-brand-primary)' }}>
-              {isLoading ? t.live.loading : isPlaying ? t.live.on : t.live.off}
+              {isLoading ? t.live.loading : isPlaying ? t.live.on : streamError ? t.live.error : t.live.off}
             </div>
             <div className="text-sm font-semibold truncate" style={{ color: 'var(--color-brand-primary)' }}>{currentShow}</div>
           </div>

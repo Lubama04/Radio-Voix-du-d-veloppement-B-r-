@@ -122,9 +122,9 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
       const audio = new Audio()
       audio.preload = 'none'
       audio.onwaiting = () => setState(s => ({ ...s, isLoading: true }))
-      audio.oncanplay  = () => setState(s => ({ ...s, isLoading: false }))
+      audio.oncanplay  = () => setState(s => ({ ...s, isLoading: false, streamError: false }))
       audio.onended    = () => setState(s => ({ ...s, isPlaying: false }))
-      audio.onerror    = () => setState(s => ({ ...s, isPlaying: false, isLoading: false }))
+      audio.onerror    = () => setState(s => ({ ...s, isPlaying: false, isLoading: false, streamError: true, showPlayer: true }))
       audioRef.current = audio
     }
     return audioRef.current
@@ -153,7 +153,8 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
     const played = await tryPlay(STREAM_PRIMARY) || await tryPlay(STREAM_BACKUP)
 
     if (!played) {
-      setState(s => ({ ...s, isPlaying: false, isLoading: false }))
+      // Le player s'ouvre quand même pour afficher l'erreur (plus d'échec silencieux)
+      setState(s => ({ ...s, isPlaying: false, isLoading: false, streamError: true, showPlayer: true }))
       logPlayerError('play_failed', 'Échec du démarrage de la lecture', STREAM_PRIMARY || STREAM_BACKUP, 0)
       return
     }
@@ -170,6 +171,7 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
         isPlaying: false,
         isLoading: false,
         streamError: true,
+        showPlayer: true,
       }))
       logPlayerError('play_timeout', `Lecture non démarrée après ${CONFIG.PLAY_TIMEOUT_MS}ms`, audio.src, audio.currentTime * 1000)
     }, CONFIG.PLAY_TIMEOUT_MS)
@@ -180,7 +182,7 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
 
     watchdogCleanupRef.current = createWatchdog(audio, () => {
       watchdogCleanupRef.current = null
-      setState(s => ({ ...s, isPlaying: false, isLoading: false, streamError: true }))
+      setState(s => ({ ...s, isPlaying: false, isLoading: false, streamError: true, showPlayer: true }))
       logPlayerError('watchdog_stuck', 'Flux bloqué ou erreur audio détectée par le watchdog', audio.src, audio.currentTime * 1000)
     })
   }, [getAudio, state.volume])
