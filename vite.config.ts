@@ -53,6 +53,7 @@ export default defineConfig({
             urlPattern: ({ url }: { url: URL }) => {
               const streamDomains = [
                 'stream.rvd967-bere.com',
+                'caster.fm',
                 'zeno.fm',
                 'stream.zeno.fm',
                 'listen.zeno.fm',
